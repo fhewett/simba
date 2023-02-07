@@ -1,0 +1,11 @@
+# Tested runtime: Python 3.10
+
+django==3.2.*  # Django LTS version (v3.2 as of 202302)
+djangorestframework
+# maybe: django-filter 
+
+torch  # stable release with CUDA (v1.13 as of 202302)
+transformers
+
+
+
