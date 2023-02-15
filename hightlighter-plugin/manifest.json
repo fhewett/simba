@@ -23,7 +23,7 @@
     "content_scripts": [
         {
             "matches": [
-                "*.wikipedia.org/*"
+                "*://*.wikipedia.org/*"
             ],
             "js": [
                 "purify.min.js",
