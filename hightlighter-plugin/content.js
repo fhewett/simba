@@ -14,7 +14,6 @@ function replaceText (node) {
     const searchWord = "Geschichte"
     const reg = new RegExp(searchWord, "gi")
     content = content.replace(reg, "<mark>$&</mark>");
-    hjdsadhsaj
     node.innerHTML = content;
   }
   else {
