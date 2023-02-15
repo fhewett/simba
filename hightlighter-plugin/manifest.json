@@ -1,0 +1,35 @@
+{
+    "manifest_version": 2,
+    "name": "Highlighter Plugin",
+    "version": "1.0",
+    "description": "Highlighter Plugin",
+    "icons": {
+        "48": "icons/border-48.png"
+    },
+    "permissions": [
+        "activeTab"
+    ],
+    "browser_action": {
+        "default_icon": {
+            "48": "border-48.png"
+        },
+        "default_title": "Highlight"
+    },
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "purify.min.js",
+                "Readability.js",
+                "content.js"
+            ]
+        }
+    ]
+}
