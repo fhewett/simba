@@ -1,32 +1,16 @@
 "use strict";
 
 function extractCoreText() {
-  console.log("Hello")
   let cloneDoc = document.cloneNode(true)
   const reader = new Readability(cloneDoc)
   const article = reader.parse()
   return DOMPurify.sanitize(article.textContent)
 }
 
-/*var ajax = new XMLHttpRequest();
-ajax.open('POST', URLHERE, true);
-ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8'); // I think this is okay
-
-ajax.onload = function() {
-	if (this.status == 200) {
-		var data = JSON.parse(this.response);
-		if (data.length > 0) {
-			replaceText(document.body, data)
-		}
-	}
-}
-
-ajax.send(extractCoreText());*/
-
 function replaceText(node, highlightText) {
   if (node.nodeType === Node.ELEMENT_NODE) {
     let content = node.innerHTML;
-    console.log(content)
+    //console.log(content)
     const searchWord = "Geschichte"
     const reg = new RegExp(searchWord, "gi")
     content = content.replace(reg, "<mark>$&</mark>");
@@ -40,7 +24,7 @@ function replaceText(node, highlightText) {
 }
 
 // Start the recursion from the body tag.
-replaceText(document.body);
+
 
 
 const observer = new MutationObserver((mutations) => {
@@ -59,9 +43,31 @@ observer.observe(document.body, {
   subtree: true
 });
 
-browser.runtime.onMessage.addListener((request) => {
+/*browser.runtime.onMessage.addListener((request) => {
   console.log("Message from the background script:");
   console.log(request.action);
-  console.log(extractCoreText())
-  return Promise.resolve({ response: "Hi from content script" });
+  if (request.action === "highlight") {
+    console.log(request.sentences)
+    replaceText(document.body, request.sentences[0])
+  }
+  else if (request.action === "getText") {
+    return Promise.resolve({ response: extractCoreText() });
+  }
+});*/
+
+let myPort = browser.runtime.connect({name:"port-from-cs"});
+
+myPort.onMessage.addListener((m) => {
+  console.log(m.greeting)
+  if (m.greeting == "getText") {
+    myPort.postMessage({greeting: "returnText", text: extractCoreText()})
+  }
+  else if (m.greeting === "highlight") {
+    console.log(m.sentences)
+    replaceText(document.body, sentences)
+  }
+});
+
+document.body.addEventListener("click", () => {
+  myPort.postMessage({greeting: "they clicked the page!"});
 });

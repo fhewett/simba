@@ -7,7 +7,7 @@
         "48": "icon.png"
     },
     "permissions": [
-        "activeTab", "tabs"
+        "activeTab", "tabs", "http://10.0.2.233:8000/sum-wse", "http://10.0.2.233:8000/sum-dum"
     ],
     "browser_action": {
         "default_icon": {
