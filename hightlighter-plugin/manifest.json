@@ -4,14 +4,14 @@
     "version": "1.0",
     "description": "Highlighter Plugin",
     "icons": {
-        "48": "icons/border-48.png"
+        "48": "icon.png"
     },
     "permissions": [
-        "activeTab"
+        "activeTab", "tabs"
     ],
     "browser_action": {
         "default_icon": {
-            "48": "border-48.png"
+            "48": "icon.png"
         },
         "default_title": "Highlight"
     },
