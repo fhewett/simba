@@ -1,14 +1,30 @@
+"use strict";
+
 function extractCoreText() {
+  console.log("Hello")
   let cloneDoc = document.cloneNode(true)
   const reader = new Readability(cloneDoc)
   const article = reader.parse()
   return DOMPurify.sanitize(article.textContent)
 }
 
-function replaceText (node) {
-  if (node.nodeType === Node.ELEMENT_NODE) {
+/*var ajax = new XMLHttpRequest();
+ajax.open('POST', URLHERE, true);
+ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8'); // I think this is okay
 
-    console.log(node)
+ajax.onload = function() {
+	if (this.status == 200) {
+		var data = JSON.parse(this.response);
+		if (data.length > 0) {
+			replaceText(document.body, data)
+		}
+	}
+}
+
+ajax.send(extractCoreText());*/
+
+function replaceText(node, highlightText) {
+  if (node.nodeType === Node.ELEMENT_NODE) {
     let content = node.innerHTML;
     console.log(content)
     const searchWord = "Geschichte"
@@ -16,11 +32,11 @@ function replaceText (node) {
     content = content.replace(reg, "<mark>$&</mark>");
     node.innerHTML = content;
   }
-  else {
+  /*if (node.childNodes.length > 0) {
     for (let i = 0; i < node.childNodes.length; i++) {
-      replaceText(node.childNodes[i]);
-    }    
-  }
+      replaceText(node.childNodes[i], highlightText);
+    }
+  }*/
 }
 
 // Start the recursion from the body tag.
@@ -41,4 +57,11 @@ const observer = new MutationObserver((mutations) => {
 observer.observe(document.body, {
   childList: true,
   subtree: true
+});
+
+browser.runtime.onMessage.addListener((request) => {
+  console.log("Message from the background script:");
+  console.log(request.action);
+  console.log(extractCoreText())
+  return Promise.resolve({ response: "Hi from content script" });
 });
