@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-4n^xg4t58mid9+yow^=4ee*4w*0hz0%z+1*!s6(a_1x!5b)61&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]  # HA: allows world! careful!
 
 
 # Application definition
@@ -37,13 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',  # for django REST framework
+    'rest_framework',  # HA added for django REST framework
+    "corsheaders",  # HA added to avoid CORS error from browser
     'highlight'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",  # HA: added to avoid CORS error
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -135,3 +137,6 @@ REST_FRAMEWORK = {
         #'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+# HA
+CORS_ORIGIN_ALLOW_ALL = True
