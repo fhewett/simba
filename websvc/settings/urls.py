@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('', include('highlight.urls')),  # catchall passes to highlight `app`
+    path('api/', include('endpoints.urls')),  # apis
     # path('admin/', admin.site.urls),  # HA in case admin needed
-    # path('api-auth/', include('rest_framework.urls'))  # HA if one wishes to have write access with REST framework
+    # path('api-auth/', include('rest_framework.urls'))  # HA if one wishes to have write access with REST framework?
 ]
