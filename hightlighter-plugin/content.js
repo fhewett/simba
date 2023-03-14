@@ -64,7 +64,7 @@ function highlightNode(replacePropertiesArray) {
         break;
       // replaceType 2 represents the case, when a part of the searchString continues after this Node
       case 2:
-        const index = replaceProperties.node.innerHTML.lastIndexOf(replaceProperties.text)
+        const index = replaceProperties.node.nodeValue.lastIndexOf(replaceProperties.text)
         if (index >= 0) {
           template = document.createElement("template")
           template.innerHTML = replaceProperties.node.nodeValue.substring(0, index) + "<mark>" + replaceProperties.text + "</mark>"
@@ -203,16 +203,24 @@ myPort.onMessage.addListener((m) => {
   // If we however get the sentences which should be highlighted, we will do so
   else if (m.greeting === "highlight") {
     console.log(m.sentences)
-    for (const sentence in m.sentences) {
+    m.sentences.forEach(sentence => {
+      const str = "Ammonios Hermeiou (altgriechisch Ἀμμώνιος τοῦ Ἑρμείου Ammṓnios tou Hermeíou, auch Ammonios von Alexandria, lateinisch Ammonius Hermiae; * zwischen 435 und 450 in Alexandria; † vermutlich nach 517) war ein einflussreicher spätantiker Philosoph."
       console.log(findSmallestParent(document.body, sentence))
       // First find the smallest Parent Node
       const hNode = findSmallestParent(document.body, sentence)
-      const rPArray = []
-      // Then fill the replaceProperties Array with all the Nodes, which should be highlighted
-      getReplaceNodes(hNode, { nsi: 0, ssi: 0, sso: 0, searchString: theStr, rPArray: rPArray })
-      console.log(rPArray)
-      // And lastly highlight these Nodes
-      highlightNode(rPArray)
-    }
+
+      if (hNode != null) {
+        const rPArray = []
+        // Then fill the replaceProperties Array with all the Nodes, which should be highlighted
+        getReplaceNodes(hNode, { nsi: 0, ssi: 0, sso: 0, searchString: sentence, rPArray: rPArray })
+        console.log(rPArray)
+        // And lastly highlight these Nodes
+        highlightNode(rPArray)
+      }
+      else {
+        console.log("Could not find text: " + sentence)
+      }
+      
+    });
   }
 });
