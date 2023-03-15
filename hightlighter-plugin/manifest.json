@@ -3,6 +3,7 @@
     "name": "Highlighter Plugin",
     "version": "1.0",
     "description": "Highlighter Plugin",
+    "homepage_url": "https://github.com/fhewett/simba",
     "icons": {
         "48": "icon.png"
     },
