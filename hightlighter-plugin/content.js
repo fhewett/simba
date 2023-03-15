@@ -198,6 +198,7 @@ myPort.onMessage.addListener((m) => {
   console.log(m.greeting)
   // If the backgroundScript requests the core Text of the website, send it over
   if (m.greeting == "getText") {
+    console.log(extractCoreText())
     myPort.postMessage({ greeting: "returnText", text: extractCoreText() })
   }
   // If we however get the sentences which should be highlighted, we will do so
@@ -220,7 +221,7 @@ myPort.onMessage.addListener((m) => {
       else {
         console.log("Could not find text: " + sentence)
       }
-      
+
     });
   }
 });
