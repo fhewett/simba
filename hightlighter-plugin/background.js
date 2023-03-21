@@ -15,28 +15,29 @@ function onError(error) {
 function callServer(inputText) {
     let gettingItem = browser.storage.local.get('model');
     gettingItem.then((value) => {
+        console.log(value.model)
         switch (value.model) {
             case "model1":
                 console.log("First Model Loaded")
                 //The real model
-                sendRequest("http://10.0.2.233:8000/sum-wse")
+                sendRequest(inputText, "http://10.0.2.233:8000/sum-wse")
                 break;
             case "model2":
                 // Dummy on the server
                 console.log("Second Model Loaded")
-                sendRequest("http://10.0.2.233:8000/sum-dum")
+                sendRequest(inputText, "http://10.0.2.233:8000/sum-dum")
                 break;
             case "model3":
                 // Dummy on Hadis Server
                 console.log("Third Model Loaded")
-                sendRequest("https://hadi.uber.space/api/sum-dum")
+                sendRequest(inputText, "https://hadi.uber.space/api/sum-dum")
                 break;
         }
     })
 
 }
 
-function sendRequest(model) {
+function sendRequest(inputText, model) {
     let ajax = new XMLHttpRequest();
     // We want to post the inputText and listen for the response
     ajax.open('POST', model, true);
