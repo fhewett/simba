@@ -47,7 +47,7 @@ function findSmallestParent(node, searchString) {
  * 
  * @param {{node: Node, text: string, replaceType: int}} replacePropertiesArray 
  * Given an Array of replaceProperties, this function highlights all the given text in their respective Nodes
- * 
+ * For security reasons any inserted text gets sanatized by DOMPurfy first, this is best practice and even nessasary according to Mozilla
  */
 function highlightNode(replacePropertiesArray) {
   for (const replaceProperties of replacePropertiesArray) {
@@ -59,7 +59,7 @@ function highlightNode(replacePropertiesArray) {
       // replaceType 0 represents to case, when the entire text is in the Node
       case 0:
         template = document.createElement("template")
-        template.innerHTML = replaceProperties.node.nodeValue.replaceAll(replaceProperties.text, "<mark>" + replaceProperties.text + "</mark>")
+        template.innerHTML = DOMPurify.sanitize(replaceProperties.node.nodeValue.replaceAll(replaceProperties.text, "<mark>" + replaceProperties.text + "</mark>"))
         replaceProperties.node.replaceWith(...template.content.childNodes)
         break;
       // replaceType 2 represents the case, when a part of the searchString continues after this Node
@@ -67,8 +67,8 @@ function highlightNode(replacePropertiesArray) {
         const index = replaceProperties.node.nodeValue.lastIndexOf(replaceProperties.text)
         if (index >= 0) {
           template = document.createElement("template")
-          template.innerHTML = replaceProperties.node.nodeValue.substring(0, index) + "<mark>" + replaceProperties.text + "</mark>"
-            + replaceProperties.node.nodeValue.substring(index + replaceProperties.text.length)
+          template.innerHTML = DOMPurify.sanitize(replaceProperties.node.nodeValue.substring(0, index) + "<mark>" + replaceProperties.text + "</mark>"
+            + replaceProperties.node.nodeValue.substring(index + replaceProperties.text.length))
           replaceProperties.node.replaceWith(...template.content.childNodes)
         }
         break;
@@ -77,7 +77,7 @@ function highlightNode(replacePropertiesArray) {
       // replaceType 1 represents the case, when a part of the searchString is in front of this Node
       case 1:
         template = document.createElement("template")
-        template.innerHTML = replaceProperties.node.nodeValue.replace(replaceProperties.text, "<mark>" + replaceProperties.text + "</mark>")
+        template.innerHTML = DOMPurify.sanitize(replaceProperties.node.nodeValue.replace(replaceProperties.text, "<mark>" + replaceProperties.text + "</mark>"))
         replaceProperties.node.replaceWith(...template.content.childNodes)
         break;
     }
