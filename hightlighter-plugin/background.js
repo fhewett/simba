@@ -13,9 +13,33 @@ function onError(error) {
  * For that matter it sends the inputText to ths API
  */
 function callServer(inputText) {
+    let gettingItem = browser.storage.local.get('model');
+    gettingItem.then((value) => {
+        switch (value.model) {
+            case "model1":
+                console.log("First Model Loaded")
+                //The real model
+                sendRequest("http://10.0.2.233:8000/sum-wse")
+                break;
+            case "model2":
+                // Dummy on the server
+                console.log("Second Model Loaded")
+                sendRequest("http://10.0.2.233:8000/sum-dum")
+                break;
+            case "model3":
+                // Dummy on Hadis Server
+                console.log("Third Model Loaded")
+                sendRequest("https://hadi.uber.space/api/sum-dum")
+                break;
+        }
+    })
+
+}
+
+function sendRequest(model) {
     let ajax = new XMLHttpRequest();
     // We want to post the inputText and listen for the response
-    ajax.open('POST', "https://hadi.uber.space/api/sum-dum", true);
+    ajax.open('POST', model, true);
     ajax.setRequestHeader('Content-Type', 'application/json');
 
     ajax.onload = function () {

@@ -10,6 +10,7 @@
     "permissions": [
         "activeTab",
         "tabs",
+        "storage",
         "http://10.0.2.233:8000/sum-wse",
         "http://10.0.2.233:8000/sum-dum"
     ],
@@ -18,6 +19,16 @@
             "48": "icon.png"
         },
         "default_title": "Highlight"
+    },
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "extensionname@example.org",
+            "strict_min_version": "42.0"
+        }
+    },
+    "options_ui": {
+        "page": "options.html",
+        "browser_style": true
     },
     "background": {
         "scripts": [
