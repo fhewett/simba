@@ -2,7 +2,8 @@ from sentence_transformers import SentenceTransformer, util
 import numpy as np
 from LexRank import degree_centrality_scores
 import spacy
-nlp = spacy.load("de_dep_news_trf") #this model is better but slower
+#nlp = spacy.load("de_dep_news_trf") #this model is better but slower
+nlp = spacy.load("de_core_news_sm")
 
 """
 Tried out the LexRank model (unsupervised) as recommended here https://dennis-aumiller.de/posts/cohere-summarization/
@@ -58,7 +59,7 @@ def get_lex_rank_summary(input_text, sentences=True, model=model):
 
             summary += input_text[idx].strip() + " "
         return summary, preds
-        
+
     except IndexError: #less than 3 sentences??
         top_idx = most_central_sentence_indices
         #print(top_idx)
