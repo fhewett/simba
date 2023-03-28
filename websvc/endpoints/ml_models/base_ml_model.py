@@ -1,5 +1,5 @@
 from time import time
-#from django.views import View
+import uuid
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser
@@ -14,7 +14,6 @@ class BaseMLModel(APIView):
     It also handles database logging including exception handling"""
 
     def __init__(self):
-        # self.name = "basemodel-to-be-overridden"
         super().__init__()
 
     def process(self, input_text):
@@ -33,17 +32,22 @@ class BaseMLModel(APIView):
         # Handle the POST request here
         st = time()
         input_text = request.data
-        print(request)
-        #meta = # TODO: extract sanitized URL (nothing after ?) from request
+        error = ""
         try:
             output = self.process(input_text)
         except Exception as e:
-            output = "EXCEPTION: " + str(e)
-            pass
-        self.log_to_database(input_text, output)
-        # TODO: also return the log ID (for feedback)
+            error = str(e)
+            output = "ERROR: " + error
+        duration = time() - st
+        # TODO: get 'url' from as passed to some field in request...
+        # log to database model APIRequestLog
+        logobj = APIRequestLog.objects.create(
+            id = uuid.uuid4().hex,
+            model=self.name,
+            input=input_text,
+            output=output,
+            duration=duration,
+            error=error
+        )
+        # TODO: return the log ID (for feedback) in outputg
         return Response(output)
-
-    def log_to_database(self, input, output):
-         # TODO: Database logging logic
-         pass

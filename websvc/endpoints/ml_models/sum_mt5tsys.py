@@ -1,6 +1,8 @@
 from transformers import MT5ForConditionalGeneration, MT5Tokenizer
 from .base_ml_model import BaseMLModel
 
+# TODO: move these into a Singleton method in base_ml_models so they are only loaded on first view initialization
+#  (and not everytime this file is read eg for manage.py migrate and such commands)
 tokenizer = MT5Tokenizer.from_pretrained("T-Systems-onsite/mt5-small-sum-de-en-v2")
 transformer = MT5ForConditionalGeneration.from_pretrained("T-Systems-onsite/mt5-small-sum-de-en-v2")
 
