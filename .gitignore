@@ -139,4 +139,6 @@ nohup.*
 data/large
 venv-*/
 .idea/
+.env
+websvc/temp-tests/
 

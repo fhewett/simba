@@ -1,12 +1,19 @@
 # Tested runtime: Python 3.10
 gunicorn
 django==3.2.*  # Django LTS version (v3.2 as of 202302)
-djangorestframework
+djangorestframework  # might also need django-filter
 django-cors-headers
-# maybe: django-filter, markdown 
+
+scikit_learn
+nltk
+spacy  # more accurate than nltk but slow
+
+openai
+tiktoken  # openai's fast tokenizer
 
 torch  # stable release with CUDA (v1.13 as of 202302)
 transformers
+sentencepiece  # needed for some HF models
+sentence_transformers  # for sentence embeddings
 
-spacy
-
+sumy  # ?!

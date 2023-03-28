@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class HighlightConfig(AppConfig):
+class EndPointsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'highlight'
+    name = 'endpoints'
