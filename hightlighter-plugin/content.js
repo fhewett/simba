@@ -196,13 +196,8 @@ let myPort = browser.runtime.connect({ name: "port-from-cs" });
 
 myPort.onMessage.addListener((m) => {
   console.log(m.greeting)
-  // If the backgroundScript requests the core Text of the website, send it over
-  if (m.greeting == "getText") {
-    console.log(extractCoreText())
-    myPort.postMessage({ greeting: "returnText", text: extractCoreText() })
-  }
   // If we however get the sentences which should be highlighted, we will do so
-  else if (m.greeting === "highlight") {
+  if (m.greeting === "highlight") {
     console.log(m.sentences)
     m.sentences.forEach(sentence => {
       const str = "Ammonios Hermeiou (altgriechisch Ἀμμώνιος τοῦ Ἑρμείου Ammṓnios tou Hermeíou, auch Ammonios von Alexandria, lateinisch Ammonius Hermiae; * zwischen 435 und 450 in Alexandria; † vermutlich nach 517) war ein einflussreicher spätantiker Philosoph."
@@ -223,5 +218,13 @@ myPort.onMessage.addListener((m) => {
       }
 
     });
+  }
+});
+
+// User opened the popup
+browser.runtime.onMessage.addListener((message) => {
+  if (message.greeting === "start") {
+    console.log(extractCoreText())
+    myPort.postMessage({ greeting: "returnText", text: extractCoreText() })
   }
 });
