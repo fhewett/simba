@@ -93,8 +93,6 @@ function connected(p) {
                 let data = { "text": m.text, "url": m.url , "bid": res.bid}
                 callServer(JSON.stringify(data))
             });
-
-
         }
     });
 }

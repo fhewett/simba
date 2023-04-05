@@ -358,7 +358,7 @@ input:checked+.slider:before {
     width: 299px;
     min-height: 68px;
     position: absolute;
-    top: 550px;
+    top: 450px;
     left: 15px;
 }
 
@@ -400,7 +400,7 @@ input:checked+.slider:before {
     width: 300px;
     min-height: 60px;
     position: absolute;
-    top: 600px;
+    top: 500px;
     left: 15px;
 }
 
@@ -408,7 +408,7 @@ input:checked+.slider:before {
     width: 500px;
     min-height: 203px;
     position: absolute;
-    top: 630px;
+    top: 530px;
     left: 15px;
     margin-right: 15px;
 }
@@ -417,7 +417,7 @@ input:checked+.slider:before {
     width: 300px;
     min-height: 60px;
     position: absolute;
-    top: 820px;
+    top: 620px;
     left: 15px;
 }
 
@@ -425,7 +425,7 @@ input:checked+.slider:before {
     width: 500px;
     min-height: 203px;
     position: absolute;
-    top: 850px;
+    top: 650px;
     left: 15px;
     margin-right: 15px;
 }
