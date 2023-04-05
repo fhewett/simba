@@ -4,12 +4,15 @@ from scipy.special import softmax
 from sentence_transformers import SentenceTransformer, util
 from .base_ml_model import BaseMLModel
 from django.conf import settings
+from ..utils import we_running_server
 
-transformer = SentenceTransformer('symanto/sn-xlm-roberta-base-snli-mnli-anli-xnli')
-
+if we_running_server():
+    transformer = SentenceTransformer('symanto/sn-xlm-roberta-base-snli-mnli-anli-xnli')
+else:
+    transformer = None
 
 class SummaryLexRank(BaseMLModel):
-    """This is a lex rank model based on sentence transformers.
+    """This is a extractive summary model that uses lex ranking and sentence transformers.
 
     Please note that while the transformer used is multilingual, the sentence splitter is for German, so
     the model may have unexpected results for other languages"""
