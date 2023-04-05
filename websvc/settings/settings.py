@@ -16,8 +16,9 @@ env_path = Path('.') / '.env'
 if env_path.exists():
     with open(env_path) as f:
         for line in f:
-            key, value = line.strip().split('=', 1)
-            os.environ[key] = value
+            if line.strip():
+                key, value = line.strip().split('=', 1)
+                os.environ[key] = value
 
 # Based on quick-start development settings (slightly updated)
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -80,6 +81,14 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'mydatabase',
+    #     'USER': 'myuser',
+    #     'PASSWORD': 'mypassword',
+    #     'HOST': 'localhost',
+    #     'PORT': '3306',
+    # }
 }
 
 # Password validation
@@ -107,6 +116,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 STATIC_URL = '/static/'
 
+STATIC_ROOT = '/var/www/simba/static/'
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -129,6 +141,6 @@ SPACY_NLP = None
 try:
     import spacy
     SPACY_NLP = spacy.load("de_core_news_sm")  # (for speed this one rather than de_dep_news_trf
-except ImportError:
+except Exception:
     print("spacy not installed. some views will not work.")
 

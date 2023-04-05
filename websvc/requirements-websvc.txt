@@ -17,3 +17,5 @@ sentencepiece  # needed for some HF models
 sentence_transformers  # for sentence embeddings
 
 sumy  # ?!
+
+mysqlclient  # needs `libmysqlclient-dev` on Ubuntu
