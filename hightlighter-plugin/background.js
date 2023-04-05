@@ -13,6 +13,11 @@ function onError(error) {
  * For that matter it sends the inputText to ths API
  */
 function callServer(inputText) {
+
+    // Temporary dummy
+    sendRequest(inputText, "https://hadi.uber.space/api/sum-dum")
+
+
     let gettingItem = browser.storage.local.get('model');
     gettingItem.then((value) => {
         console.log(value.model)
@@ -75,9 +80,3 @@ function connected(p) {
 
 // Starts when the connection with the contentScript is made
 browser.runtime.onConnect.addListener(connected);
-
-// We create an onclickListerner, which listens for the user to click the toolbar button
-browser.browserAction.onClicked.addListener(() => {
-    // If the button is pressed, we want to get the core text from the website
-    portFromCS.postMessage({ greeting: "getText" });
-});
