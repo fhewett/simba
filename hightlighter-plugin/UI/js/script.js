@@ -1,23 +1,33 @@
 try {
     let copyButton = document.getElementById("copy")
-    
-    copyButton.addEventListener("click", function() {
+
+    copyButton.addEventListener("click", function () {
         navigator.clipboard.writeText(document.getElementById("summary-text").innerText)
     })
-       
+
 } catch (error) {
-    
+
 }
 
 let upvote = document.getElementById("upvote")
-upvote.addEventListener("click", function() {
-    const sending = browser.runtime.sendMessage({content: "Test"})
+upvote.addEventListener("click", function () {
+    const sending = browser.runtime.sendMessage({ content: "Test" })
     sending.then(console.log(this.response))
 })
 
 function startSimba() {
-    browser.tabs.query({ active: true, currentWindow: true })
-        .then(sendIt)
+    let getBID = browser.storage.local.get('bid');
+    getBID.then((res) => {
+        if (Object.keys(res).length === 0) {
+            const bid = Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36)
+            console.log(bid)
+            browser.storage.local.set({
+                bid: bid
+            });
+        }
+        browser.tabs.query({ active: true, currentWindow: true })
+            .then(sendIt)
+    });
 }
 
 function sendIt(tabs) {

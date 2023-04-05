@@ -67,7 +67,7 @@ function sendRequest(inputText, model) {
                 if (model === "sum-abstract") {
                     window.sessionStorage.setItem("sum-text", data.output)
                     window.sessionStorage.setItem("uuid-sum", data.uuid)
-                    console.log(window.sessionStorage.getItem("uuid-sum"))
+                    //console.log(window.sessionStorage.getItem("uuid-sum"))
                     browser.runtime.sendMessage({ greeting: "summary", text: data.output })
                 }
             }
@@ -88,15 +88,20 @@ function connected(p) {
         if (m.greeting === "returnText") {
             // Make sure to match the JSON format
             const text = JSON.stringify("Eine Kaltfront hat dem Sommer ein jähes Ende gesetzt. Am Wochenende ist die Schneefallgrenze auf 1000 Meter gesunken. Das hat den Bergregionen viel Neuschnee beschert. Bei den Bergbahnen freut man sich nur teilweise darüber. 'Schönes Herbstwetter wäre uns an diesem Wochenende lieber gewesen', sagt Sepp Odermatt, Direktor Seilbahnen Schweiz. Der Schnee habe die Wanderer vertrieben. Denn in vielen Bergregionen mussten die Wanderrouten aus Sicherheitsgründen gesperrt werden. Langfristig gesehen, habe der Schnee aber auch eine positive Auswirkung auf den Wintersport: 'Der erste Schnee erinnert die Leute an die Winterferien, und das regt zum Kauf von Saisonkarten an', erklärt Odermatt. Der Verkauf beginnt am 1. Oktober. Roger Friedli, Präsident der Berner Bergbahnen zeigt sich erfreut über den Schnee: 'Der Schnee regt die Leute sicherlich zum Kauf von Saisontickets an'. Den Betrieb der Bergbahnen beeinflusse der frühe Wintereinbruch aber nicht. Laut Friedli sei davon auszugehen, dass der Schnee in einer Woche wieder geschmolzen ist. Für die Öffnungen der Bergbahnen sei das Wetter im November ausschlaggebend. 'Dann muss es kalt sein, damit die Pisten beschneit werden können', sagt Friedli. Ein früherer Saisonbeginn will Friedli aber nicht ausschliessen: 'Bleibt es kühl und fällt immer wieder Schnee, könnte es sein, dass einzelne Bahnen bereits Mitte November öffnen können'. Trotz Corona sind die Schweizer Bergbahnen zuversichtlich, dass die Schweizer Skiferien machen werden. Bereits jetzt steht in einigen Regionen fest: Müssen Bahnen wegen Corona an einzelnen Tagen schliessen, erhalten die Kunden mit einer Saisonkarte das Geld für diese Tage zurück. Wie das Schutzkonzept in den Skigebieten genau aussehen wird, will der Verband Seilbahnen Schweiz Anfang Oktober bekannt geben. Anschliessend soll eine gross angelegten Kampagne darauf aufmerksam machen.")
-            let data = { "text": m.text, "url": m.url }
-            callServer(JSON.stringify(data))
+            let getBID = browser.storage.local.get('bid');
+            getBID.then((res) => {
+                let data = { "text": m.text, "url": m.url , "bid": res.bid}
+                callServer(JSON.stringify(data))
+            });
+
+
         }
     });
 }
 
 function handleMessage(request, sender, sendResponse) {
     console.log(`content script sent a message: ${request.content}`);
-    return Promise.resolve({ response:  window.sessionStorage.getItem("uuid-sum")});
+    return Promise.resolve({ response: window.sessionStorage.getItem("uuid-sum") });
 }
 
 browser.runtime.onMessage.addListener(handleMessage);
