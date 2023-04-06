@@ -10,10 +10,10 @@ try {
 }
 
 let upvote = document.getElementById("upvote")
-upvote.addEventListener("click", function () {
-    const sending = browser.runtime.sendMessage({ content: "Test" })
-    sending.then(console.log(this.response))
-})
+upvote.addEventListener("click", sendUpvote)
+
+let downvote = document.getElementById("downvote")
+downvote.addEventListener("click", sendDownvote)
 
 function startSimba() {
     let getBID = browser.storage.local.get('bid');
@@ -40,6 +40,14 @@ function removeHighlight(tabs) {
     browser.tabs.sendMessage(tabs[0].id, {
         greeting: "restore"
     })
+}
+
+function sendUpvote() {
+    browser.runtime.sendMessage({ greeting: "upvote" })
+}
+
+function sendDownvote() {
+    browser.runtime.sendMessage({ greeting: "downvote" })
 }
 
 browser.runtime.onMessage.addListener(showSummary)
