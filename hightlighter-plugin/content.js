@@ -198,9 +198,8 @@ myPort.onMessage.addListener((m) => {
   console.log(m.greeting)
   // If we however get the sentences which should be highlighted, we will do so
   if (m.greeting === "highlight") {
-    console.log(m.sentences)
-    m.sentences.forEach(sentence => {
-      const str = "Ammonios Hermeiou (altgriechisch Ἀμμώνιος τοῦ Ἑρμείου Ammṓnios tou Hermeíou, auch Ammonios von Alexandria, lateinisch Ammonius Hermiae; * zwischen 435 und 450 in Alexandria; † vermutlich nach 517) war ein einflussreicher spätantiker Philosoph."
+    console.log(m.data.output)
+    m.data.output.forEach(sentence => {
       console.log(findSmallestParent(document.body, sentence))
       // First find the smallest Parent Node
       const hNode = findSmallestParent(document.body, sentence)
@@ -219,12 +218,15 @@ myPort.onMessage.addListener((m) => {
 
     });
   }
+  else if (m.greeting === "summary") {
+
+  }
 });
 
 // User opened the popup
 browser.runtime.onMessage.addListener((message) => {
   if (message.greeting === "start") {
     console.log(extractCoreText())
-    myPort.postMessage({ greeting: "returnText", text: extractCoreText() })
+    myPort.postMessage({ greeting: "returnText", text: extractCoreText() , url: document.URL})
   }
 });
