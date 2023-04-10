@@ -5,9 +5,11 @@ class APIRequestLog(models.Model):
     id = models.CharField(max_length=255, primary_key=True)  # use a UUID for security/privacy on feedback
     timestamp = models.DateTimeField(auto_now_add=True)  # when request has been made
     model = models.CharField(max_length=255)  # which ml model was used
+    browser_id = models.CharField(max_length=255, default="")  # the browser id (pseudonymous)
     meta_url = models.TextField(default="")  # the cleaned URL, or an exception code
     input = models.TextField()  # input text
     output = models.TextField(default="")  # model output (e.g. summary)
+    from_cache = models.BooleanField(default=False)  # whether the model output was read from cache
     duration = models.FloatField()  # how long the model took to run
     error = models.TextField(default="")  # whether a warning, error, or exception occurred
     feedback_thumb = models.CharField(max_length=1, default="", null=True)  # whether user has provided thumbs up/dn feedback

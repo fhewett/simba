@@ -1,7 +1,7 @@
 from time import time
 import uuid
 from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
+from django.core.cache import cache
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser, FormParser
 from rest_framework.response import Response
@@ -30,30 +30,38 @@ class BaseMLModel(APIView):
 
     @csrf_exempt
     def post(self, request, *args, **kwargs):
-        # Handle the POST request here
         st = time()
+        # Parse the POST data
         input_text = request.data.get("text", "") if type(request.data) is dict else str(request.data)
         input_text = input_text[:2000]   # hack for now to limit size of input re speed/timeout
         meta_url = request.data.get("url", "") if type(request.data) is dict else ""
+        browser_id = request.data.get("bid", "") if type(request.data) is dict else ""
         if "?" in meta_url:
-            meta_url = meta_url.split("?")[0]  # cutoff very personal part of URL
+            meta_url = meta_url.split("?")[0]  # cutoff very private part of URL
+        # Use cache to only run the ML models if they haven't been run for this user/url before
         error = ""
-        try:
-            output = self.process(input_text)
-        except Exception as e:
-            # TODO: this should probably be not 200 -- and return an error in the output
-            error = str(e)
-            output = "ERROR: " + error
-        duration = time() - st
-
+        from_cache = True
+        output = cache.get(f"smb:{self.name}:{browser_id}:{meta_url}") if meta_url != "" and browser_id != "" else None
+        if output is None:
+            from_cache = False
+            try:
+                output = self.process(input_text)
+                cache.set(f"smb:{self.name}:{browser_id}:{meta_url}", output, 86400)  # Cache the result for 24 hours
+            except Exception as e:
+                # TODO: this should probably be not 200 -- but that requires coord with plugin
+                error = str(e)
+                output = "ERROR: " + error
+        duration = int((time() - st) * 1000)  # response time in ms
         # log to database model APIRequestLog
         logobj = APIRequestLog.objects.create(
             id = uuid.uuid4().hex,
             model=self.name,
-            input=input_text,
+            browser_id=browser_id,
             meta_url=meta_url,
+            input=input_text,
             output=output,
-            duration=duration,
-            error=error
+            from_cache=from_cache,
+            error=error,
+            duration=duration
         )
-        return Response({"output": output, "uuid": logobj.id})
+        return Response({"output": output, "uuid": logobj.id, "duration": duration, "from_cache": from_cache})

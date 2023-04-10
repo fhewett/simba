@@ -144,3 +144,12 @@ try:
 except Exception:
     print("spacy not installed. some views will not work.")
 
+# Caching Backend
+# See https://docs.djangoproject.com/en/3.2/topics/cache/
+# NOTE: this requires memcached to be installed and running (which is quite easy on Ubuntu)
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
+}

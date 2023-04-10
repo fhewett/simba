@@ -1,13 +1,13 @@
 import numpy as np
 from scipy.sparse.csgraph import connected_components
 from scipy.special import softmax
-from sentence_transformers import SentenceTransformer, util
+import sentence_transformers
 from .base_ml_model import BaseMLModel
 from django.conf import settings
 from ..utils import we_running_server
 
 if we_running_server():
-    transformer = SentenceTransformer('symanto/sn-xlm-roberta-base-snli-mnli-anli-xnli')
+    transformer = sentence_transformers.SentenceTransformer('symanto/sn-xlm-roberta-base-snli-mnli-anli-xnli')
 else:
     transformer = None
 
@@ -45,7 +45,7 @@ class SummaryLexRank(BaseMLModel):
         print(type(embeddings), embeddings.shape)
 
         # Compute the pairwise cosine similarities
-        cos_scores = util.cos_sim(embeddings, embeddings).numpy()
+        cos_scores = sentence_transformers.util.cos_sim(embeddings, embeddings).numpy()
         print(cos_scores.shape)
 
         # Compute the centrality for each sentence

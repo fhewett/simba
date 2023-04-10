@@ -19,3 +19,4 @@ sentence_transformers  # for sentence embeddings
 sumy  # ?!
 
 mysqlclient  # needs `libmysqlclient-dev` on Ubuntu
+pylibmc  # needs libmemcached-tools on Ubuntu
