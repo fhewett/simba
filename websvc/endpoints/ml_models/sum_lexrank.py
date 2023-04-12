@@ -40,21 +40,16 @@ class SummaryLexRank(BaseMLModel):
 
         # Compute the sentence embeddings
         # TODO: @hadi @freya does this not need padding and trunctation?
-        print(len(input_sents))
         embeddings = transformer.encode(input_sents, convert_to_tensor=True).cpu()
-        print(type(embeddings), embeddings.shape)
 
         # Compute the pairwise cosine similarities
         cos_scores = sentence_transformers.util.cos_sim(embeddings, embeddings).numpy()
-        print(cos_scores.shape)
 
         # Compute the centrality for each sentence
         centrality_scores = self.degree_centrality_scores(cos_scores)
-        print(centrality_scores.shape)
 
         # Use argsort so that the first element is the sentence with the highest score
         most_central_sentence_indices = np.argsort(-centrality_scores)
-        print(most_central_sentence_indices.shape)
 
         summary = []
         try:
