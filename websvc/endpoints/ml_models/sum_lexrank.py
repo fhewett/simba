@@ -7,9 +7,9 @@ from django.conf import settings
 from ..utils import we_running_server
 
 if we_running_server():
-    transformer = sentence_transformers.SentenceTransformer('symanto/sn-xlm-roberta-base-snli-mnli-anli-xnli')
+    model = sentence_transformers.SentenceTransformer('symanto/sn-xlm-roberta-base-snli-mnli-anli-xnli')
 else:
-    transformer = None
+    model = None
 
 class SummaryLexRank(BaseMLModel):
     """This is a extractive summary model that uses lex ranking and sentence transformers.
@@ -28,19 +28,23 @@ class SummaryLexRank(BaseMLModel):
     def __init__(self):
         self.name = "Sum-LexRank"
         self.TOP_SENTENCES = 3  # can be changed
+        self.INPUT_LIMIT = 500  # approx. word limit for input
         super().__init__()
 
     def process(self, input_text):
         # split into sentences
         nlp = settings.SPACY_NLP
         input_sents = list()
+        input_len = 0
         for sent in nlp(input_text).sents:
-            if sent.text != '\n' and sent.text != ' ':
-                input_sents.append(sent.text)
+            if sent.text.strip() != '':
+                input_sents.append(sent.text.strip())
+                input_len += len(sent)
+                if input_len >= self.INPUT_LIMIT:
+                    break  # hacky truncation re speed issues
 
         # Compute the sentence embeddings
-        # TODO: @hadi @freya does this not need padding and trunctation?
-        embeddings = transformer.encode(input_sents, convert_to_tensor=True).cpu()
+        embeddings = model.encode(input_sents, convert_to_tensor=True).cpu()
 
         # Compute the pairwise cosine similarities
         cos_scores = sentence_transformers.util.cos_sim(embeddings, embeddings).numpy()
@@ -56,7 +60,7 @@ class SummaryLexRank(BaseMLModel):
             top_idx = most_central_sentence_indices[:self.TOP_SENTENCES]
             for idx in most_central_sentence_indices[:self.TOP_SENTENCES]:
                 summary.append(input_sents[idx].strip())
-        except IndexError: # less than 3 sentences??
+        except IndexError:  # less than 3 sentences??
             top_idx = most_central_sentence_indices
             for idx in most_central_sentence_indices:
                 summary.append(input_sents[idx].strip())

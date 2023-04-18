@@ -10,7 +10,7 @@ class APIRequestLog(models.Model):
     input = models.TextField()  # input text
     output = models.TextField(default="")  # model output (e.g. summary)
     from_cache = models.BooleanField(default=False)  # whether the model output was read from cache
-    duration = models.FloatField()  # how long the model took to run
+    duration = models.FloatField(null=True)  # how long the model took to run
     error = models.TextField(default="")  # whether a warning, error, or exception occurred
     feedback_thumb = models.CharField(max_length=1, default="", null=True)  # whether user has provided thumbs up/dn feedback
     feedback_details = models.TextField(default="")  # user feedback
