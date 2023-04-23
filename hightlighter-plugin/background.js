@@ -63,7 +63,11 @@ function sendRequest(inputText, model) {
             if (this.response.length > 0) {
                 let data = JSON.parse(this.response)
                 if (Object.keys(data).length > 0) {
-                    if (model === "sum-extract") portFromCS.postMessage({ greeting: "highlight", data: data })
+                    if (model === "sum-extract") {
+                        portFromCS.postMessage({ greeting: "highlight", data: data })
+                        browser.runtime.sendMessage({ greeting: "highlight"})
+                    }
+
 
                     if (model === "sum-abstract") {
                         window.sessionStorage.setItem("sum-text", data.output)

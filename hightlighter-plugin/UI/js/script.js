@@ -50,12 +50,17 @@ function sendDownvote() {
     browser.runtime.sendMessage({ greeting: "downvote" })
 }
 
-browser.runtime.onMessage.addListener(showSummary)
+browser.runtime.onMessage.addListener(respondToCall)
 
-function showSummary(message) {
+function respondToCall(message) {
     console.log(message.greeting)
-    if (message.greeting = "summary") {
+    if (message.greeting == "summary") {
+        for (let element of document.getElementsByClassName("loader2")) element.style.visibility = "hidden"
+        console.log(message.text)
         document.getElementById("summary-text").innerText = message.text
+    }
+    else if (message.greeting == "highlight") {
+        for (let element of document.getElementsByClassName("loader")) element.style.visibility = "hidden"
     }
 }
 

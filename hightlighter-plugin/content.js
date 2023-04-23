@@ -5,11 +5,12 @@
  * @returns The cleaned and sanatized core Text of a website
  * This function just uses external libraries to extract the core text of any website
  */
-function extractCoreText() {
+ function extractCoreText() {
   let cloneDoc = document.cloneNode(true)
   const reader = new Readability(cloneDoc)
   const article = reader.parse()
-  return DOMPurify.sanitize(article.textContent)
+  let txt = article.title + "\n\n" + article.excerpt + "\n\n" + article.textContent
+  return DOMPurify.sanitize(txt)
 }
 
 /**
