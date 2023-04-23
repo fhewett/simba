@@ -1,15 +1,15 @@
 import numpy as np
 from scipy.sparse.csgraph import connected_components
 from scipy.special import softmax
-from sentence_transformers import SentenceTransformer, util
+import sentence_transformers
 from .base_ml_model import BaseMLModel
 from django.conf import settings
 from ..utils import we_running_server
 
 if we_running_server():
-    transformer = SentenceTransformer('symanto/sn-xlm-roberta-base-snli-mnli-anli-xnli')
+    model = sentence_transformers.SentenceTransformer('symanto/sn-xlm-roberta-base-snli-mnli-anli-xnli')
 else:
-    transformer = None
+    model = None
 
 class SummaryLexRank(BaseMLModel):
     """This is a extractive summary model that uses lex ranking and sentence transformers.
@@ -28,40 +28,39 @@ class SummaryLexRank(BaseMLModel):
     def __init__(self):
         self.name = "Sum-LexRank"
         self.TOP_SENTENCES = 3  # can be changed
+        self.INPUT_LIMIT = 500  # approx. word limit for input
         super().__init__()
 
     def process(self, input_text):
         # split into sentences
         nlp = settings.SPACY_NLP
         input_sents = list()
+        input_len = 0
         for sent in nlp(input_text).sents:
-            if sent.text != '\n' and sent.text != ' ':
-                input_sents.append(sent.text)
+            if sent.text.strip() != '':
+                input_sents.append(sent.text.strip())
+                input_len += len(sent)
+                if input_len >= self.INPUT_LIMIT:
+                    break  # hacky truncation re speed issues
 
         # Compute the sentence embeddings
-        # TODO: @hadi @freya does this not need padding and trunctation?
-        print(len(input_sents))
-        embeddings = transformer.encode(input_sents, convert_to_tensor=True).cpu()
-        print(type(embeddings), embeddings.shape)
+        embeddings = model.encode(input_sents, convert_to_tensor=True).cpu()
 
         # Compute the pairwise cosine similarities
-        cos_scores = util.cos_sim(embeddings, embeddings).numpy()
-        print(cos_scores.shape)
+        cos_scores = sentence_transformers.util.cos_sim(embeddings, embeddings).numpy()
 
         # Compute the centrality for each sentence
         centrality_scores = self.degree_centrality_scores(cos_scores)
-        print(centrality_scores.shape)
 
         # Use argsort so that the first element is the sentence with the highest score
         most_central_sentence_indices = np.argsort(-centrality_scores)
-        print(most_central_sentence_indices.shape)
 
         summary = []
         try:
             top_idx = most_central_sentence_indices[:self.TOP_SENTENCES]
             for idx in most_central_sentence_indices[:self.TOP_SENTENCES]:
                 summary.append(input_sents[idx].strip())
-        except IndexError: # less than 3 sentences??
+        except IndexError:  # less than 3 sentences??
             top_idx = most_central_sentence_indices
             for idx in most_central_sentence_indices:
                 summary.append(input_sents[idx].strip())

@@ -111,6 +111,10 @@ TIME_ZONE = 'Europe/Berlin'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+TIME_FORMAT = 'H:i'
+DATE_FORMAT = 'Y.m.d'
+DATETIME_FORMAT = 'Y.m.d H:i'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -140,7 +144,16 @@ CORS_ORIGIN_ALLOW_ALL = True
 SPACY_NLP = None
 try:
     import spacy
-    SPACY_NLP = spacy.load("de_core_news_sm")  # (for speed this one rather than de_dep_news_trf
+    SPACY_NLP = spacy.load("de_core_news_sm")  # for speed this better than de_dep_news_trf (still huge!)
 except Exception:
     print("spacy not installed. some views will not work.")
 
+# Caching Backend
+# See https://docs.djangoproject.com/en/3.2/topics/cache/
+# NOTE: this requires memcached to be installed and running (which is quite easy on Ubuntu)
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
+}

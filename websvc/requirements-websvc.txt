@@ -1,9 +1,12 @@
 # Tested runtime: Python 3.10
-gunicorn
 django==3.2.*  # Django LTS version (v3.2 as of 202302)
 djangorestframework  # might also need django-filter
 django-cors-headers
+gunicorn  # to serve the app
+uvicorn  # for asgi support
 
+
+ipython
 scikit_learn
 nltk
 spacy  # more accurate than nltk but slow
@@ -19,3 +22,4 @@ sentence_transformers  # for sentence embeddings
 sumy  # ?!
 
 mysqlclient  # needs `libmysqlclient-dev` on Ubuntu
+pylibmc  # needs libmemcached-tools on Ubuntu

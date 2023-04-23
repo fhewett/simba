@@ -2,14 +2,14 @@ from transformers import MT5ForConditionalGeneration, MT5Tokenizer
 from .base_ml_model import BaseMLModel
 from ..utils import we_running_server
 
-# TODO: move these into a Singleton method in base_ml_models so they are only loaded on first view initialization
-#  (and not everytime this file is read eg for manage.py migrate and such commands) -- called in process
 if we_running_server():
-    tokenizer = MT5Tokenizer.from_pretrained("T-Systems-onsite/mt5-small-sum-de-en-v2")
-    transformer = MT5ForConditionalGeneration.from_pretrained("T-Systems-onsite/mt5-small-sum-de-en-v2")
+    # Only load models if server running (i.e. not if django doing migrations)
+    # Future note: using intel's int8 optimization might help speed up inference on CPU
+    tokenizer = MT5Tokenizer.from_pretrained("T-Systems-onsite/mt5-small-sum-de-en-v2")  # 0.5s, once
+    model = MT5ForConditionalGeneration.from_pretrained("T-Systems-onsite/mt5-small-sum-de-en-v2")  # 6.3s, once
 else:
     tokenizer = None
-    transformer = None
+    model = None
 
 class SummaryMT5TSys(BaseMLModel):
     """This is an abstractive summary model based on the MT5 model finetuned by T-Systems
@@ -17,15 +17,19 @@ class SummaryMT5TSys(BaseMLModel):
 
     def __init__(self):
         self.name = "Sum-MT5-TSystems"
-        self.SUMMARY_LEN = 150
+        self.SUMMARY_LEN = 120  # 120 tokens, compromise fast/quality
+        self.MAX_INPUT_LEN = 512  # 512 tokens, typical max for MT5
         super().__init__()
 
 
     def process(self, text):
-        input_ids = tokenizer.encode(text, return_tensors="pt")
-        output = transformer.generate(input_ids=input_ids,
-                                      max_length=self.SUMMARY_LEN,
-                                      num_beams=4,
-                                      length_penalty=2.0)
+        input_ids = tokenizer.encode(text,
+                                     return_tensors="pt",
+                                     max_length=self.MAX_INPUT_LEN,
+                                     truncation=True)  # 2ms
+        output = model.generate(input_ids=input_ids,
+                                max_new_tokens=self.SUMMARY_LEN,
+                                repetition_penalty=1.5,
+                                do_sample=False)
         summary = tokenizer.decode(output[0], skip_special_tokens=True)
         return summary
