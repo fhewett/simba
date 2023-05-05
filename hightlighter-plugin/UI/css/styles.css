@@ -1,11 +1,25 @@
-* {
-    font-family: 'OCR A Std', sans-serif;
+:root {
+    --color-font: #000;
+    --color-background: #F8F8FA;
+    --color-background-muted: #fff;
+    --color-font-muted: #666;
+    --font-std: 'Roboto', 'Arial', 'sans-serif';
+    --font-high: 'OCR A Std', sans-serif;
+    --font-muted: 'Courier', 'monospace';
 }
 
 @media (prefers-color-scheme: dark) {
-    * {
-        /*filter: invert(1);*/
+
+    :root {
+        --color-font: #fff;
+        --color-background: #000;
+        --color-background-muted: #111;
+        --color-font-muted: #AAA;
     }
+}
+
+* {
+    color: var(--color-font);
 }
 
 .loader, .loader2 {
@@ -151,7 +165,7 @@
     width: 26px;
     left: 4px;
     bottom: 4px;
-    background-color: white;
+    background-color: var(--color-font-muted);
     -webkit-transition: .4s;
     transition: .4s;
 }
@@ -197,7 +211,7 @@ input:checked+.slider:before {
     width: 26px;
     left: 4px;
     bottom: 4px;
-    background-color: white;
+    background-color: var(--color-font-muted);
     -webkit-transition: .4s;
     transition: .4s;
 }
@@ -339,6 +353,7 @@ input:checked+.sliderH:before {
 }
 
 .silex-id-1679993209914-18 {
+    font-family: var(--font-high);
     width: 343px;
     font-size: medium;
     min-height: 118px;
@@ -348,66 +363,80 @@ input:checked+.sliderH:before {
 }
 
 .silex-id-1679993209914-18 h2 {
+    font-family: var(--font-high);
     position: absolute;
     font-size: large;
     top: 40px;
 }
 
-
-
 .silex-id-1679993209914-19 {
-    width: 60px;
-    height: 60px;
+    mask: url(../assets/Logotype.svg) no-repeat center;
+    mask-size: 100%;
+    width: 168px;
+    height: 30px;
+    background-color: var(--color-font);
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 20px;
+    left: 20px;
+}
+
+.beta-badge {
+    width: 50px;
+    height: 25px;
+    fill: var(--color-font);
+    position: absolute;
+    top: 20px;
+    left: 200px;
 }
 
 .silex-id-1679993209914-20 {
-    width: 48px;
-    height: 48px;
+    mask: url(../assets/settings-adjust.svg) no-repeat center;
+    background-color: var(--color-font);
+    width: 30px;
+    height: 30px;
     position: absolute;
-    top: 10px;
-    left: 440px;
+    top: 20px;
+    left: 350px;
 }
 
 .silex-id-1679993209915-21 {
     width: 100px;
     min-height: 100px;
-    background-color: rgb(255, 255, 255);
+    background-color: var(--color-background);
     position: absolute;
-    top: 100px;
-    left: 15px;
+    top: 95px;
+    left: 20px;
 }
 
 .silex-id-1679993209915-22 {
     width: 100px;
     min-height: 100px;
-    background-color: rgb(255, 255, 255);
+    background-color: var(--color-background);
     position: absolute;
-    top: 200px;
-    left: 15px;
+    top: 195px;
+    left: 20px;
 }
 
 .silex-id-1679993209915-23 {
     width: 371px;
-    min-height: 60.43333435058594px;
-    font-size: small;
+    color: var(--color-font-muted);
+    font-size: large;
     position: absolute;
-    top: 100px;
+    top: 110px;
     left: 100px;
 }
 
 .silex-id-1679993209915-24 {
     width: 371px;
-    min-height: 60.43333435058594px;
-    font-size: small;
+    color: var(--color-font-muted);
+    font-size: large;
     position: absolute;
-    top: 200px;
+    top: 210px;
     left: 100px;
 }
 
 .silex-id-1679993209915-25 {
+    color: var(--color-font-muted);
     min-height: 51px;
     font-size: small;
     position: absolute;
@@ -416,6 +445,7 @@ input:checked+.sliderH:before {
 }
 
 .silex-id-1679993209915-26 {
+    color: var(--color-font-muted);
     min-height: 51px;
     font-size: small;
     position: absolute;
@@ -424,60 +454,72 @@ input:checked+.sliderH:before {
 }
 
 .silex-id-1679993209915-27 {
-    width: 48px;
-    height: 48px;
+    mask: url(../assets/Info.svg) no-repeat center;
+    background-color: var(--color-font);
+    mask-size: 100%;
+    width: 30px;
+    height: 30px;
     position: absolute;
-    top: 10px;
-    left: 490px;
-    margin-right: 10px;
+    top: 20px;
+    left: 400px;
 }
 
 .silex-id-1679993233298-40 {
-    width: 138px;
-    min-height: 68px;
+    width: 200px;
+    color: var(--color-font-muted);
+    letter-spacing: 1px;
+    font-size: large;
     position: absolute;
-    top: 290px;
-    left: 15px;
+    top: 320px;
+    left: 20px;
 }
 
 .silex-id-1679993945167-41 {
-    width: 40px;
-    height: 40px;
+    mask: url(../assets/thumbs-up-line.svg) no-repeat center;
+    mask-size: 100%;
+    background-color: var(--color-font);
+    width: 20px;
+    height: 20px;
     position: absolute;
-    top: 305px;
-    left: 370px;
+    top: 320px;
+    left: 300px;
 }
 
 .silex-id-1679993956549-42 {
-    width: 40px;
-    height: 40px;
+    mask: url(../assets/thumbs-down-line.svg) no-repeat center;
+    background-color: var(--color-font);
+    mask-size: 100%;
+    width: 20px;
+    height: 20px;
     position: absolute;
-    top: 305px;
-    left: 415px;
+    top: 320px;
+    left: 330px;
 }
 
 .silex-id-1679993963785-43 {
-    width: 40px;
-    height: 40px;
+    mask: url(../assets/bx-message-error.svg) no-repeat center;
+    mask-size: 90%;
+    background-color: var(--color-font);
+    width: 30px;
+    height: 30px;
     position: absolute;
-    top: 305px;
-    left: 490px;
+    top: 315px;
+    left: 390px;
 }
 
 .silex-id-1679994428800-45 {
-    width: 500px;
+    width: 388px;
+    font-family: var(--font-muted);
     font-size: small;
     min-height: 203px;
     position: absolute;
     top: 360px;
-    left: 15px;
-    background-color: rgba(154, 153, 150, 0.14901960784313725);
-    padding-left: 10px;
-    padding-right: 10px;
+    left: 20px;
+    background-color: var(--color-background-muted);
     border-width: 1px 1px 1px 1px;
     border-style: solid;
+    padding: 10px;
     border-color: rgba(119, 118, 123, 1);
-    margin-right: 15px;
 }
 
 .silex-id-1679995708280-46 {
@@ -681,15 +723,13 @@ input:checked+.sliderH:before {
 }
 
 .silex-id-1679998999094-125 {
-    width: 500px;
+    width: 530px;
     min-height: 100px;
     position: absolute;
     top: 256px;
     left: 15px;
     border-width: 1px 1px 1px 1px;
     border-style: solid;
-    padding-left: 10px;
-    padding-right: 10px;
     background-color: rgba(154, 153, 150, 0.14901960784313725);
 }
 
@@ -770,7 +810,8 @@ input:checked+.sliderH:before {
 }
 
 .website-width {
-    width: 550px;
+    width: 450px;
+    background-color: var(--color-background);
 }
 
 @media (min-width: 481px) {

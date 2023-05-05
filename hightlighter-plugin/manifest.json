@@ -13,9 +13,7 @@
         "storage"
     ],
     "browser_action": {
-        "default_icon": {
-            "48": "UI/assets/logo.png"
-        },
+        "default_icon": "UI/assets/Lion.svg",
         "default_title": "Highlight",
         "default_popup": "UI/index.html"
     },
