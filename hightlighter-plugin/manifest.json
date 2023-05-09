@@ -1,25 +1,27 @@
 {
     "manifest_version": 2,
-    "name": "Highlighter Plugin",
+    "name": "Simba Text Assistant",
     "version": "1.0",
     "description": "Highlighter Plugin",
     "homepage_url": "https://github.com/fhewett/simba",
-    "icons": {
-        "48": "icon.png"
-    },
     "permissions": [
         "activeTab",
         "tabs",
         "storage"
     ],
     "browser_action": {
-        "default_icon": "UI/assets/Lion.svg",
-        "default_title": "Highlight",
-        "default_popup": "UI/index.html"
-    },
-    "options_ui": {
-        "page": "options.html",
-        "browser_style": true
+        "browser_style": true,
+        "default_title": "Simba",
+        "default_popup": "UI/index.html",
+        "theme_icons": [{
+            "light": "UI/assets/Lion-dark.svg",
+            "dark": "UI/assets/Lion.svg",
+            "size": 16
+          }, {
+            "light": "UI/assets/Lion-dark.svg",
+            "dark": "UI/assets/Lion.svg",
+            "size": 32
+          }]
     },
     "background": {
         "scripts": [
