@@ -5,7 +5,7 @@
  * @returns The cleaned and sanatized core Text of a website
  * This function just uses external libraries to extract the core text of any website
  */
- function extractCoreText() {
+function extractCoreText() {
   let cloneDoc = document.cloneNode(true)
   const reader = new Readability(cloneDoc)
   const article = reader.parse()
@@ -25,21 +25,24 @@
 function findSmallestParent(node, searchString) {
   //Only Element Nodes are important, these includes <p>, <div>, <span>, <b>, etc; basically every Node that can contain text
   if (node.nodeType === Node.ELEMENT_NODE) {
-    //continue the search, if the string is still included
-    if (node.innerText.includes(searchString)) {
-      //search in every Child Node of the current Node
-      for (const subNode of node.childNodes) {
-        //search recursively
-        const ret = findSmallestParent(subNode, searchString)
-        if (ret != null) {
-          return ret
+    if (node.innerText != null) {
+      //continue the search, if the string is still included
+      if (node.innerText.includes(searchString)) {
+        //search in every Child Node of the current Node
+        for (const subNode of node.childNodes) {
+          //search recursively
+          const ret = findSmallestParent(subNode, searchString)
+          if (ret != null) {
+            return ret
+          }
         }
       }
+      else {
+        return null
+      }
+      return node
     }
-    else {
-      return null
-    }
-    return node
+    return null
   }
   return null
 }
@@ -228,6 +231,9 @@ myPort.onMessage.addListener((m) => {
 browser.runtime.onMessage.addListener((message) => {
   if (message.greeting === "start") {
     console.log(extractCoreText())
-    myPort.postMessage({ greeting: "returnText", text: extractCoreText() , url: document.URL})
+    myPort.postMessage({ greeting: "returnText", text: extractCoreText(), url: document.URL })
+  }
+  else if (message.greeting === "highSel") {
+    myPort.postMessage({ greeting: "returnText", text: message.text, url: document.URL })
   }
 });

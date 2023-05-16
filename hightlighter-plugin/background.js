@@ -13,9 +13,6 @@ function onError(error) {
  * For that matter it sends the inputText to ths API
  */
 function callServer(inputText) {
-
-    // Temporary dummy
-    //sendRequest(inputText, "https://hadi.uber.space/api/sum-dum")
     console.log("Calling server")
 
     let getHighlight = browser.storage.local.get('highlight');
@@ -26,27 +23,6 @@ function callServer(inputText) {
     getSummary.then((res) => {
         if (res.summary) sendRequest(inputText, "sum-abstract")
     });
-    /*let gettingItem = browser.storage.local.get('model');
-    gettingItem.then((value) => {
-        console.log(value.model)
-        switch (value.model) {
-            case "model1":
-                console.log("First Model Loaded")
-                //The real model
-                sendRequest(inputText, "http://10.0.2.233:8000/sum-wse")
-                break;
-            case "model2":
-                // Dummy on the server
-                console.log("Second Model Loaded")
-                sendRequest(inputText, "http://10.0.2.233:8000/sum-dum")
-                break;
-            case "model3":
-                // Dummy on Hadis Server
-                console.log("Third Model Loaded")
-                sendRequest(inputText, "https://hadi.uber.space/api/sum-dum")
-                break;
-        }
-    })*/
 
 }
 
@@ -68,7 +44,6 @@ function sendRequest(inputText, model) {
                         browser.runtime.sendMessage({ greeting: "highlight"})
                     }
 
-
                     if (model === "sum-abstract") {
                         window.sessionStorage.setItem("sum-text", data.output)
                         window.sessionStorage.setItem("uuid-sum", data.uuid)
@@ -81,6 +56,23 @@ function sendRequest(inputText, model) {
     }
     ajax.send(inputText)
 }
+
+browser.contextMenus.create(
+    {
+      id: "highlight-sel",
+      title: "Highlight here!",
+      contexts: ["selection"],
+    }
+  );
+
+  browser.contextMenus.onClicked.addListener((info, tab) => {
+    switch (info.menuItemId) {
+      case "highlight-sel":
+        console.log(info.selectionText);
+        browser.runtime.sendMessage({ greeting: "highSel", text: info.selectionText })
+        break;
+    }
+  });
 
 // To be able to communicate with the contentScript we create a messager, which sends and retrieves messages to and from the contentScript
 let portFromCS;
