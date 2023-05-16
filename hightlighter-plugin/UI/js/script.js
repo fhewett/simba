@@ -55,12 +55,11 @@ browser.runtime.onMessage.addListener(respondToCall)
 function respondToCall(message) {
     console.log(message.greeting)
     if (message.greeting == "summary") {
-        for (let element of document.getElementsByClassName("loader2")) element.style.visibility = "hidden"
-        console.log(message.text)
+        for (let element of document.getElementsByClassName("summaryLoader")) element.style.visibility = "hidden"
         document.getElementById("summary-text").innerText = message.text
     }
     else if (message.greeting == "highlight") {
-        for (let element of document.getElementsByClassName("loader")) element.style.visibility = "hidden"
+        for (let element of document.getElementsByClassName("highlightLoader")) element.style.visibility = "hidden"
     }
 }
 

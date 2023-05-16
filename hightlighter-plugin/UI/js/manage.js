@@ -4,25 +4,23 @@ let toggleSummary = document.getElementById("summary")
 toggleHighlight.addEventListener("change", saveOptions)
     
 toggleHighlight.addEventListener("change", function () {
-    if (this.checked) {
-        
-    }
-    else {
-        browser.tabs.query({ active: true, currentWindow: true })
-        .then(removeHighlight)
-    }
+    toggleVisibility(this, "highlightLoader")
 })
 
 toggleSummary.addEventListener("change", function () {
-    if (this.checked) {
-        for (let element of document.getElementsByClassName("summary")) element.style.visibility = "visible"
-    }
-    else {
-        for (let element of document.getElementsByClassName("summary")) element.style.visibility = "hidden"
-    }
+    toggleVisibility(this, "summary")
 })
 
 toggleSummary.addEventListener("change", saveOptions)
+
+function toggleVisibility(toggleButton, classname) {
+    if (toggleButton.checked) {
+        for (let element of document.getElementsByClassName(classname)) element.style.visibility = "visible"
+    }
+    else {
+        for (let element of document.getElementsByClassName(classname)) element.style.visibility = "hidden"
+    }
+}
 
 function saveOptions(e) {
     browser.storage.local.set({
@@ -41,15 +39,12 @@ function restoreOptions() {
         let getSummary = browser.storage.local.get('summary');
         getSummary.then((res) => {
             toggleSummary.checked = res.summary
+            toggleVisibility(toggleSummary, "summary")
         });
     } catch (error) {
         console.log(error)
     }
 }
-
-
-window.silex = window.silex || {}
-window.silex.data = { "site": { "width": 550 }, "pages": [{ "id": "page-simba-main", "displayName": "Simba Main", "link": { "linkType": "LinkTypePage", "href": "#!page-simba-main" }, "canDelete": true, "canProperties": true, "canMove": true, "canRename": true, "opened": false }, { "id": "page-simba-summary", "displayName": "Simba summary", "link": { "linkType": "LinkTypePage", "href": "#!page-simba-summary" }, "canDelete": true, "canRename": true, "canMove": true, "canProperties": true }, { "id": "page-simba-about", "displayName": "Simba About", "link": { "linkType": "LinkTypePage", "href": "#!page-simba-about" }, "canDelete": true, "canRename": true, "canMove": true, "canProperties": true }, { "id": "page-simba-feedback-downvote", "displayName": "Simba Feedback downvote", "link": { "linkType": "LinkTypePage", "href": "#!page-simba-feedback-downvote" }, "canDelete": true, "canRename": true, "canMove": true, "canProperties": true }, { "id": "page-simba-feedback-upvote", "displayName": "Simba Feedback upvote", "link": { "linkType": "LinkTypePage", "href": "#!page-simba-feedback-upvote" }, "canDelete": true, "canRename": true, "canMove": true, "canProperties": true }] }
 
 document.addEventListener('DOMContentLoaded', restoreOptions);
 
