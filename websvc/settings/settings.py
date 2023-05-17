@@ -140,14 +140,6 @@ REST_FRAMEWORK = {
 # HA
 CORS_ORIGIN_ALLOW_ALL = True
 
-# HA define a global spacy nlp model which can be used by different endpoints and views as needed
-SPACY_NLP = None
-try:
-    import spacy
-    SPACY_NLP = spacy.load("de_core_news_sm")  # for speed this better than de_dep_news_trf (still huge!)
-except Exception:
-    print("spacy not installed. some views will not work.")
-
 # Caching Backend
 # See https://docs.djangoproject.com/en/3.2/topics/cache/
 # NOTE: this requires memcached to be installed and running (which is quite easy on Ubuntu)

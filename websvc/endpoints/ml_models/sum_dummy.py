@@ -1,6 +1,5 @@
-from nltk import tokenize
-
 from .base_ml_model import BaseMLModel
+from ..utils import split_sentences
 
 
 class SummaryDummy(BaseMLModel):
@@ -11,5 +10,5 @@ class SummaryDummy(BaseMLModel):
         super().__init__()
 
     def process(self, input_text):
-        sentences = tokenize.sent_tokenize(input_text)
+        sentences = split_sentences(input_text)
         return sentences[0], sentences[-1]
