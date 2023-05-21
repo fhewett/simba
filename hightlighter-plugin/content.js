@@ -17,7 +17,13 @@ function extractCoreText() {
 
   const reader = new Readability(cloneDoc)
   const article = reader.parse()
-  let txt = article.title + "\n\n" + article.excerpt + "\n\n" + article.textContent
+  let txt = ""
+  if (article.textContent.includes(article.excerpt)) {
+    txt = article.title + "\n\n" + article.textContent
+  }
+  else {
+    txt = article.title + "\n\n" + article.excerpt + "\n\n" + article.textContent
+  }
   return DOMPurify.sanitize(txt)
 }
 
