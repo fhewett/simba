@@ -7,10 +7,12 @@
  */
 function extractCoreText() {
   let cloneDoc = document.cloneNode(true)
-
+  
   // Elements to remove
-  const e = cloneDoc.querySelector("code")
-  e.remove()
+  if (cloneDoc.querySelector("code") != null) {
+    const e = cloneDoc.querySelector("code")
+    e.remove()
+  }
   // Elements to remove
 
   const reader = new Readability(cloneDoc)
