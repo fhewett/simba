@@ -1,13 +1,15 @@
 import numpy as np
 from scipy.sparse.csgraph import connected_components
 from scipy.special import softmax
-import sentence_transformers
+from sentence_transformers import SentenceTransformer
+from sentence_transformers import util as sentence_transformers_util
 from .base_ml_model import BaseMLModel
 from django.conf import settings
-from ..utils import we_running_server
+from ..utils import we_running_server, split_sentences
 
 if we_running_server():
-    model = sentence_transformers.SentenceTransformer('symanto/sn-xlm-roberta-base-snli-mnli-anli-xnli')
+    model = SentenceTransformer('sentence-transformers/paraphrase-MiniLM-L3-v2')  # faster
+    # model = SentenceTransformer('symanto/sn-xlm-roberta-base-snli-mnli-anli-xnli') # this slow
 else:
     model = None
 
@@ -28,26 +30,18 @@ class SummaryLexRank(BaseMLModel):
     def __init__(self):
         self.name = "Sum-LexRank"
         self.TOP_SENTENCES = 3  # can be changed
-        self.INPUT_LIMIT = 500  # approx. word limit for input
+        self.INPUT_LIMIT = 500  # TODO: approx. word limit for input
         super().__init__()
 
     def process(self, input_text):
-        # split into sentences
-        nlp = settings.SPACY_NLP
-        input_sents = list()
-        input_len = 0
-        for sent in nlp(input_text).sents:
-            if sent.text.strip() != '':
-                input_sents.append(sent.text.strip())
-                input_len += len(sent)
-                if input_len >= self.INPUT_LIMIT:
-                    break  # hacky truncation re speed issues
+        # split into sentences  (with truncaiton for speed)
+        input_sents = split_sentences(input_text, max_tokens=self.INPUT_LIMIT)
 
         # Compute the sentence embeddings
         embeddings = model.encode(input_sents, convert_to_tensor=True).cpu()
 
         # Compute the pairwise cosine similarities
-        cos_scores = sentence_transformers.util.cos_sim(embeddings, embeddings).numpy()
+        cos_scores = sentence_transformers_util.cos_sim(embeddings, embeddings).numpy()
 
         # Compute the centrality for each sentence
         centrality_scores = self.degree_centrality_scores(cos_scores)

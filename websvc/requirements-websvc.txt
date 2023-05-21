@@ -5,21 +5,15 @@ django-cors-headers
 gunicorn  # to serve the app
 uvicorn  # for asgi support
 
-
 ipython
 scikit_learn
-nltk
-spacy  # more accurate than nltk but slow
-
+somajo # a better splitter than NLTK/Spacy
 openai
-tiktoken  # openai's fast tokenizer
-
+tiktoken  # OpenAI's fast tokenizer
 torch  # stable release with CUDA (v1.13 as of 202302)
 transformers
 sentencepiece  # needed for some HF models
-sentence_transformers  # for sentence embeddings
-
-sumy  # ?!
+sentence_transformers  # for sentence embeddings (installs nltk too)
 
 mysqlclient  # needs `libmysqlclient-dev` on Ubuntu
 pylibmc  # needs libmemcached-tools on Ubuntu
