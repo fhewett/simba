@@ -7,6 +7,12 @@
  */
 function extractCoreText() {
   let cloneDoc = document.cloneNode(true)
+
+  // Elements to remove
+  const e = cloneDoc.querySelector("code")
+  e.remove()
+  // Elements to remove
+
   const reader = new Readability(cloneDoc)
   const article = reader.parse()
   let txt = article.title + "\n\n" + article.excerpt + "\n\n" + article.textContent
