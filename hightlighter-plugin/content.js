@@ -40,8 +40,10 @@ function findSmallestParent(node, searchString) {
   //Only Element Nodes are important, these includes <p>, <div>, <span>, <b>, etc; basically every Node that can contain text
   if (node.nodeType === Node.ELEMENT_NODE) {
     if (node.innerText != null) {
+      let nodeText = node.innerText.replace(/\s/g,' ')
+      searchString = searchString.replace(/\s/g,' ')
       //continue the search, if the string is still included
-      if (node.innerText.includes(searchString)) {
+      if (nodeText.includes(searchString)) {
         //search in every Child Node of the current Node
         for (const subNode of node.childNodes) {
           //search recursively
@@ -161,6 +163,7 @@ function getReplaceNodes(currentNode, searchProps) {
 
     // If currentNode is a textNode, we can start looking for the Characters of the searchString
     case Node.TEXT_NODE:
+      const nodeText = currentNode.nodeValue.replace(/\s/g,' ')
       // This describes, if we've already had a match in an earlier Node, this is only important later for the Highlighting
       const hasMatchBeforeNode = searchProps.ssi > 0 ? 1 : 0
       let matchedText = ""
@@ -193,7 +196,7 @@ function getReplaceNodes(currentNode, searchProps) {
         }
         // We loop over every Character in the currentNode and compare it to the respective Character in the searchString
         // If they match, we continue until the above contitions are met
-        if (currentNode.nodeValue[i] === searchProps.searchString[searchProps.sso]) {
+        if (nodeText[i] === searchProps.searchString[searchProps.sso]) {
           matchedText += currentNode.nodeValue[i]
           i++;
           searchProps.sso++
@@ -219,9 +222,9 @@ myPort.onMessage.addListener((m) => {
     console.log(m.data.output)
     m.data.output.forEach(sentence => {
       console.log(findSmallestParent(document.body, sentence))
+      console.log(sentence)
       // First find the smallest Parent Node
       const hNode = findSmallestParent(document.body, sentence)
-
       if (hNode != null) {
         const rPArray = []
         // Then fill the replaceProperties Array with all the Nodes, which should be highlighted
