@@ -26,8 +26,5 @@ We use django (Python) on the backend, these files are in the *websvc* folder. T
 
 SIMBA has been created by members of the [AI & Society Lab](https://www.hiig.de/en/research/ai-and-society-lab/) at the [Humboldt Institute for Internet and Society](https://www.hiig.de/en/) in Berlin, Germany.
 Hadi Asghari, Christopher Richter and Freya Hewett are responsible for the technical aspects, Larissa Wunderlich for the visuals, with general input from Theresa Züger.
+
 If you have any questions, feedback or comments, get in touch with us at simba -at- hiig.de. More information can be found at the following page ([coming soon](https://publicinterest.ai/)).
-
-
-
-
