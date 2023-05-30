@@ -8,6 +8,7 @@ The SIMBA Text Assistant is designed to improve your online reading experience. 
 
 The plug-in supports two types of summaries: extractive, where the most important sentences are highlighted on the page, and abstractive, where a new text is generated which reflects the main points in the text. 
 We offer both summaries as they both have their advantages: the extractive summary is guaranteed to be accurate, whereas the abstractive summary is a stand-alone text that should be more coherent.
+
 The extractive summary is created using sentence embeddings from [SBERT](https://sbert.net/) and the [LexRank algorithm](https://github.com/crabcamp/lexrank/tree/dev), which is an unsupervised algorithm. The abstractive summary is created using the model [mt5-small](https://huggingface.co/T-Systems-onsite/mt5-small-sum-de-en-v2), which has been fine-tuned with German-language newspaper articles.
 
 ## Known limitations
