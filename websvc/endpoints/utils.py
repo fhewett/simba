@@ -2,9 +2,10 @@ import sys
 from somajo import SoMaJo
 
 somajo_tokenizer = SoMaJo("de_CMC", split_camel_case=False, split_sentences=True)
+# note, for English, en_PTB is needed. but then language has to be detected
 
 def split_sentences(input_text, max_sentences=None, max_tokens=None):
-    sentences = somajo_tokenizer.tokenize_text([input_text])
+    sentences = somajo_tokenizer.tokenize_text(input_text.splitlines())
     output_sentences = []
     output_tokens = 0
     for s in sentences:
