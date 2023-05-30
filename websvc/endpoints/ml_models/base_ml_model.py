@@ -5,8 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser, FormParser
 from rest_framework.response import Response
 from rest_framework.decorators import parser_classes
-from ..db_models import APIRequestLog
-from ..urls import create_comb_uuid
+from ..db_models import APIRequestLog, gen_comb
 
 
 @parser_classes([JSONParser, FormParser])
@@ -40,6 +39,7 @@ class BaseMLModel(APIView):
             meta_url = meta_url.split("?")[0]  # cutoff very private part of URL
         # Create DB log entry
         logobj = APIRequestLog.objects.create(
+            id=gen_comb(),
             model=self.name,
             browser_id=browser_id,
             meta_url=meta_url,

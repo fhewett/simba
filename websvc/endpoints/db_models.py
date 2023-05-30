@@ -1,4 +1,4 @@
-# This file contains the database class (name is Django convention)
+# This file contains the database class
 import uuid
 import time
 from django.db import models
@@ -16,7 +16,7 @@ def gen_comb():
 
 
 class APIRequestLog(models.Model):
-    id = models.CharField(max_length=32, primary_key=True, default=gen_comb())  # COMB-id for feedback
+    id = models.CharField(max_length=32, primary_key=True)  # COMB-id for feedback
     timestamp = models.DateTimeField(auto_now_add=True)  # when request has been made
     model = models.CharField(max_length=255)  # which ml model was used
     browser_id = models.CharField(max_length=255, default="")  # the browser id (pseudonymous)

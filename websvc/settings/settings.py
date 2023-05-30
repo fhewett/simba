@@ -6,6 +6,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -52,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'settings.middleware.TimingMiddleware',
 ]
 
 ROOT_URLCONF = 'settings.urls'
@@ -147,5 +149,25 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
         'LOCATION': '127.0.0.1:11211',
+    }
+}
+
+# HA
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'stream': sys.stderr,  # Output to stderr
+        },
+        'file': {
+            'class': 'logging.FileHandler',  # or RotatingFileHandler
+            'filename': 'simba-backend.log',
+        },
+    },
+    'root': {
+        'handlers': ['file'],
+        'level': 'INFO',
     }
 }
