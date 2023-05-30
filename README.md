@@ -16,6 +16,11 @@ The extractive summary is created using sentence embeddings from [SBERT](https:/
 - SIMBA works best on shorter texts
 - It has been created for German-language text: it may work on other languages, but it has not been designed to do so
 - The abstractive summary may contain false information or ungrammatical phrases
+- The abstractive model has been trained using datasets with known biases. Limitations can be found on the respective dataset pages: [CNN Daily Mail](https://huggingface.co/datasets/cnn_dailymail), [XSum](https://huggingface.co/datasets/xsum), [MLSUM](https://huggingface.co/datasets/mlsum), [SwissText](https://www.swisstext.org/2019/shared-task/german-text-summarization-challenge.html).
+
+## Project structure
+
+We use django (Python) on the backend, these files are in the *websvc* folder. The plug-in code is in Javascript and can be found in the folder *highlighter-plugin*.
 
 ## Credits
 
