@@ -353,6 +353,23 @@ input:focus+.sliderH {
     background-color: var(--color-background-muted);
 }
 
+.downvote-submit {
+    top: 370px;
+    left: 350px;
+    border-width: 1px 1px 1px 1px;
+    border-style: solid;
+    font-size: large;
+    background-color: var(--color-background-muted);
+}
+
+.downvote-submit:hover {
+    background-color: var(--color-font-muted);
+    color: var(--color-background-muted);
+    font-size: large;
+    border-width: 1px 1px 1px 1px;
+    border-style: solid;
+}
+
 .website-width {
     width: 450px;
     background-color: var(--color-background);

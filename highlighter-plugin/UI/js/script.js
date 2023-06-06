@@ -9,6 +9,18 @@ try {
 
 }
 
+try {
+    let downvoteSubmit = document.getElementById("down-sub")
+
+    downvoteSubmit.addEventListener("click", function () {
+        let downvoteText = document.getElementById("down-text").value
+        browser.runtime.sendMessage({ greeting: "downvote" , text: downvoteText})
+    })
+
+} catch (error) {
+
+}
+
 let upvote = document.getElementById("upvote")
 upvote.addEventListener("click", sendUpvote)
 

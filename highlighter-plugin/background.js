@@ -100,7 +100,7 @@ function handleMessage(request, sender, sendResponse) {
         sendRequest(JSON.stringify(data), "feedback")
     }
     else if (request.greeting == "downvote") {
-        const data = { "uuid": window.sessionStorage.getItem("uuid-sum"), "thumb": "down" }
+        const data = { "uuid": window.sessionStorage.getItem("uuid-sum"), "thumb": "down" , "text": request.text}
         sendRequest(JSON.stringify(data), "feedback")
     }
 }
