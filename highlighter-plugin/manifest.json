@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Simba Text Assistant",
     "version": "1.0",
-    "description": "Highlighter Plugin",
+    "description": "The Simba Text Assistant is designed to improve your online reading experience. It is a plug-in that runs in your browser and provides summaries of the text found on web pages. Simba provides two types of summaries: extractive and abstractive.",
     "homepage_url": "https://github.com/fhewett/simba",
     "permissions": [
         "activeTab",
