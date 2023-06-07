@@ -20,13 +20,19 @@ class Feedback(APIView):
     @csrf_exempt
     @parser_classes([JSONParser])  # only JSON
     def post(self, request, *args, **kwargs):
-        if type(request.data) is dict:
-            uuid = request.data.get("uuid", "")
-            thumb = request.data.get("thumb", "?")  # up/dn
+        #if type(request.data) is dict:
+        uuid = request.data.get("uuid", "")
+        thumb = request.data.get("thumb", "?")  # up/dn
+        notes = request.data.get("fnotes", "")
 
         obj = get_object_or_404(APIRequestLog, pk=uuid)
+        if obj.feedback_thumb:
+            # there shouldn't really be a feedback already stored, but to be safe lets not override.
+            obj.feedback_details = "\n---\nEarlier: " + obj.feedback_thumb + "\n" + obj.feedback_details
+
         obj.feedback_thumb = thumb[0].upper()
+        obj.feedback_details = notes + obj.feedback_details
         obj.save()
-        # TODO: in future also update feedback_details
-        # technically 204 means successfully processed w/o content but 200 is more common
+
+        # technically returning 204 means successfully processed w/o content but 200 is more common
         return Response(status=200)
