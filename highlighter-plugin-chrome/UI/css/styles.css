@@ -189,19 +189,17 @@ input:focus+.sliderH {
 }
 
 .mask {
-    mask-repeat: no-repeat;
-    mask-position: center;
-    mask-size: 100%;
-    background-color: var(--color-font);
+    fill: var(--color-font);
     position: absolute;
     width: 30px;
     height: 30px;
 }
 
 .index {
-    mask-image: url(../assets/Logotype.svg);
-    width: 168px;
-    height: 30px;
+    position: absolute;
+    overflow: hidden;
+    width: 190px;
+    height: 35Spx;
     top: 20px;
     left: 20px;
 }
@@ -220,33 +218,27 @@ input:focus+.sliderH {
 }
 
 .settings {
-    mask-image: url(../assets/settings-adjust.svg);
     top: 20px;
     left: 350px;
 }
 
 .about {
-    mask-image: url(../assets/Info.svg);
     top: 20px;
     left: 400px;
 }
 
 .upvote {
-    mask-image: url(../assets/thumbs-up-line.svg);
-    top: 320px;
+    top: 325px;
     left: 300px;
 }
 
 .downvote {
-    mask-image: url(../assets/thumbs-down-line.svg);
-    top: 320px;
+    top: 325px;
     left: 340px;
 }
 
 .copy {
-    mask-image: url(../assets/bx-message-error.svg);
-    mask-size: 90%;
-    top: 315px;
+    top: 325px;
     left: 400px;
 }
 
