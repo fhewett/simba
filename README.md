@@ -2,7 +2,7 @@
 
 ## What is SIMBA?
 
-The SIMBA Text Assistant is designed to improve your online reading experience. It is a plug-in that runs in your browser and provides summaries of the text found on web pages. Our models and code are open source. It has been designed for German-langugage text, but it may work on other languages.
+The SIMBA Text Assistant is designed to improve your online reading experience. It is a plug-in that runs in your browser and provides summaries of the text found on web pages. Our models and code are open source. It has been designed for German-language text, but it may work on other languages.
 
 ## How does SIMBA work?
 
