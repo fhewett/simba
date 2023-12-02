@@ -1,0 +1,99 @@
+<!doctype html>
+<html class="" lang="">
+
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.cdnfonts.com/css/ocr-a-std" rel="stylesheet">
+
+  <title>Simba Main Page</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="css/styles.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="main website-width" title="">
+    <a href="./simba-feedback-upvote.html" alt="Simba Logo" class="index" tabindex="1">
+      <img src="assets/Logotype.svg" frameborder="0" width="100%" height="100%">
+    </a>
+    <!--<a class="settings mask" href="./simba-manage.html" tabindex="1"></a>-->
+    <a class="about mask" href="https://www.github.com/fhewett/simba" tabindex="2" target="_blank">
+      <img src="assets/Info.svg" frameborder="0" width="100%" height="100%">
+    </a>
+    <div class="beta-badge">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48.113" height="24.236" viewBox="0 0 48.113 24.236">
+        <g id="Beta_Badge" data-name="Beta Badge" transform="matrix(0.978, 0.208, -0.208, 0.978, -177.173, -41.389)">
+          <g id="Rectangle_33" data-name="Rectangle 33" transform="translate(184.957 3)" fill="#fff" stroke="#000"
+            stroke-width="1">
+            <rect width="46" height="15" rx="5" stroke="none" />
+            <rect x="0.5" y="0.5" width="45" height="14" rx="4.5" fill="none" />
+          </g>
+          <text id="BETA" transform="translate(194.84 14.238)" font-size="10"
+            font-family="SourceCodePro-Bold, Source Code Pro" font-weight="700">
+            <tspan x="0" y="0">BETA</tspan>
+          </text>
+        </g>
+      </svg>
+    </div>
+    <div class="highlight-switch">
+      <p><label class="switch" tabindex="3">
+          <input type="checkbox" id="highlight">
+          <span class="sliderH slider round"></span>
+        </label></p>
+    </div>
+    <div class="loader highlightLoader">
+      <div class="bar1"></div>
+      <div class="bar2"></div>
+      <div class="bar3"></div>
+      <div class="bar4"></div>
+      <div class="bar5"></div>
+      <div class="bar6"></div>
+    </div>
+    <div class="summary-switch">
+      <p><label class="switch" tabindex="4">
+          <input type="checkbox" id="summary">
+          <span class="slider round"></span>
+        </label></p>
+    </div>
+    <div class="loader loader2 summary summaryLoader">
+      <div class="bar1"></div>
+      <div class="bar2"></div>
+      <div class="bar3"></div>
+      <div class="bar4"></div>
+      <div class="bar5"></div>
+      <div class="bar6"></div>
+    </div>
+    <div class="highlight-head std-text">
+      Highlight most important sentences
+    </div>
+    <div class="highlight-sub std-text">
+      Use extractive summary algorithm
+    </div>
+    <div class="summary-head std-text">
+      Summary
+    </div>
+    <div class="summary-sub std-text">
+      Use abstractive summary algorithm
+    </div>
+    <div class="summary-main summary std-text">
+      SUMMARY
+    </div>
+    
+    <a class="upvote summary mask" href="./simba-feedback-upvote.html" id="upvote" tabindex="5">
+      <img src="assets/thumbs-up-line.svg" frameborder="0" width="100%" height="100%">
+    </a>
+    <a class="downvote summary mask" href="./simba-feedback-downvote.html" id="downvote" tabindex="6">
+      <img src="assets/thumbs-down-line.svg" frameborder="0" width="100%" height="100%">
+    </a>
+    <a class="copy summary mask" id="copy" tabindex="7">
+      <img src="assets/bx-message-error.svg" frameborder="0" width="100%" height="100%">
+    </a>
+    <div class="summary-textarea summary std-text">
+      <p id="summary-text">Preparing your summary...</p>
+    </div>
+  </div>
+  <script src="js/script.js"></script>
+  <script src="js/manage.js"></script>
+</body>
+
+</html>
