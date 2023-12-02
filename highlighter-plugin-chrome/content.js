@@ -215,7 +215,6 @@ function getReplaceNodes(currentNode, searchProps) {
 
 // Connect to the messager, to be able to communicate with the backgroundScript
 let myPort = chrome.runtime.connect({ name: "port-from-cs" });
-
 myPort.onMessage.addListener((m) => {
   console.log(m.greeting)
   // If we however get the sentences which should be highlighted, we will do so
@@ -241,6 +240,8 @@ myPort.onMessage.addListener((m) => {
     });
   }
   else if (m.greeting === "summary") {
+    window.sessionStorage.setItem("sum-text", m.text)
+    window.sessionStorage.setItem("uuid-sum", m.uuid)
 
   }
 });
@@ -253,7 +254,9 @@ chrome.runtime.onMessage.addListener((message) => {
     console.log(extractCoreText());
     // Send message to backgroundScript
     (async () => {
-      const response = await chrome.runtime.sendMessage({greeting: "returnText", text: extractCoreText(), url: document.URL});
+      let bid = await getBid();
+      console.log(bid);
+      const response = await chrome.runtime.sendMessage({greeting: "returnText", text: extractCoreText(), url: document.URL, bid: getBid.bid});
       // do something with response here, not outside the function
       console.log(response);
     })();
@@ -262,3 +265,11 @@ chrome.runtime.onMessage.addListener((message) => {
     myPort.postMessage({ greeting: "returnText", text: message.text, url: document.URL })
   }
 });
+
+async function getBid() {
+  return new Promise((resolve, reject) => {
+      chrome.storage.local.get(['bid'], function (result) {
+          resolve(result.bid);
+      });
+  });
+}

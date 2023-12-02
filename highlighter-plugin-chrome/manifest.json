@@ -1,44 +1,46 @@
 {
-    "manifest_version": 2,
-    "name": "Simba Text Assistant",
-    "version": "1.0.1",
-    "description": "The Simba Text Assistant improves your reading experience. It provides two types of summaries: extractive and abstractive.",
-    "homepage_url": "https://github.com/fhewett/simba",
-    "permissions": [
-        "activeTab",
-        "tabs",
-        "storage",
-        "contextMenus"
-    ],
-    "browser_action": {
-        "browser_style": true,
-        "default_title": "Simba",
-        "default_popup": "UI/index.html",
-        "theme_icons": [{
-            "light": "UI/assets/Lion-dark.svg",
-            "dark": "UI/assets/Lion.svg",
-            "size": 16
-          }, {
-            "light": "UI/assets/Lion-dark.svg",
-            "dark": "UI/assets/Lion.svg",
-            "size": 32
-          }]
-    },
-    "background": {
-        "scripts": [
-            "background.js"
-        ]
-    },
-    "content_scripts": [
-        {
-            "matches": [
-                "<all_urls>"
-            ],
-            "js": [
-                "purify.min.js",
-                "Readability.js",
-                "content.js"
-            ]
-        }
+  "manifest_version": 3,
+  "name": "Simba Text Assistant",
+  "version": "1.0.1",
+  "description": "The Simba Text Assistant improves your reading experience. It provides two types of summaries: extractive and abstractive.",
+  "homepage_url": "https://github.com/fhewett/simba",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage",
+    "contextMenus"
+  ],
+  "background": {
+    "service_worker": "service_worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "purify.min.js",
+        "Readability.js",
+        "content.js"
+      ]
+    }
+  ],
+  "action": {
+    "browser_style": true,
+    "default_title": "Simba",
+    "default_popup": "UI/index.html",
+    "theme_icons": [
+      {
+        "light": "UI/assets/Lion-dark.svg",
+        "dark": "UI/assets/Lion.svg",
+        "size": 16
+      },
+      {
+        "light": "UI/assets/Lion-dark.svg",
+        "dark": "UI/assets/Lion.svg",
+        "size": 32
+      }
     ]
+  },
+  "content_security_policy": {}
 }

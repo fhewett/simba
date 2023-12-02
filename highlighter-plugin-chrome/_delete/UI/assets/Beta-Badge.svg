@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48.113" height="24.236" viewBox="0 0 48.113 24.236">
-  <g id="Beta_Badge" data-name="Beta Badge" transform="matrix(0.978, 0.208, -0.208, 0.978, -177.173, -41.389)">
-    <g id="Rectangle_33" data-name="Rectangle 33" transform="translate(184.957 3)" fill="#fff" stroke="#000" stroke-width="1">
-      <rect width="46" height="15" rx="5"/>
-      <rect x="0.5" y="0.5" width="45" height="14" rx="4.5" fill="none"/>
-    </g>
-    <text id="BETA" transform="translate(194.84 14.238)" font-size="10" font-family="SourceCodePro-Bold, Source Code Pro" font-weight="700"><tspan x="0" y="0">BETA</tspan></text>
-  </g>
-</svg>
