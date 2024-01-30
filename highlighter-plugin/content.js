@@ -218,7 +218,7 @@ let myPort = browser.runtime.connect({ name: "port-from-cs" });
 myPort.onMessage.addListener((m) => {
   console.log(m.greeting)
   // If we however get the sentences which should be highlighted, we will do so
-  if (m.greeting === "highlight") {
+  if (m.greeting === "highlightZZ") {
     console.log(m.data.output)
     m.data.output.forEach(sentence => {
       console.log(findSmallestParent(document.body, sentence))
@@ -244,9 +244,87 @@ myPort.onMessage.addListener((m) => {
   }
 });
 
+function highlightWord() {
+  const fileFetch = browser.runtime.getURL('dict.json')
+  fetch(browser.extension.getURL("dict.json"))
+  .then(response => response.json())
+  .then(data => {
+    // Function to recursively traverse the DOM and apply search and replace to text nodes
+    function traverseAndHighlight(node) {
+      if (node.nodeType === 3) { // Text node
+        // Create a temporary document fragment
+        var fragment = document.createDocumentFragment();
+  
+        // Split the text content by word boundaries
+        var words = node.nodeValue.split(/\b/);
+  
+        // Process each word
+        words.forEach(word => {
+          var span = document.createElement('span');
+          span.textContent = word;
+  
+          // Highlight and add tooltips to words found in the JSON data
+          Object.keys(data).forEach(key => {
+            var regex = new RegExp('\\b' + key + '\\b', 'gi');
+            if (regex.test(word)) {
+              span.className = 'highlight';
+              span.setAttribute('data-tooltip', data[key]);
+            }
+          });
+  
+          fragment.appendChild(span);
+        });
+  
+        // Replace the original text node with the fragment
+        node.parentNode.replaceChild(fragment, node);
+      } else if (node.nodeType === 1) { // Element node
+        // Recursively traverse child nodes
+        for (var i = 0; i < node.childNodes.length; i++) {
+          traverseAndHighlight(node.childNodes[i]);
+        }
+      }
+    }
+
+  // Start traversing from the body of the document
+  traverseAndHighlight(document.body);
+
+  // Add event listeners for showing/hiding tooltips
+  var highlightedWords = document.querySelectorAll('.highlight');
+  highlightedWords.forEach(wordElement => {
+    wordElement.addEventListener('mouseenter', showTooltip);
+    wordElement.addEventListener('mouseleave', hideTooltip);
+  });
+});
+ 
+}
+
+function showTooltip(event) {
+  var tooltip = document.createElement('div');
+  tooltip.className = 'tooltip';
+  tooltip.textContent = event.target.getAttribute('data-tooltip');
+  document.body.appendChild(tooltip);
+  positionTooltip(event, tooltip);
+}
+
+function hideTooltip(event) {
+  var tooltip = document.querySelector('.tooltip');
+  if (tooltip) {
+    tooltip.parentNode.removeChild(tooltip);
+  }
+}
+
+function positionTooltip(event, tooltip) {
+  tooltip.style.top = event.clientY + 10 + 'px';
+  tooltip.style.left = event.clientX + 10 + 'px';
+}
+
+
 // User opened the popup
 browser.runtime.onMessage.addListener((message) => {
   if (message.greeting === "start") {
+    // Call the function with your desired word
+    // let highlightedWord = "ABBA";
+    highlightWord();
     console.log(extractCoreText())
     myPort.postMessage({ greeting: "returnText", text: extractCoreText(), url: document.URL })
   }
