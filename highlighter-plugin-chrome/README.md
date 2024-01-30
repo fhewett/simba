@@ -1,8 +1,7 @@
 # Highlighter Plugin Integration
 
-Firstly I have to say that I only tested the Plugin on Firefox so far.
-I checked for compatability on most of the functions and properties I used.
-If you want to try it on other Browsers feel free to do so!
+This is a tutorial for installing any work in progress version of the plugin.
+If you want to install the stable versions for firefox and Chrome, check out the Simba Add-On on the Firefox or Chrome Extension Store respectively.
 
 ## Installing on Firefox
 - Open the page [about:debugging](about:debugging)
@@ -18,7 +17,12 @@ Adding the extension to the tool bar makes it way easier to use and test out and
 - In the Dropdown Menu you should see our Extension. now click on the little **cog icon**
 - A new Dropdown Menu shows, where you can select **Add to tool bar**, which should permanently add the Extension to the toolbar (until the next restart)
 
-## TBD: Installing on Chrome
+## Installing on Chrome
+- Make sure you have the **Developer Mode** enabled
+- Open the page [chrome://extensions/](chrome://extensions/)
+- Click on **Load unpacked extension**
+- Navigate to the root folder of the entension
+- Click **Open** and the entension should now be added!
 
 ## Final Notes
 - Remember: after you close your browser the Plugin is no longer installed so you have to repeat the steps shown above to install it yet again (and add it to the toolbar)
