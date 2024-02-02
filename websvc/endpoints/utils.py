@@ -2,7 +2,6 @@ import sys
 from somajo import SoMaJo
 
 somajo_tokenizer = SoMaJo("de_CMC", split_camel_case=False, split_sentences=True)
-# note, for English, en_PTB is needed. but then language has to be detected
 
 def split_sentences(input_text, max_sentences=None, max_tokens=None):
     sentences = somajo_tokenizer.tokenize_text(input_text.splitlines())
@@ -24,13 +23,13 @@ def split_sentences(input_text, max_sentences=None, max_tokens=None):
     return output_sentences
 
 
-def we_running_server():
-    serving_debug = any(arg.endswith("manage.py") for arg in sys.argv) and "runserver" in sys.argv
-    serving_gunicorn = any(arg.endswith("gunicorn") for arg in sys.argv)
-    downloading_mode = any(arg.endswith("manage.py") for arg in sys.argv) and "nlpdownload" in sys.argv
-    ret = serving_debug or serving_gunicorn or downloading_mode
-    return ret
 
-# TODO: make this a singleton and use it in base_ml_model (instead of loading from settings)
-# SPACY_NLP = spacy.load("de_core_news_sm")
+def is_migration_running():
+    return any(arg.endswith("manage.py") for arg in sys.argv) and "migrate" in sys.argv
 
+def get_manage_py_command():
+    if any(arg.endswith("manage.py") for arg in sys.argv):
+        for arg in sys.argv[1:]:
+            if not arg.startswith("-"):  # Ignore flags
+                return arg
+    return None

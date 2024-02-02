@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('api/', include('endpoints.urls')),  # apis
-    path('admin/', admin.site.urls),  # for admin interface
+    path('simba/api/', include('endpoints.urls')),  # apis
+    path('simba/admin/', admin.site.urls),  # for admin interface
     # path('api-auth/', include('rest_framework.urls'))  # TODO: if one wishes to have write access with REST framework?
 ]

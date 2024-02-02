@@ -1,10 +1,10 @@
-from .db_models import APIRequestLog
+from .models import APIRequestLog
 from django.contrib import admin
 
 @admin.register(APIRequestLog)
 class APIRequestLogAdmin(admin.ModelAdmin):
     list_display = ['timestamp', 'url', 'model', 'input_chars', 'output_chars', 'duration', 'feedback_thumb']
-    list_filter = ['model', 'feedback_thumb']  # also 'timestamp', 'error'
+    list_filter = ['model', 'feedback_thumb', 'from_cache']  # also 'timestamp', 'error', 'feedback_yn'
     ordering = ['-timestamp']
     # admin ui search bar: search_fields = ['']
 

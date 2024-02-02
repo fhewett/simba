@@ -1,5 +1,5 @@
-from .base_ml_model import BaseMLModel
 from ..utils import split_sentences
+from .base_ml_model import BaseMLModel
 
 
 class SummaryDummy(BaseMLModel):
