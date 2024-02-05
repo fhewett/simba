@@ -1,5 +1,5 @@
 # Tested runtime: Python 3.10
-django==3.2.*  # Django LTS version (v3.2 as of 202302)
+django==4.2.*  # Django LTS version (v4.2 as of 202402)
 djangorestframework  # might also need django-filter
 django-cors-headers
 gunicorn  # to serve the app

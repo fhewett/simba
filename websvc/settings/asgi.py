@@ -1,8 +1,9 @@
-import os
-from django.core.asgi import get_asgi_application
+# HA 202402 we are NOT using the asgi method hence this is ignored
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings.settings')
-application = get_asgi_application()
+# import os
+# from django.core.asgi import get_asgi_application
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings.settings')
+# application = get_asgi_application()
 
 
 

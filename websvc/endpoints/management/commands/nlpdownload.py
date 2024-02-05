@@ -17,9 +17,10 @@ class Command(BaseCommand):
         except Exception as e:
             print("nltk download failed")
 
-        try:
-            import spacy
-            spacy.cli.download("de_core_news_sm")
-        except Exception as e:
-            print("spacy download failed")
+        # HA: removed 202402 for GAE release
+        # try:
+        #     import spacy
+        #     spacy.cli.download("de_core_news_sm")
+        # except Exception as e:
+        #     print("spacy download failed")
 

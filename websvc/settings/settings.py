@@ -1,35 +1,74 @@
 """
-Django settings for settings project.
+Django settings for project.
 
 For more information see:
-https://docs.djangoproject.com/en/3.2/topics/settings/
-https://docs.djangoproject.com/en/3.2/ref/settings/
+https://docs.djangoproject.com/en/4.2/topics/settings/
+https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 import sys
+import io
+import environ
 from pathlib import Path
+from urllib.parse import urlparse
+from google.cloud import secretmanager
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# load environment variables from .env file
-env_path = Path('.') / '.env'
-if env_path.exists():
-    with open(env_path) as f:
-        for line in f:
-            if line.strip():
-                key, value = line.strip().split('=', 1)
-                os.environ[key] = value
 
-# Based on quick-start development settings (slightly updated)
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
+# From Google App Engine's example on how to access Secret Settings -- three methods
+env = environ.Env(DEBUG=(bool, False))
+env_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(env_file):
+    # 1. Use a local secret file, if provided
+    env.read_env(env_file)
+elif os.getenv("TRAMPOLINE_CI", None):
+    # 2. Create local settings if running with CI, for unit testing
+    placeholder = (
+        f"SECRET_KEY=a\n"
+        f"DATABASE_URL=sqlite://{os.path.join(BASE_DIR, 'db.sqlite3')}"
+    )
+    env.read_env(io.StringIO(placeholder))
+elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
+    # 3. Pull secrets from Secret Manager
+    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
+    client = secretmanager.SecretManagerServiceClient()
+    settings_name = os.environ.get("SETTINGS_NAME", "django_settings")
+    name = f"projects/{project_id}/secrets/{settings_name}/versions/latest"
+    payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")
+    env.read_env(io.StringIO(payload))
+else:
+    raise Exception("No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.")
+
 
 SECRET_KEY = os.environ['SECRET_KEY']  # load from environment for security
-DEBUG = True
-if not DEBUG:
-    ALLOWED_HOSTS = ["simba.publicinterest.ai"]  # don't forget to add your domain here :-)
+
+
+# Deployment checklist: https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+# SECURITY WARNING: don't run with debug turned on in production!
+# Change this to "False" when you are ready for production
+DEBUG = env("DEBUG")
+
+
+# GAE SECURITY WARNING: It's recommended that you use this when
+# running in production. The URL will be known once you first deploy
+# to App Engine. This code takes the URL and converts it to both these settings formats.
+APPENGINE_URL = env("APPENGINE_URL", default=None)
+if APPENGINE_URL:
+    # Ensure a scheme is present in the URL before it's processed.
+    if not urlparse(APPENGINE_URL).scheme:
+        APPENGINE_URL = f"https://{APPENGINE_URL}"
+
+    ALLOWED_HOSTS = [urlparse(APPENGINE_URL).netloc]
+    ALLOWED_HOSTS += ["simba.publicinterest.ai"]  # HA - add custom domains here :-)
+    CSRF_TRUSTED_ORIGINS = [APPENGINE_URL]
+    SECURE_SSL_REDIRECT = True
 else:
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ["*"]
+
+
 
 # Application definition
 INSTALLED_APPS = [
@@ -53,7 +92,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'settings.middleware.TimingMiddleware',
+    'settings.middleware.TimingMiddleware',  # HA added to measure API time
 ]
 
 ROOT_URLCONF = 'settings.urls'
@@ -76,25 +115,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'settings.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Database 
+# (HA: replaced below for GAE)
+DATABASES = {"default": env.db()}
+# If the flag as been set, configure to use proxy
+if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
+    DATABASES["default"]["HOST"] = "127.0.0.1"
+    DATABASES["default"]["PORT"] = 5432
+# Use a in-memory sqlite3 database when testing in CI systems
+# TODO(glasnt) CHECK IF THIS IS REQUIRED because we're setting a val above
+if os.getenv("TRAMPOLINE_CI", None):
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
     }
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'mydatabase',
-    #     'USER': 'myuser',
-    #     'PASSWORD': 'mypassword',
-    #     'HOST': 'localhost',
-    #     'PORT': '3306',
-    # }
-}
+
 
 # Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [{
     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
 }, {
@@ -107,7 +146,6 @@ AUTH_PASSWORD_VALIDATORS = [{
 ]
 
 # Internationalization
-# https://docs.djangoproject.com/en/3.2/topics/i18n/
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Europe/Berlin'
 USE_I18N = True
@@ -119,14 +157,12 @@ DATETIME_FORMAT = 'Y.m.d H:i'
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-STATIC_URL = '/static/'
-
-STATIC_ROOT = '/var/www/simba/static/'
+STATIC_URL = '/static/'  # GAE
+STATIC_ROOT = 'static'  # GAE suggestion
+STATICFILES_DIRS = []
 
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # HA This is for the Django REST framework. -
@@ -143,31 +179,32 @@ REST_FRAMEWORK = {
 CORS_ORIGIN_ALLOW_ALL = True
 
 # Caching Backend
-# See https://docs.djangoproject.com/en/3.2/topics/cache/
 # NOTE: this requires memcached to be installed and running (which is quite easy on Ubuntu)
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
-        'LOCATION': '127.0.0.1:11211',
-    }
-}
+# HA/TODO: adapt below for GAE
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
+#         'LOCATION': '127.0.0.1:11211',
+#     }
+# }
 
 # HA
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'stream': sys.stderr,  # Output to stderr
-        },
-        'file': {
-            'class': 'logging.FileHandler',  # or RotatingFileHandler
-            'filename': 'simba-backend.log',
-        },
-    },
-    'root': {
-        'handlers': ['file'],
-        'level': 'INFO',
-    }
-}
+# (might be useful to have below, however turning off on GAE for now)
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#             'stream': sys.stderr,  # Output to stderr
+#         },
+#         'file': {
+#             'class': 'logging.FileHandler',  # or RotatingFileHandler
+#             'filename': 'simba-backend.log',
+#         },
+#     },
+#     'root': {
+#         'handlers': ['file'],
+#         'level': 'INFO',
+#     }
+# }

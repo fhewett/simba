@@ -1,7 +1,7 @@
 from time import time
 import uuid
 from django.conf import settings
-from django.core.cache import cache
+from django.core.cache import cache  
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser, FormParser
