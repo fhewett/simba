@@ -1,26 +1,18 @@
-# Requirements file for Google App Engine
+# Requirements file (adapted for Google App Engine)
 django==4.2.*  # Django LTS version (v4.2 as of 202402)
-djangorestframework  # might also need django-filter
-django-cors-headers  # ? 
+djangorestframework  # restapi support 
+django-cors-headers  # 
 
 django-environ==0.10.0
 psycopg2-binary==2.9.9  
 google-cloud-secret-manager==2.16.1
 
-openai  # for the openai
-pylibmc  # needs libmemcached-tools on Ubuntu; not sure on GAE?
+openai  # for the openai API support (used by VLLM)
+pylibmc  # needs libmemcached-tools on Ubuntu; on GAE works
+transformers  # AutoTokenizer
 
-# ? tiktoken  # OpenAI's fast tokenizer
+# tiktoken  # OpenAI's fast tokenizer
+# sentencepiece  # needed for some HF models
+# somajo # a better splitter than NLTK/Spacy
 
-
-# removed due to vllm: scikit_learn
-# removed due to vllm: somajo # a better splitter than NLTK/Spacy
-# removed due to vllm  torch  # stable release with CUDA (v1.13 as of 202302)
-# removed due to vllm: transformers
-# removed due to vllm: sentencepiece  # needed for some HF models
-# removed due to vllm: sentence_transformers  # for sentence embeddings (installs nltk too)
-
-#served by GAE: gunicorn  # to serve the app
-#served by GAE: uvicorn  # for asgi support
-
-# switch to postgress: mysqlclient  # needs `libmysqlclient-dev` on Ubuntu
+# served by GAE: gunicorn  # to serve the app

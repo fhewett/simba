@@ -19,6 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # From Google App Engine's example on how to access Secret Settings -- three methods
+# NOTE: if you plan to run the webservice not GAE then this .env file is needed (and it needs to set the database access plus VLLM settings)
 env = environ.Env(DEBUG=(bool, False))
 env_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(env_file):
@@ -123,7 +124,6 @@ if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
     DATABASES["default"]["HOST"] = "127.0.0.1"
     DATABASES["default"]["PORT"] = 5432
 # Use a in-memory sqlite3 database when testing in CI systems
-# TODO(glasnt) CHECK IF THIS IS REQUIRED because we're setting a val above
 if os.getenv("TRAMPOLINE_CI", None):
     DATABASES = {
         "default": {
@@ -178,9 +178,9 @@ REST_FRAMEWORK = {
 # HA
 CORS_ORIGIN_ALLOW_ALL = True
 
-# Caching Backend
-# NOTE: this requires memcached to be installed and running (which is quite easy on Ubuntu)
-# HA/TODO: adapt below for GAE
+# Caching Backend 
+# - Not necessary to include snippet on GAE (memcached is active/configured already)
+# - For other insalls, use below, which also requires memcached to be installed/running (easy on Ubuntu)
 # CACHES = {
 #     'default': {
 #         'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
@@ -189,7 +189,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 # }
 
 # HA
-# (might be useful to have below, however turning off on GAE for now)
+# (might be useful to configure below, however leaving at default on GAE for now)
 # LOGGING = {
 #     'version': 1,
 #     'disable_existing_loggers': False,

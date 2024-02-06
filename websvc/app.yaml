@@ -13,7 +13,7 @@
 #
 
 # [START django_app]
-# [START gaestd_py_django_app_yaml]
+instance_class: F2
 runtime: python39
 
 env_variables:
@@ -31,5 +31,4 @@ handlers:
 # the entire handlers section) when there are no static files defined.
 - url: /.*
   script: auto
-# [END gaestd_py_django_app_yaml]
 # [END django_app]
