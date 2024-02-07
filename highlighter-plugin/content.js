@@ -239,8 +239,8 @@ myPort.onMessage.addListener((m) => {
 
     });
   }
-  else if (m.greeting === "summary") {
-
+  else if (m.greeting === "markWords") {
+    highlightWord()
   }
 });
 
@@ -322,9 +322,6 @@ function positionTooltip(event, tooltip) {
 // User opened the popup
 browser.runtime.onMessage.addListener((message) => {
   if (message.greeting === "start") {
-    // Call the function with your desired word
-    // let highlightedWord = "ABBA";
-    highlightWord();
     console.log(extractCoreText())
     myPort.postMessage({ greeting: "returnText", text: extractCoreText(), url: document.URL })
   }

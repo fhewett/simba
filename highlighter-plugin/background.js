@@ -12,12 +12,11 @@ function onError(error) {
  * Given any text, this function calls the webservice-api to retrieve the sentences which should be highlighted.
  * For that matter it sends the inputText to ths API
  */
-function callServer(inputText) {
-    console.log("Calling server")
+function checkToggles(inputText) {
 
     let getHighlight = browser.storage.local.get('highlight');
     getHighlight.then((res) => {
-        if (res.highlight) sendRequest(inputText, "sum-extract")
+        if (res.highlight) portFromCS.postMessage({ greeting: "markWords"})
     });
     let getSummary = browser.storage.local.get('summary');
     getSummary.then((res) => {
@@ -88,7 +87,7 @@ function connected(p) {
             let getBID = browser.storage.local.get('bid');
             getBID.then((res) => {
                 let data = { "text": m.text, "url": m.url, "bid": res.bid }
-                callServer(JSON.stringify(data))
+                checkToggles(JSON.stringify(data))
             });
         }
     });
