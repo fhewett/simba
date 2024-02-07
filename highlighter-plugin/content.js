@@ -241,6 +241,7 @@ myPort.onMessage.addListener((m) => {
   }
   else if (m.greeting === "markWords") {
     highlightWord()
+    browser.runtime.sendMessage({ greeting: "highlight"})
   }
 });
 
