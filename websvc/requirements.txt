@@ -1,0 +1,18 @@
+# Requirements file (adapted for Google App Engine)
+django==4.2.*  # Django LTS version (v4.2 as of 202402)
+djangorestframework  # restapi support 
+django-cors-headers  # 
+
+django-environ==0.10.0
+psycopg2-binary==2.9.9  
+google-cloud-secret-manager==2.16.1
+
+openai  # for the openai API support (used by VLLM)
+pylibmc  # needs libmemcached-tools on Ubuntu; on GAE works
+transformers  # AutoTokenizer
+
+# tiktoken  # OpenAI's fast tokenizer
+# sentencepiece  # needed for some HF models
+# somajo # a better splitter than NLTK/Spacy
+
+# served by GAE: gunicorn  # to serve the app

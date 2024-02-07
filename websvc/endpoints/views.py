@@ -1,10 +1,11 @@
 from django.shortcuts import get_object_or_404
+
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.decorators import parser_classes
-from .db_models import APIRequestLog
+from .models import APIRequestLog
 
 class Feedback(APIView):
     """Store feedback from user for a particular model output (stored in db as apilog)"""
@@ -34,5 +35,5 @@ class Feedback(APIView):
         obj.feedback_details = notes + obj.feedback_details
         obj.save()
 
-        # technically returning 204 means successfully processed w/o content but 200 is more common
+        # technically 204 means successfully processed w/o content but 200 is more common
         return Response(status=200)

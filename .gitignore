@@ -141,4 +141,4 @@ venv-*/
 .idea/
 .env
 websvc/temp-tests/
-
+tmp-*
