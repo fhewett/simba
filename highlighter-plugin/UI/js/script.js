@@ -22,10 +22,15 @@ try {
 }
 
 let upvote = document.getElementById("upvote")
-upvote.addEventListener("click", sendUpvote)
+if (upvote != null) {
+    upvote.addEventListener("click", sendUpvote)
+}
 
-let downvote = document.getElementById("downvote")
-downvote.addEventListener("click", sendDownvote)
+let downvote = document.getElementById("down-sub")
+if (downvote != null) {
+    downvote.addEventListener("click", sendDownvote)
+}
+
 
 function startSimba() {
     let getBID = browser.storage.local.get('bid');
@@ -59,7 +64,9 @@ function sendUpvote() {
 }
 
 function sendDownvote() {
-    browser.runtime.sendMessage({ greeting: "downvote" })
+    let downvoteText = document.getElementById("down-text").value
+    browser.runtime.sendMessage({ greeting: "downvote", text: downvoteText })
+    window.location.href = "./simba-feedback-upvote.html";
 }
 
 browser.runtime.onMessage.addListener(respondToCall)
