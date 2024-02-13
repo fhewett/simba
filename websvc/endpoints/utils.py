@@ -24,9 +24,15 @@ import re
 #     return output_sentences
 
 def split_sentences(text):
+  # The splitter below will split the text on new lines and periods, 
+  # (except in a number of cases: period after a number, "i.e.", period after capital etc.)
   # from here: https://github.com/brjezierski/scrapers/blob/51da6fa87879217c5676df87a5f28873ee8e0826/preprocess.py#L88C1-L100C19 
-  sentences = re.split(r"(?<!\w\.\w.)(?<![0-9]\.)(?<![0-9][0-9]\.)(?<![A-Z]\.)(?<![A-Z][a-z]\.)(?<=\.|\?|\!)\s", text)
-  sentences = [s for s in sentences if s]
+  splitdots = re.split(r"(?<!\w\.\w.)(?<![0-9]\.)(?<![0-9][0-9]\.)(?<![A-Z]\.)(?<![A-Z][a-z]\.)(?<=\.|\?|\!)\s", text)
+  sentences = []
+  for s in splitdots: 
+      if s:
+          ss = s.split("\n")
+          sentences.extend(ss)
   return sentences
 
 
@@ -39,3 +45,19 @@ def get_manage_py_command():
             if not arg.startswith("-"):  # Ignore flags
                 return arg
     return None
+
+
+def keep_full_sentences(input_sents):
+    # go through list of sentences and remove whitespaces and empty sentences;
+    # additionally, do not add sentences that do not end in one of `.?!`
+    # these sentence are probably headings or metadata which our models typically don't need
+    cleaned = list()
+    for s in input_sents:
+        s = s.replace("\t", " ").strip()
+        if s == "":
+            continue
+        elif s[-1] not in [".", "?", "!"]:
+            continue
+        else:
+            cleaned.append(s)
+    return cleaned

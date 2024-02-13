@@ -1,8 +1,7 @@
-# Highlighter Plugin Integration
+# Highlighter Plugin Integration: Firefox
 
-Firstly I have to say that I only tested the Plugin on Firefox so far.
-I checked for compatability on most of the functions and properties I used.
-If you want to try it on other Browsers feel free to do so!
+This is a tutorial for installing any work in progress version of the plugin for Firefox.
+If you want to install the stable version for Firefox, check out [the Simba Add-On on the Firefox](https://addons.mozilla.org/en-US/firefox/addon/simba-text-assistant/).
 
 ## Installing on Firefox
 - Open the page [about:debugging](about:debugging)
@@ -18,8 +17,5 @@ Adding the extension to the tool bar makes it way easier to use and test out and
 - In the Dropdown Menu you should see our Extension. now click on the little **cog icon**
 - A new Dropdown Menu shows, where you can select **Add to tool bar**, which should permanently add the Extension to the toolbar (until the next restart)
 
-## TBD: Installing on Chrome
-
 ## Final Notes
 - Remember: after you close your browser the Plugin is no longer installed so you have to repeat the steps shown above to install it yet again (and add it to the toolbar)
-- To be able to publish the Plugin in the official firefox add-on store, there are still a few changes to be made, this is still the alpha
