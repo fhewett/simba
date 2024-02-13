@@ -12,8 +12,8 @@ class SummaryViaVLLM(BaseMLModel):
     # 202402: this is again currently not used but kept in case 
 
     def __init__(self):
-        self.name = "VLLM-simba-v01c"
-        self.VLLM_MODEL = "hiig-piai/simba-v01c"
+        self.name = "VLLM-simba-v01b"
+        self.VLLM_MODEL = "hiig-piai/simba-v01b"
         self.VLLM_API_URL = "http://35.246.100.145:7001/v1"
         self.VLLM_API_KEY = os.environ.get('VLLM_API_KEY')
         self.MAX_LEN = 4096
@@ -24,18 +24,20 @@ class SummaryViaVLLM(BaseMLModel):
 
     def process(self, input_text):  
         input_text = self.preprocess_text(input_text)
-        input_text = self.truncate_text(input_text, self.MAX_LEN-self.SUMMARY_LEN-50)  # truncate to max token length for this API
+        input_text = self.truncate_text(input_text, self.MAX_LEN-self.SUMMARY_LEN-50)  # truncate to max token length for API
 
         client = OpenAI(
             api_key = self.VLLM_API_KEY,
             base_url = self.VLLM_API_URL,
         )
-        prompt = "Du bist ein hilfreicher Übersetzer für Leichte Sprache.\nUSER: Kannst du folgenden Text vereinfachen:\n"
-        prompt += "```" + input_text + "```\nASSISTANT: "
+        prompt = "Du bist ein hilfreicher Assistent. USER: Kannst du folgenden Zeitungsartikel vereinfachen: "
+        #prompt = "Du bist ein hilfreicher Übersetzer für Leichte Sprache. USER: Kannst du folgenden Text vereinfachen: "
+        prompt += "```" + input_text + "``` ASSISTANT: "
 
-        response = client.completions.create(model=self.VLLM_MODEL, prompt=prompt, max_tokens=120)  # set temperature=0.5
+        response = client.completions.create(model=self.VLLM_MODEL, prompt=prompt, max_tokens=120, temperature=1)
         output = response.choices[0].text  # this is just the model response (excludes prompt)
-        # TODO: Re add this rule once we're sure re crash/empty outputs:  output = self.remove_repetitive_output(output)  
+        # TODO: add below rule once we're sure it doesn't crash or blank outputs (requires additional DB logging): 
+        # output = self.remove_repetitive_output(output)  
         return output
 
 
