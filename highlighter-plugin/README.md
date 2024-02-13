@@ -1,5 +1,7 @@
 # Highlighter Plugin Integration: Firefox
 
+[Eine Deutsche Version dieser Seite findest du hier](https://github.com/fhewett/simba/blob/main/highlighter-plugin/README_de.md)
+
 This is a tutorial for installing any work in progress version of the plugin for Firefox.
 If you want to install the stable version for Firefox, check out [the Simba Add-On on the Firefox](https://addons.mozilla.org/en-US/firefox/addon/simba-text-assistant/).
 
