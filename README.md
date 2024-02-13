@@ -2,7 +2,7 @@
 
 ## What is SIMBA?
 
-The Simba Text Assistant is a browser plug-in that produces summaries of German-language text on web pages. It is designed to additionally simplify the summaries, by shortening the sentences and providing explanations for words. We have also integrated the Hurraki dictionary; a Wiki-based dictionary with entries in Leichte Sprache (Easy German Language). You can choose to highlight words found in the dictionary and in the online text, and be shown their definition in Easy Language.
+The Simba Text Assistant is a browser plug-in that produces summaries of German-language text on web pages. It is designed to additionally simplify the summaries, by shortening the sentences and providing explanations for words. We have also integrated the [Hurraki dictionary](https://hurraki.de/wiki/Hauptseite); a Wiki-based dictionary with entries in Leichte Sprache (Easy German Language). You can choose to highlight words found in the dictionary and in the online text, and be shown their definition in Easy Language.
 
 Our models and code are open source. It has been designed for German-language text, but it may work on other languages.
 
