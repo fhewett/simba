@@ -20,10 +20,14 @@ try {
 }
 
 let upvote = document.getElementById("upvote");
-upvote.addEventListener("click", sendUpvote);
+if (upvote != null) {
+    upvote.addEventListener("click", sendUpvote);
+}
 
-let downvote = document.getElementById("downvote");
-downvote.addEventListener("click", sendDownvote);
+let downvote = document.getElementById("down-sub");
+if (downvote != null) {
+    downvote.addEventListener("click", sendDownvote);
+}
 
 async function startSimba() {
     // Get the varialbe "bid" from the chrome local storage
@@ -69,7 +73,9 @@ function sendUpvote() {
 }
 
 function sendDownvote() {
+    downvoteText = document.getElementById("down-text").value;
     chrome.runtime.sendMessage({ greeting: "downvote" });
+    window.location.href = "./simba-feedback-upvote.html";
 }
 
 chrome.runtime.onMessage.addListener(respondToCall);

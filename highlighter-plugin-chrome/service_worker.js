@@ -12,11 +12,11 @@ function onError(error) {
  * Given any text, this function calls the webservice-api to retrieve the sentences which should be highlighted.
  * For that matter it sends the inputText to ths API
  */
-function callServer(inputText) {
+function checkToggles(inputText) {
     console.log("Calling server")
 
     let getHighlight = chrome.storage.local.get('highlight', function (result) {
-        if (result.highlight) sendRequest(inputText, "sum-extract")
+        if (result.highlight) portFromCS.postMessage({ greeting: "markWords"})
     });
     let getSummary = chrome.storage.local.get('summary', function (result) {
         if (result.summary) sendRequest(inputText, "sum-abstract")
@@ -85,7 +85,8 @@ function connected(p) {
         if (m.greeting === "returnText") {
             // Make sure to match the JSON format
             let data = { "text": m.text, "url": m.url, "bid": m.bid };
-            callServer(JSON.stringify(data));
+            print("Data:" + data);
+            checkToggles(JSON.stringify(data));
         }
     });
 }
@@ -103,7 +104,7 @@ function handleMessage(request, sender, sendResponse) {
         let getBid = chrome.storage.local.get('bid', function (result) {
             console.log(result.bid);
             let data = { "text": request.text, "url": request.url, "bid": result.bid };
-            callServer(JSON.stringify(data));
+            checkToggles(JSON.stringify(data));
         });
     }
 }

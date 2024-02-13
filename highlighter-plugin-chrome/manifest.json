@@ -21,6 +21,9 @@
         "purify.min.js",
         "Readability.js",
         "content.js"
+      ],
+      "css": [
+          "UI/injected.css"
       ]
     }
   ],
@@ -41,5 +44,16 @@
       }
     ]
   },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "dict.json"
+      ],
+      "matches": [
+        "*://*/*"
+      ]
+    }
+  ],
+
   "content_security_policy": {}
 }
