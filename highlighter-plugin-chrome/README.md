@@ -1,5 +1,7 @@
 # Highlighter Plugin Integration: Chrome
 
+[Eine Deutsche Version dieser Seite findest du hier](https://github.com/fhewett/simba/blob/main/highlighter-plugin-chrome/README_de.md)
+
 **Please note: these are instructions for the developer version, the official version is in the Chrome Extension Store (coming soon)**
 
 This is a tutorial for installing any work in progress version of the plugin for Chrome.
