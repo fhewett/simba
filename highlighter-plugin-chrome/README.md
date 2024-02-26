@@ -1,9 +1,14 @@
 # Highlighter Plugin Integration: Chrome
 
+[Eine Deutsche Version dieser Seite findest du hier](https://github.com/fhewett/simba/blob/main/highlighter-plugin-chrome/README_de.md)
+
+**Please note: these are instructions for the developer version, the official version is in the Chrome Extension Store (coming soon)**
+
 This is a tutorial for installing any work in progress version of the plugin for Chrome.
 If you want to install the stable versions for Chrome, check out the Simba Add-On on the Chrome Extension Store (**coming soon**).
 
 ## Installing on Chrome
+- Pull this repository (or download as .zip)
 - Make sure you have the **Developer Mode** enabled
 - Open the page [chrome://extensions/](chrome://extensions/)
 - Click on **Load unpacked extension**
