@@ -2,6 +2,7 @@ try {
     let copyButton = document.getElementById("copy")
 
     copyButton.addEventListener("click", function () {
+        // If the user clicks the copy button, we copy the summary to the clipboard
         navigator.clipboard.writeText(document.getElementById("summary-text").innerText)
     })
 
@@ -9,25 +10,19 @@ try {
 
 }
 
-try {
-    let downvoteSubmit = document.getElementById("down-sub")
-
-    downvoteSubmit.addEventListener("click", function () {
-        let downvoteText = document.getElementById("down-text").value
-        browser.runtime.sendMessage({ greeting: "downvote" , text: downvoteText})
-    })
-
-} catch (error) {
-
-}
-
+/**
+ * Checks the user's language and changes the UI accordingly
+ * Can be expanded to support more languages
+ * Currently supports German and English
+ * English is the default language
+ */
 function checkUserLanguage() {
+    // Check for user's browser language
     const userLanguage = navigator.language || navigator.userLanguage;
     console.log(userLanguage);
 
+    // If the user's language is German, we change the UI to German
     if (userLanguage.startsWith("de")) {
-
-        console.log(document.getElementsByClassName("summary-sub")[0])
 
         // Downvote Page
         if (document.getElementById("down-text") != null) document.getElementById("down-text").placeholder = "Bitte erklären Sie uns, warum Sie diesen Text nicht hilfreich fanden.";
@@ -43,28 +38,23 @@ function checkUserLanguage() {
         if (document.getElementsByClassName("summary-main")[0] != null) document.getElementsByClassName("summary-main")[0].innerText = "ZUSAMMENFASSUNG";
         if (document.getElementById("summary-text") != null) document.getElementById("summary-text").innerText = "Zusammenfassung wird vorbereitet...";
 
-        // Upvote Page
-
     }
 
 }
 
-
-let upvote = document.getElementById("upvote")
-if (upvote != null) {
-    upvote.addEventListener("click", sendUpvote)
-}
-
-let downvote = document.getElementById("down-sub")
-if (downvote != null) {
-    downvote.addEventListener("click", sendDownvote)
-}
-
-
+/**
+ * Starts the Simba process
+ */
 function startSimba() {
+    // If the user has already been assigned a bid, we don't need to assign a new one
+    // Each user gets a unique browser id to be able to track the user's feedback
     let getBID = browser.storage.local.get('bid');
+
+    // Change the UI according to the user's language
     checkUserLanguage();
     getBID.then((res) => {
+
+        // If the user has not been assigned a bid, we assign a new one
         if (Object.keys(res).length === 0) {
             const bid = Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36)
             console.log(bid)
@@ -83,16 +73,25 @@ function sendIt(tabs) {
     })
 }
 
-function removeHighlight(tabs) {
-    browser.tabs.sendMessage(tabs[0].id, {
-        greeting: "restore"
-    })
+let upvote = document.getElementById("upvote")
+if (upvote != null) {
+    upvote.addEventListener("click", sendUpvote)
 }
 
+let downvote = document.getElementById("down-sub")
+if (downvote != null) {
+    downvote.addEventListener("click", sendDownvote)
+}
+
+// Send upvote message to the backgroundScript
+// If the user clicks the upvote button
 function sendUpvote() {
     browser.runtime.sendMessage({ greeting: "upvote" })
 }
 
+// Send downvote message to the backgroundScript
+// If the user clicks the downvote button
+// Also redirects the user to the upvote page
 function sendDownvote() {
     let downvoteText = document.getElementById("down-text").value
     browser.runtime.sendMessage({ greeting: "downvote", text: downvoteText })
@@ -101,6 +100,12 @@ function sendDownvote() {
 
 browser.runtime.onMessage.addListener(respondToCall)
 
+/**
+ * Responds to the backgroundScript
+ * The Loaders will get hidden when the according message is received
+ * If the users wants to see the summary, the summary will be displayed
+ * @param {*} message Message of the backgroundScript
+ */
 function respondToCall(message) {
     console.log(message.greeting)
     if (message.greeting == "summary") {
@@ -112,4 +117,5 @@ function respondToCall(message) {
     }
 }
 
+// Start the plugin when the page is loaded
 document.addEventListener('DOMContentLoaded', startSimba);

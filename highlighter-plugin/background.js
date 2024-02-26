@@ -6,30 +6,36 @@ function onError(error) {
 }
 
 /**
+ * Looking for the user's settings depending on whether the user wants to see the summary or the highlighted words
  * 
- * @param {string} inputText 
- * 
- * Given any text, this function calls the webservice-api to retrieve the sentences which should be highlighted.
- * For that matter it sends the inputText to ths API
+ * @param {string} inputText The text, which is being sent to the API
  */
 function checkToggles(inputText) {
 
     let getHighlight = browser.storage.local.get('highlight');
     getHighlight.then((res) => {
-        if (res.highlight) portFromCS.postMessage({ greeting: "markWords"})
+        // If the user set the Highlight toggle to true, we tell the content script to highlight the words
+        if (res.highlight) portFromCS.postMessage({ greeting: "markWords" })
     });
     let getSummary = browser.storage.local.get('summary');
     getSummary.then((res) => {
-        if (res.summary) sendRequest(inputText, "sum-abstract")
+        // If the user set the Summary toggle to true, we send the text to the API
+        if (res.summary) sendRequest(inputText)
     });
 
 }
 
-function sendRequest(inputText, model) {
-    const base_url = "https://simba.publicinterest.ai/simba/api/"
+/**
+ * Sending a request to the API
+ * This is used for sending the text to the API and retrieving the summary
+ * Also used for sending the feedback
+ * @param {*} inputText The text, which is being sent to the API
+ */
+function sendRequest(inputText) {
+    const url = "https://simba.publicinterest.ai/simba/api/sum-abstract"
     let ajax = new XMLHttpRequest();
     // We want to post the inputText and listen for the response
-    ajax.open('POST', base_url + model, true);
+    ajax.open('POST', url, true);
     ajax.setRequestHeader('Content-Type', 'application/json');
 
     ajax.onload = function () {
@@ -38,16 +44,11 @@ function sendRequest(inputText, model) {
             if (this.response.length > 0) {
                 let data = JSON.parse(this.response)
                 if (Object.keys(data).length > 0) {
-                    if (model === "sum-extract") {
-                        portFromCS.postMessage({ greeting: "highlight", data: data })
-                        browser.runtime.sendMessage({ greeting: "highlight"})
-                    }
-
-                    if (model === "sum-abstract") {
-                        window.sessionStorage.setItem("sum-text", data.output)
-                        window.sessionStorage.setItem("uuid-sum", data.uuid)
-                        browser.runtime.sendMessage({ greeting: "summary", text: data.output })
-                    }
+                    // When the data is retrieved, we store it in the sessionStorage and send it to the contentScript
+                    // This way we can use the data later, if the user wants to give feedback
+                    window.sessionStorage.setItem("sum-text", data.output)
+                    window.sessionStorage.setItem("uuid-sum", data.uuid)
+                    browser.runtime.sendMessage({ greeting: "summary", text: data.output })
                 }
             }
 
@@ -56,27 +57,13 @@ function sendRequest(inputText, model) {
     ajax.send(inputText)
 }
 
-browser.contextMenus.create(
-    {
-      id: "highlight-sel",
-      title: "Highlight here!",
-      contexts: ["selection"],
-    }
-  );
-
-  browser.contextMenus.onClicked.addListener((info, tab) => {
-    switch (info.menuItemId) {
-      case "highlight-sel":
-        console.log(info.selectionText);
-        browser.runtime.sendMessage({ greeting: "highSel", text: info.selectionText })
-        break;
-    }
-  });
-
 // To be able to communicate with the contentScript we create a messager, which sends and retrieves messages to and from the contentScript
 let portFromCS;
 
-// Initialize the messager
+/**
+ * Continuously listens for messages from the contentScript
+ * @param {*} p 
+ */
 function connected(p) {
     portFromCS = p;
     portFromCS.onMessage.addListener((m) => {
@@ -93,18 +80,27 @@ function connected(p) {
     });
 }
 
+
+/**
+ * Handles the messages from the popup script
+ * Specifically the upvote and downvote messages
+ * @param {*} request 
+ * @param {*} sender 
+ * @param {*} sendResponse 
+ */
 function handleMessage(request, sender, sendResponse) {
     if (request.greeting == "upvote") {
         const data = { "uuid": window.sessionStorage.getItem("uuid-sum"), "thumb": "up" }
         sendRequest(JSON.stringify(data), "feedback")
     }
     else if (request.greeting == "downvote") {
-        const data = { "uuid": window.sessionStorage.getItem("uuid-sum"), "thumb": "down" , "fnotes": request.text}
-        console.log(data)
+        const data = { "uuid": window.sessionStorage.getItem("uuid-sum"), "thumb": "down", "fnotes": request.text }
         sendRequest(JSON.stringify(data), "feedback")
     }
 }
 
+
+// Listen for messages from the Pupup Script
 browser.runtime.onMessage.addListener(handleMessage);
 
 // Starts when the connection with the contentScript is made

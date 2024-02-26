@@ -13,12 +13,14 @@ toggleSummary.addEventListener("change", saveOptions)
 
 toggleSummary.addEventListener("change", function () { startOnToggleOn(this) })
 
+// If the toggle is on, we start the Simba
 function startOnToggleOn(toggleButton) {
     if (toggleButton.checked) {
         startSimba()
     }
 }
 
+// If the user disables the summary option, we hide it entirely until the user enables it again
 function toggleVisibility(toggleButton, classname) {
     if (toggleButton.checked) {
         for (let element of document.getElementsByClassName(classname)) element.style.visibility = "visible"
@@ -28,6 +30,8 @@ function toggleVisibility(toggleButton, classname) {
     }
 }
 
+// Store the options in the local storage
+// This way the options are saved, even if the user closes the browser
 function saveOptions(e) {
     browser.storage.local.set({
         highlight: toggleHighlight.checked,
@@ -36,6 +40,7 @@ function saveOptions(e) {
     e.preventDefault();
 }
 
+// Restore the options from the local storage
 function restoreOptions() {
     try {
         let getHighlight = browser.storage.local.get('highlight');
