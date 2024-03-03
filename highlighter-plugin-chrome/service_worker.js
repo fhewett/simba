@@ -16,62 +16,38 @@ function checkToggles(inputText) {
     console.log("Calling server")
 
     let getHighlight = chrome.storage.local.get('highlight', function (result) {
-        if (result.highlight) portFromCS.postMessage({ greeting: "markWords"})
+        if (result.highlight) portFromCS.postMessage({ greeting: "markWords" })
     });
     let getSummary = chrome.storage.local.get('summary', function (result) {
-        if (result.summary) sendRequest(inputText, "sum-abstract")
+        if (result.summary) sendRequest(inputText)
     });
 
 }
 
-async function sendRequest(inputText, model) {
-    const base_url = "https://simba.publicinterest.ai/simba/api/";
+async function sendRequest(inputText) {
+    const url = "https://simba.publicinterest.ai/simba/api/sum-abstract";
 
     try {
-        const response = await fetch(base_url + model, {
+        const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(inputText),
+            body: inputText,
         });
 
         if (response.ok) {
             const data = await response.json();
 
             if (Object.keys(data).length > 0) {
-                if (model === "sum-extract") {
-                    portFromCS.postMessage({ greeting: "highlight", data: data });
-                    chrome.runtime.sendMessage({ greeting: "highlight" });
-                }
-
-                if (model === "sum-abstract") {
-                    portFromCS.postMessage({ greeting: "summary" });
-                    chrome.runtime.sendMessage({ greeting: "summary", text: data.output});
-                }
+                portFromCS.postMessage({ greeting: "summary" });
+                chrome.runtime.sendMessage({ greeting: "summary", text: data.output });
             }
         }
     } catch (error) {
         console.error('Error during fetch:', error);
     }
 }
-
-chrome.contextMenus.create(
-    {
-      id: "highlight-sel",
-      title: "Highlight here!",
-      contexts: ["selection"],
-    }
-  );
-
-  chrome.contextMenus.onClicked.addListener((info, tab) => {
-    switch (info.menuItemId) {
-      case "highlight-sel":
-        console.log(info.selectionText);
-        chrome.runtime.sendMessage({ greeting: "highSel", text: info.selectionText })
-        break;
-    }
-  });
 
 // To be able to communicate with the contentScript we create a messager, which sends and retrieves messages to and from the contentScript
 let portFromCS;
@@ -97,7 +73,7 @@ function handleMessage(request, sender, sendResponse) {
         sendRequest(JSON.stringify(data), "feedback")
     }
     else if (request.greeting == "downvote") {
-        const data = { "uuid": window.sessionStorage.getItem("uuid-sum"), "thumb": "down" , "fnotes": request.text}
+        const data = { "uuid": window.sessionStorage.getItem("uuid-sum"), "thumb": "down", "fnotes": request.text }
         sendRequest(JSON.stringify(data), "feedback")
     }
     else if (request.greeting == "returnText") {

@@ -324,30 +324,11 @@ myPort.onMessage.addListener((m) => {
   }
 });
 
-
-
 // User opened the popup
 chrome.runtime.onMessage.addListener((message) => {
   if (message.greeting === "start") {
     console.log(extractCoreText());
+    chrome.runtime.sendMessage({greeting: "returnText", text: extractCoreText(), url: document.URL});
     // Send message to backgroundScript
-    (async () => {
-      let bid = await getBid();
-      console.log(bid);
-      const response = await chrome.runtime.sendMessage({greeting: "returnText", text: extractCoreText(), url: document.URL, bid: getBid.bid});
-      // do something with response here, not outside the function
-      console.log(response);
-    })();
-  }
-  else if (message.greeting === "highSel") {
-    myPort.postMessage({ greeting: "returnText", text: message.text, url: document.URL })
   }
 });
-
-async function getBid() {
-  return new Promise((resolve, reject) => {
-      chrome.storage.local.get(['bid'], function (result) {
-          resolve(result.bid);
-      });
-  });
-}
