@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Simba Text Assistant",
   "version": "1.0.1",
-  "description": "The Simba Text Assistant improves your reading experience. It provides two types of summaries: extractive and abstractive.",
+  "description": "The Simba Text Assistant improves your reading experience. It provides a simplified summary.",
   "homepage_url": "https://github.com/fhewett/simba",
   "permissions": [
     "activeTab",
