@@ -81,7 +81,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',  # HA added for django REST framework
     'corsheaders',  # HA added to resolve CORS error in browser
-    'endpoints'
+    'endpoints',
+    'pagebox'
 ]
 
 MIDDLEWARE = [

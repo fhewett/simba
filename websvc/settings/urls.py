@@ -21,4 +21,5 @@ urlpatterns = [
     path('simba/api/', include('endpoints.urls')),  # apis
     path('simba/admin/', admin.site.urls),  # for admin interface
     # path('api-auth/', include('rest_framework.urls'))  # TODO: if one wishes to have write access with REST framework?
+    path('', include('pagebox.urls')),  # default goes to the user facing pagebox
 ]

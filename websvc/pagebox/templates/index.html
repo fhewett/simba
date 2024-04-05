@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simba Text Assistant</title>
+    <style>
+        body {
+            background-color: #333;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
+        #logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        #about-link {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        #br-link {
+            /*position: static;
+            bottom: 10px;
+            right: 10px;*/
+            text-align: right;
+            padding: 10px;
+
+        }
+        .box-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .text-box {
+            background-color: #222;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            padding: 0px;
+            margin: 10px;
+            flex-grow: 1;
+            max-width: 600px;
+            min-width: 500px;
+            height: 400px;  /* TODO FIX THIS TO WORK ON PHONE ETC*/
+            overflow: auto;
+        }
+        .text-box:first-child {
+            margin-left: 0;
+        }
+        .text-box:last-child {
+            margin-right: 0;
+        }
+        .input-text {
+            font-family: Arial, sans-serif;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            color: white;
+            resize: none;
+        }
+        .output-text {
+            font-family: 'Courier New', monospace;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none;
+            color: white;
+            resize: none;
+        }
+
+        .text-box textarea {
+            width: 100%;       /* Makes the textarea take up 100% of its parent's width */
+            height: 100%;      /* Makes the textarea take up 100% of its parent's height */
+            box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+            padding: 10px;     /* Optional: Adds some space inside the text area */
+            border: 0px solid #000; /* Optional: Adds a border that matches the parent container */
+            /*border-radius: 8px; /* Optional: Rounds the corners to match the parent container */
+            background: transparent; /* Maintains the background color of the parent */
+            color: inherit;    /* Inherits the text color from the parent */
+            resize: none;      /* Prevents resizing of the textarea */
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+
+        <div id="logo">SIMBA TEXT ASSISTANT</div>
+        <div id="about-link"><a href="https://publicinterest.ai/tool/simba/about" style="color: #fff; text-decoration: none;">About</a></div>
+
+        <form method="post">
+            {% csrf_token %}
+
+        <div class="box-container">
+            <div>
+            <div class="text-box">
+                <textarea name="text" class="input-text" placeholder="Type text here...">{{ input }}</textarea>
+            </div>
+            <div id="br-link">
+            <input type="submit" value="Simplify"></div>
+            </div>
+
+            <div>
+            <div class="text-box">           
+                <textarea class="output-text" placeholder="Output..." readonly>{{ output }}</textarea>
+            </div>
+            <div id="br-link">
+            <a href="/feedback" style="color: #fff; text-decoration: none; font-style:italic;">Send feedback</a>
+            </div>
+        </div>
+
+        </div>
+    </form>
+
+</body>
+</html>
+
+
+

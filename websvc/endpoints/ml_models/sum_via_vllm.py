@@ -34,7 +34,7 @@ class SummaryViaVLLM(BaseMLModel):
         #prompt = "Du bist ein hilfreicher Übersetzer für Leichte Sprache. USER: Kannst du folgenden Text vereinfachen: "
         prompt += "```" + input_text + "``` ASSISTANT: "
 
-        response = client.completions.create(model=self.VLLM_MODEL, prompt=prompt, max_tokens=120, temperature=1)
+        response = client.completions.create(model=self.VLLM_MODEL, prompt=prompt, max_tokens=120, temperature=0.5)
         output = response.choices[0].text  # this is just the model response (excludes prompt)
         # TODO: add below rule once we're sure it doesn't crash or blank outputs (requires additional DB logging): 
         # output = self.remove_repetitive_output(output)  
