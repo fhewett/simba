@@ -50,7 +50,7 @@ SECRET_KEY = os.environ['SECRET_KEY']  # load from environment for security
 # Deployment checklist: https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 # SECURITY WARNING: don't run with debug turned on in production!
 # Change this to "False" when you are ready for production
-DEBUG = env("DEBUG")
+DEBUG = True if os.environ.get("DJANGO_DEBUG") else False
 
 
 # GAE SECURITY WARNING: It's recommended that you use this when

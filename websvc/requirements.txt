@@ -9,10 +9,9 @@ google-cloud-secret-manager==2.16.1
 
 openai  # for the openai API support (used by VLLM)
 pylibmc  # needs libmemcached-tools on Ubuntu; on GAE works
-transformers  # AutoTokenizer
+together  # for Together API
 
+# transformers  # AutoTokenizer
 # tiktoken  # OpenAI's fast tokenizer
-# sentencepiece  # needed for some HF models
-# somajo # a better splitter than NLTK/Spacy
 
 # served by GAE: gunicorn  # to serve the app

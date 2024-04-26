@@ -1,13 +1,46 @@
+from time import time
 from django.shortcuts import get_object_or_404
-
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+from django.core.cache import cache  
 from rest_framework.views import APIView
-from rest_framework.parsers import JSONParser
+from rest_framework.parsers import JSONParser, FormParser
 from rest_framework.response import Response
 from rest_framework.decorators import parser_classes
-from .models import APIRequestLog
+from .db_models import APIRequestLog
+from .lang_models import *
 
-class Feedback(APIView):
+
+class RestSimplifyApi(APIView):
+    """Summarizes & simplifies inputed text via an ML model (chosen by backend); Logs to database."""
+
+    def __init__(self):
+        super().__init__()
+
+    def __call__(self, request, *args, **kwargs):
+        return self.dispatch(request, *args, **kwargs)
+
+    @csrf_exempt
+    @parser_classes([JSONParser, FormParser])
+    def post(self, request, *args, **kwargs):
+        # Handle the REST API request here (typically coming from the browser extension) 
+        text = request.data.get("text", "")  if type(request.data) is dict else str(request.data)
+        browser_id = request.data.get("bid", "") if type(request.data) is dict else ""
+        url = request.data.get("url", "") if type(request.data) is dict else ""
+        url = url.split("?")[0]  # cutoff possibly private part of URL (after ?)
+
+        # note: pre-processing of the input coming from the browser (readability) appears tobe unnecessary with latest models
+        st = time()
+        output = llama3_together_v20240425(text)  
+        duration =round(time()-st, 2)
+        print(f"Model `llama3_together_v20240425` called in  {duration} sec (RESTAPI).")  # apparently prints go to log in GAE
+        uuid = APIRequestLog.create_save(model_sig="llama3_together_v20240425",
+                                  meta_data={"browser_id": browser_id, "browser_url": url, "src": "api"}, 
+                                  input_text=text, output_text=output, duration=duration)
+        return Response({"output":output, "uuid": uuid})
+    
+
+class RestFeedbackApi(APIView):
     """Store feedback from user for a particular model output (stored in db as apilog)"""
 
     def __init__(self):
@@ -21,19 +54,16 @@ class Feedback(APIView):
     @csrf_exempt
     @parser_classes([JSONParser])  # only JSON
     def post(self, request, *args, **kwargs):
-        #if type(request.data) is dict:
+        print("DBG RestFeedbackApi.post():", request.data) 
         uuid = request.data.get("uuid", "")
         thumb = request.data.get("thumb", "?")  # up/dn
-        notes = request.data.get("fnotes", "")
+        fnotes = request.data.get("fnotes", "")
 
         obj = get_object_or_404(APIRequestLog, pk=uuid)
         if obj.feedback_thumb:
             # there shouldn't really be a feedback already stored, but to be safe lets not override.
             obj.feedback_details = "\n---\nEarlier: " + obj.feedback_thumb + "\n" + obj.feedback_details
-
         obj.feedback_thumb = thumb[0].upper()
-        obj.feedback_details = notes + obj.feedback_details
+        obj.feedback_details = fnotes + obj.feedback_details
         obj.save()
-
-        # technically 204 means successfully processed w/o content but 200 is more common
         return Response(status=200)

@@ -1,15 +1,65 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from endpoints.ml_models import sum_via_vllm
+from time import time
+import ipaddress
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse, JsonResponse
+from endpoints.db_models import APIRequestLog
+from endpoints.lang_models import *
 
-def index(request):
-    output = ""
-    text = ""
+
+def index_view(request):
+    text, output, uuid = "", "", ""
+    
     if request.method == "POST":
         text = request.POST.get('text')
-        #data = {"text": "text", "url": "pagebox-entry"}
-        vllm = sum_via_vllm.SummaryViaVLLM()
-        output = vllm.process(text)  # TODO: this won't log to db though, so we'd want to call .post()
-        output = output.strip()
+        # NOTE: perhaps we would want want to check for some minimum amount of text (and other validations)? 
+        userip = get_pseudo_user_ip(request)
+        st = time()
+        output = llama3_together_v20240425(text)  
+        duration = round(time()-st, 2)
+        print(f"Model `llama3_together_v20240425` called in  {duration} sec (webform).")  # goes to log in GAE
+        uuid = APIRequestLog.create_save(model_sig="llama3_together_v20240425",
+                                  meta_data={"userip": userip, "src": "web"}, input_text=text, 
+                                  output_text=output, duration=duration)
 
-    return render(request, 'index.html', {'output': output, 'input': text})
+    return render(request, 'index.html', {'output': output, 'input': text, 'uuid': uuid})
+
+
+def get_pseudo_user_ip(request):
+    x_forwarded = request.META.get('HTTP_X_FORWARDED_FOR')
+    ip = x_forwarded.split(',')[0] if x_forwarded else request.META.get('REMOTE_ADDR')
+
+    # now pseudonomize 
+    ip_obj = ipaddress.ip_address(ip)
+    if ip_obj.version == 4:  # IPv4
+        ip_parts = ip.split('.')
+        ip_parts[2] = '0'
+        ip_parts[3] = '0'
+        modified_ip = '.'.join(ip_parts)
+    elif ip_obj.version == 6:  # IPv6
+        # Convert the full IP to binary, then zero out the last 64 bits
+        ip_bin = ip_obj.packed
+        modified_bin = ip_bin[:-8] + (b'\x00' * 8)  # Last 8 bytes to zeros
+        modified_ip = str(ipaddress.ip_address(modified_bin)) 
+
+    # print(f"DEBUG. Original IP: {ip}, Modified IP: {modified_ip}")
+    return modified_ip
+
+
+def submit_feedback(request):
+    if request.method == 'POST':
+        thumb = request.POST.get('thumb') or ""
+        uuid = request.POST.get('uuid') or ""
+        fnotes = request.POST.get('fnotes') or ""
+        if not thumb.upper() in ('D', 'U') or not uuid:
+            return JsonResponse({'status': 'error', 'message': 'Bad or missing parameters'}, status=400)
+
+        # record feedback
+        obj = get_object_or_404(APIRequestLog, pk=uuid)
+        if obj.feedback_thumb:
+            # there shouldn't really be a feedback already stored, but to be safe lets not override.
+            obj.feedback_details = "\n---\nEarlier: " + obj.feedback_thumb + "\n" + obj.feedback_details
+
+        obj.feedback_thumb = thumb[0].upper()
+        obj.feedback_details = fnotes + obj.feedback_details
+        obj.save()    
+        return JsonResponse({'status': 'success', 'message': 'Thank you for your feedback!'})

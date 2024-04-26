@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simba Text Assistant</title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'pagebox/favicon.svg' %}" >
     <style>
         body {
             background-color: #333;
@@ -28,11 +30,9 @@
             right: 10px;
         }
         #br-link {
-            /*position: static;
-            bottom: 10px;
-            right: 10px;*/
             text-align: right;
-            padding: 10px;
+            padding: 5px 10px;
+            min-height: 22px;
 
         }
         .box-container {
@@ -76,53 +76,100 @@
             color: white;
             resize: none;
         }
-
         .text-box textarea {
-            width: 100%;       /* Makes the textarea take up 100% of its parent's width */
-            height: 100%;      /* Makes the textarea take up 100% of its parent's height */
-            box-sizing: border-box; /* Includes padding and border in the element's total width and height */
-            padding: 10px;     /* Optional: Adds some space inside the text area */
-            border: 0px solid #000; /* Optional: Adds a border that matches the parent container */
-            /*border-radius: 8px; /* Optional: Rounds the corners to match the parent container */
-            background: transparent; /* Maintains the background color of the parent */
-            color: inherit;    /* Inherits the text color from the parent */
-            resize: none;      /* Prevents resizing of the textarea */
+            width: 100%;     
+            height: 100%;      
+            box-sizing: border-box;
+            padding: 10px;     
+            border: 0px solid #000; 
+            background: transparent;
+            color: inherit;  
+            resize: none;
+        }
+        .notice {
+            font-style: italic;
         }
     </style>
 </head>
-
-
 <body>
+    <div id="logo"><img src="{% static 'pagebox/simbalogo.svg' %}" alt="Simba Logo"></div>
 
+    <div id="about-link">
+        <a href="https://github.com/fhewett/simba" style="color: #fff; text-decoration: none;">About & Source</a> | 
+        <a href="https://www.hiig.de/en/data-protection-policy/" style="color: #fff; text-decoration: none;">Privacy Policy</a>
+    </div>
 
+    <div class="notice">
+        Terms: Simba is a research project on text simplication. User texts are collected for furthur research. Please do not submit any personal data.
+    </div>
 
-        <div id="logo">SIMBA TEXT ASSISTANT</div>
-        <div id="about-link"><a href="https://publicinterest.ai/tool/simba/about" style="color: #fff; text-decoration: none;">About</a></div>
-
-        <form method="post">
-            {% csrf_token %}
-
-        <div class="box-container">
-            <div>
+    <form method="post">
+    {% csrf_token %}
+    <div class="box-container">
+        <div>
             <div class="text-box">
                 <textarea name="text" class="input-text" placeholder="Type text here...">{{ input }}</textarea>
             </div>
             <div id="br-link">
-            <input type="submit" value="Simplify"></div>
+                <select id="ModelDropdown"><option value="option1">Model 1 (summarize & simplify)</option></select>
+                <input type="submit" value="Simplify">
             </div>
-
-            <div>
+        </div>
+        <div>
             <div class="text-box">           
                 <textarea class="output-text" placeholder="Output..." readonly>{{ output }}</textarea>
             </div>
             <div id="br-link">
-            <a href="/feedback" style="color: #fff; text-decoration: none; font-style:italic;">Send feedback</a>
+                {% if uuid %}
+                <a href="#" id="thumbs-up"><img src="{% static 'pagebox/thumbs-up.svg' %}" alt="Thumbs up"></a>
+                <a href="#" id="thumbs-down"><img src="{% static 'pagebox/thumbs-down.svg' %}" alt="Thumbs down"></a>
+                {% else %}
+                <div style="width:14x; height:22px;"> <!-- Set height for H. alignment --></div>
+                {% endif %}
             </div>
         </div>
-
-        </div>
+    </div>
     </form>
 
+    <script>
+        document.getElementById('thumbs-down').onclick = function() {
+            var fnotes = prompt("How can we improve?");
+            if (fnotes !== null) {
+                // Send feedback to the server via AJAX
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/submit-feedback/", true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        alert("Thank you for your feedback!");
+                        // TODO: change the down button to filled
+                    } else {
+                        alert("Error submitting feedback.");
+                    }
+                };
+                xhr.send("uuid={{ uuid }}&thumb=D&fnotes=" + encodeURIComponent(fnotes));
+            }
+            return false;  // Prevent default link behavior
+        };
+
+        document.getElementById('thumbs-up').onclick = function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/submit-feedback/", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    alert("Thank you for your feedback!");
+                    // TODO: change the up button to filled
+                } else {
+                    alert("Error submitting feedback.");
+                }
+            };
+            xhr.send("uuid={{ uuid }}&thumb=U");
+            return false; 
+        };
+        </script>    
 </body>
 </html>
 
