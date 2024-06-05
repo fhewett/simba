@@ -27,7 +27,7 @@ Wir verwenden django (Python) im Backend, die relevanten Dateien sind im *websvc
 
 SIMBA wurde von Mitgliedern des [AI & Society Lab](https://www.hiig.de/research/ai-and-society-lab/) am [Humboldt Institut für Internet und Gesellschaft](https://www.hiig.de/) in Berlin, Deutschland, entwickelt. Hadi Asghari, Christopher Richter und Freya Hewett sind für die technischen Aspekte verantwortlich, Larissa Wunderlich für die visuellen Aspekte, mit allgemeinem Input von Theresa Züger.
 
-Wenn du Fragen, Feedback oder Kommentare hast, kontaktiere uns unter simba -at- hiig.de. Weitere Informationen findest du [unserer Website](https://publicinterest.ai/tool/simba).
+Wenn du Fragen, Feedback oder Kommentare hast, kontaktiere uns unter simba -at- hiig.de. Weitere Informationen findest du auf [unserer Website](https://publicinterest.ai/tool/simba).
 
 ---
 
