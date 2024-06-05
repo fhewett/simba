@@ -4,19 +4,18 @@
 
 ## Was ist der SIMBA Text Assistent?
 
-Der Simba Text Assistent ist ein Browser-Plugin und Weboberfläche, der Zusammenfassungen von deutschsprachigen Texten auf Webseiten erstellt. Er wurde entwickelt, um die Zusammenfassungen zusätzlich zu vereinfachen, indem er die Sätze verkürzt und Erklärungen zu Wörtern liefert. Wir haben zudem das [Hurraki-Wörterbuch](https://hurraki.de/wiki/Hauptseite) integriert, außerdem kannst du wählen, ob du im Wörterbuch und im Online-Text gefundene Wörter markieren und deren Definition in Leichter Sprache angezeigt bekommen möchtest.
+Der Simba Text Assistent ist ein Browser-Plugin und Weboberfläche, der Zusammenfassungen von deutschsprachigen Texten auf Webseiten erstellt. Er wurde entwickelt, um die Zusammenfassungen zusätzlich zu vereinfachen, indem er die Sätze verkürzt und schwierige Wörter vermeidet.
 
 Unsere Modelle und unser Code sind Open Source.
-**todo: add reason for why we do simplification**
+Die Zielgruppen von vereinfachten Sprache reichen von Menschen mit kognitiven Behinderungen über Nicht-Muttersprachler*Innen bis hin zu Kindern und Laien. Der „gesellschaftliche Zweck“ der vereinfachten Sprache besteht also darin, möglichst vielen verschiedenen Menschen Zugang zu denselben Informationen zu verschaffen.
 
 ## Wie funktioniert SIMBA?
 
 Es gibt verschiedene Möglichkeiten, eine Zusammenfassung automatisch zu erstellen, Simba basiert auf einem sogenannten "Textgenerierungsmodell". Diese Textgenerierungsmodelle werden auch als Large Language Models oder Foundation Models bezeichnet: ChatGPT und Llama sind Beispiele für diese Modelle. Es handelt sich um sehr große neuronale Netze, die mit einer großen Menge von Textdaten gefüttert werden. Diese Netze werden darauf trainiert, zu berechnen, welches Wort in einer Sequenz am wahrscheinlichsten als nächstes kommt.
-Wir haben deutschsprachige Zeitungsartikel verwendet, die zur Fine-Tuning des Grundmodells Mistral-7B-v0.1 vereinfacht wurden. Wir verwenden Artikel der Österreichischen Presseagentur, die von professionellen Übersetzern vereinfacht wurden. Sie wurden auf die Niveaus B1 und A2 des Gemeinsamen Europäischen Referenzrahmens für Sprachen (GER) vereinfacht. Ein Beispiel für den Datensatz findet sich [hier](https://github.com/fhewett/apa-rst/tree/main/original_texts).
+Wir haben deutschsprachige Zeitungsartikel verwendet, die zur Fine-Tuning des Grundmodells Llama-3-8B-Instruct vereinfacht wurden. Wir verwenden Artikel der Österreichischen Presseagentur, die von professionellen Übersetzern vereinfacht wurden. Sie wurden auf die Niveaus B1 und A2 des Gemeinsamen Europäischen Referenzrahmens für Sprachen (GER) vereinfacht. Ein Beispiel für den Datensatz findet sich [hier](https://github.com/fhewett/apa-rst/tree/main/original_texts).
 
 ## Die Grenzen von SIMBA
 
-- SIMBA funktioniert am besten mit kurzen Input-Texten
 - SIMBA ist für deutschsprachige Texte optimiert
 - Die automatisch generierten Zusammenfassungen und Vereinfachungen können Informationen enthalten, die nicht der Wahrheit entsprechen, sogenannte "Halluzinationen"
 
@@ -36,19 +35,19 @@ Wenn du Fragen, Feedback oder Kommentare hast, kontaktiere uns unter simba -at- 
 
 ## What is SIMBA?
 
-The Simba Text Assistant is a browser plug-in and webpage that produces summaries of German-language text on web pages. It is designed to additionally simplify the summaries, by shortening the sentences and providing explanations for words. We have also integrated the [Hurraki dictionary](https://hurraki.de/wiki/Hauptseite); a Wiki-based dictionary with entries in Leichte Sprache (Easy German Language). You can choose to highlight words found in the dictionary and in the online text, and be shown their definition in Easy Language.
+The Simba Text Assistant is a browser plug-in and webpage that produces summaries of German-language text on web pages. It is designed to additionally simplify the summaries, by shortening the sentences and providing explanations for words.
 
 Our models and code are open source. It has been designed for German-language text, but it may work on other languages.
-**todo: add reason for why we do simplification**
+
+The target groups of simplified language range from people with cognitive disabilities, to non-native speakers, to children, to non-experts. The ‘societal purpose’ of simplified language therefore encompasses allowing as many different people as possible access to the same information.
 
 ## How does SIMBA work?
 
 There are different ways of automatically creating a summarisation, SIMBA is based on a so-called “text generation” model. These text generation models are also referred to as Large Language Models or foundation models: ChatGPT and Llama are examples of these. They are very large neural networks that are fed with a large amount of text data. These networks are trained to calculate what word is most likely to come next in a sequence.
-We used German-language newspaper articles that have been simplified to fine-tune the foundation model from Mistral. We use articles from the Austrian Press Agency, which have been simplified by professional translators. They are simplified to the levels B1 and A2 on the Common European Framework of Reference for Languages (CEFR). A sample of the dataset can be found [here](https://github.com/fhewett/apa-rst/tree/main/original_texts).
+We used German-language newspaper articles that have been simplified to fine-tune the foundation model Llama-3-8B-Instruct. We use articles from the Austrian Press Agency, which have been simplified by professional translators. They are simplified to the levels B1 and A2 on the Common European Framework of Reference for Languages (CEFR). A sample of the dataset can be found [here](https://github.com/fhewett/apa-rst/tree/main/original_texts).
 
 ## Known limitations
 
-- SIMBA works best on shorter texts
 - It has been created for German-language text: it may work on other languages, but it has not been designed to do so
 - The summary may contain false information or ungrammatical phrases
 
