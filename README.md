@@ -1,6 +1,6 @@
 # SIMBA Text Assistent
 
-[The English version can be found below](#en)
+[The English version can be found below](#simba-text-assistant)
 
 ## Was ist der SIMBA Text Assistent?
 
@@ -33,7 +33,6 @@ Wenn du Fragen, Feedback oder Kommentare hast, kontaktiere uns unter simba -at- 
 ---
 
 # SIMBA text assistant
-{id: en}
 
 ## What is SIMBA?
 
