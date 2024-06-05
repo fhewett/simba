@@ -32,7 +32,8 @@ Wenn du Fragen, Feedback oder Kommentare hast, kontaktiere uns unter simba -at- 
 
 ---
 
-# SIMBA text assistant {#en}
+# SIMBA text assistant
+{id: en}
 
 ## What is SIMBA?
 
