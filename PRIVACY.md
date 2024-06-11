@@ -20,8 +20,8 @@ Alexander von Humboldt Institute for Internet and Society (HIIG)
 
 The data protection officer of the controller is:
 
-Alexander von Humboldt Institut für Internet und Gesellschaft gGmbH (HIIG)
-
+> Alexander von Humboldt Institut für Internet und Gesellschaft gGmbH (HIIG)
+>
 > Dr. Jörg Pohle <br>
 > Französische Straße 9 <br>
 > 10117 Berlin <br>
