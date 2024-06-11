@@ -7,28 +7,28 @@ If you use Simba on the [PublicInterest.AI](https://publicinterest.ai) website, 
  
 ## I. Name and address of the controller (the responsible entity)
 
-> Alexander von Humboldt Institute for Internet and Society (HIIG)
->
-> Französische Straße 9
-> 10117 Berlin
+Alexander von Humboldt Institute for Internet and Society (HIIG)
+
+> Französische Straße 9 <br>
+> 10117 Berlin <br>
 > Germany
 >
->  Phone: +49 (0) 30 2007 60 82
+>  Phone: +49 (0) 30 2007 60 82 <br>
 >  E-Mail: info@hiig.de 
 
 ## II. Name and address of the data protection officer
 
 The data protection officer of the controller is:
 
-> Alexander von Humboldt Institut für Internet und Gesellschaft gGmbH (HIIG)
->
-> Dr. Jörg Pohle
-> Französische Straße 9
-> 10117 Berlin
+Alexander von Humboldt Institut für Internet und Gesellschaft gGmbH (HIIG)
+
+> Dr. Jörg Pohle <br>
+> Französische Straße 9 <br>
+> 10117 Berlin <br>
 > Germany
 >
-> Phone: +49 (0)30 2007 6082
-> E-Mail: dsb@hiig.de (PGP: 0x35D2CAA8B646D3AB)
+> Phone: +49 (0)30 2007 6082 <br>
+> E-Mail: dsb@hiig.de (PGP: 0x35D2CAA8B646D3AB) <br>
 
 ## III. Information on the processing of personal data 
 
@@ -96,13 +96,13 @@ You have the right to lodge a complaint with any supervisory authority if you be
 
 The data protection supervisory authority responsible for the HIIG is:
 
-> [Berliner Beauftragte für Datenschutz und Informationsfreiheit](https://www.datenschutz-berlin.de/)
+> [Berliner Beauftragte für Datenschutz und Informationsfreiheit](https://www.datenschutz-berlin.de/) <br>
 >
-> Alt-Moabit 59-61
-> 10555 Berlin
+> Alt-Moabit 59-61 <br>
+> 10555 Berlin <br>
 > Germany
 >
-> Phone: +49 (0)30 13889-0
-> Fax: +49 (0)30 2155050
+> Phone: +49 (0)30 13889-0 <br>
+> Fax: +49 (0)30 2155050 <br>
 > E-Mail: mailbox@datenschutz-berlin.de 
 
