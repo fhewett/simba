@@ -7,12 +7,12 @@
 Der Simba Text Assistent ist ein Browser-Plugin und Weboberfläche, der Zusammenfassungen von deutschsprachigen Texten auf Webseiten erstellt. Er wurde entwickelt, um die Zusammenfassungen zusätzlich zu vereinfachen, indem er die Sätze verkürzt und schwierige Wörter vermeidet.
 
 Unsere Modelle und unser Code sind Open Source.
-Die Zielgruppen von vereinfachten Sprache reichen von Menschen mit kognitiven Behinderungen über Nicht-Muttersprachler*Innen bis hin zu Kindern und Laien. Der „gesellschaftliche Zweck“ der vereinfachten Sprache besteht also darin, möglichst vielen verschiedenen Menschen Zugang zu denselben Informationen zu verschaffen.
+Die Zielgruppen von vereinfachten Sprache reichen von Menschen mit kognitiven Behinderungen über Nicht-Muttersprachler*innen bis hin zu Kindern und Laien. Der „gesellschaftliche Zweck“ der vereinfachten Sprache besteht also darin, möglichst vielen verschiedenen Menschen Zugang zu denselben Informationen zu verschaffen.
 
 ## Wie funktioniert SIMBA?
 
 Es gibt verschiedene Möglichkeiten, eine Zusammenfassung automatisch zu erstellen, Simba basiert auf einem sogenannten "Textgenerierungsmodell". Diese Textgenerierungsmodelle werden auch als Large Language Models oder Foundation Models bezeichnet: ChatGPT und Llama sind Beispiele für diese Modelle. Es handelt sich um sehr große neuronale Netze, die mit einer großen Menge von Textdaten gefüttert werden. Diese Netze werden darauf trainiert, zu berechnen, welches Wort in einer Sequenz am wahrscheinlichsten als nächstes kommt.
-Wir haben deutschsprachige Zeitungsartikel verwendet, die zur Fine-Tuning des Grundmodells Llama-3-8B-Instruct vereinfacht wurden. Wir verwenden Artikel der Österreichischen Presseagentur, die von professionellen Übersetzern vereinfacht wurden. Sie wurden auf die Niveaus B1 und A2 des Gemeinsamen Europäischen Referenzrahmens für Sprachen (GER) vereinfacht. Ein Beispiel für den Datensatz findet sich [hier](https://github.com/fhewett/apa-rst/tree/main/original_texts).
+Wir haben deutschsprachige Zeitungsartikel verwendet, die zur Fine-Tuning des Grundmodells Llama-3-8B-Instruct vereinfacht wurden. Wir verwenden Artikel der Austrian Press Agency, die von professionellen Übersetzer*innen vereinfacht wurden. Sie wurden auf die Niveaus B1 und A2 des Gemeinsamen Europäischen Referenzrahmens für Sprachen (GER) vereinfacht. Ein Beispiel für den Datensatz findet sich [hier](https://github.com/fhewett/apa-rst/tree/main/original_texts).
 
 ## Die Grenzen von SIMBA
 
@@ -25,7 +25,7 @@ Wir verwenden django (Python) im Backend, die relevanten Dateien sind im *websvc
 
 ## Team
 
-SIMBA wurde von Mitgliedern des [AI & Society Lab](https://www.hiig.de/research/ai-and-society-lab/) am [Humboldt Institut für Internet und Gesellschaft](https://www.hiig.de/) in Berlin, Deutschland, entwickelt. Hadi Asghari, Christopher Richter und Freya Hewett sind für die technischen Aspekte verantwortlich, Larissa Wunderlich für die visuellen Aspekte, mit allgemeinem Input von Theresa Züger.
+SIMBA wurde von Mitglieder*innen des [AI & Society Lab](https://www.hiig.de/research/ai-and-society-lab/) am [Humboldt Institut für Internet und Gesellschaft](https://www.hiig.de/) in Berlin, Deutschland, entwickelt. Hadi Asghari, Christopher Richter und Freya Hewett sind für die technischen Aspekte verantwortlich, Larissa Wunderlich für die visuellen Aspekte, mit allgemeinem Input von Theresa Züger.
 
 Wenn du Fragen, Feedback oder Kommentare hast, kontaktiere uns unter simba -at- hiig.de. Weitere Informationen findest du auf [unserer Website](https://publicinterest.ai/tool/simba).
 
