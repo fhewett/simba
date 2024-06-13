@@ -27,8 +27,7 @@ def index_view(request):
 def get_pseudo_user_ip(request):
     x_forwarded = request.META.get('HTTP_X_FORWARDED_FOR')
     ip = x_forwarded.split(',')[0] if x_forwarded else request.META.get('REMOTE_ADDR')
-
-    # now pseudonomize 
+    # now pseudonomize half the IPv4/v6 address
     ip_obj = ipaddress.ip_address(ip)
     if ip_obj.version == 4:  # IPv4
         ip_parts = ip.split('.')
@@ -36,12 +35,9 @@ def get_pseudo_user_ip(request):
         ip_parts[3] = '0'
         modified_ip = '.'.join(ip_parts)
     elif ip_obj.version == 6:  # IPv6
-        # Convert the full IP to binary, then zero out the last 64 bits
-        ip_bin = ip_obj.packed
-        modified_bin = ip_bin[:-8] + (b'\x00' * 8)  # Last 8 bytes to zeros
+        ip_bin = ip_obj.packed  # convert to binary
+        modified_bin = ip_bin[:-8] + (b'\x00' * 8)  # Zero last 64 bits 
         modified_ip = str(ipaddress.ip_address(modified_bin)) 
-
-    # print(f"DEBUG. Original IP: {ip}, Modified IP: {modified_ip}")
     return modified_ip
 
 

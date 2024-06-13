@@ -13,7 +13,8 @@ VLLM_URL = "https://xe7wds4uko1j3x-8000.proxy.runpod.net"       # "http://35.246
 
 def llama3_together_v20240425(input_text, meta_data=None):
     client = Together(api_key=os.environ.get('TOGETHER_API_KEY'))
-    PROMPT = "Kannst du bitte den folgenden Text zusammenfassen und sprachlich auf ein A2-Niveau in Deutsch vereinfachen? Schreibe maximal 5 Sätze.\n``%TXT%``"
+    PROMPT = "Kannst du bitte den folgenden Text zusammenfassen und sprachlich auf ein A2-Niveau in Deutsch vereinfachen? Schreibe maximal 5 Sätze und nur auf Deutsch.\n``%TXT%``"
+    # TODO: on https://de.wikipedia.org/wiki/Gro%C3%9Fgefleckter_Katzenhai returns in English, unclear why. perhaps needs <>?
     response = client.chat.completions.create(
         model="meta-llama/Llama-3-8b-chat-hf",
         messages=[{"role": "user", 
@@ -30,7 +31,7 @@ def llama3_vllm_v20240425(input_text, meta_data=None):
     client = OpenAI(api_key=os.environ.get('VLLM_API_KEY'), base_url=VLLM_URL + "/v1")   
     PROMPT = """<|begin_of_text|><|start_header_id|>system<|end_header_id|>
 Du bist ein hilfreicher Assistent und hilfst dem User, Texte besser zu verstehen.<|eot_id|><|start_header_id|>user<|end_header_id|>
-Kannst du bitte den folgenden Text zusammenfassen und sprachlich auf ein A2-Niveau in Deutsch vereinfachen? Schreibe maximal 5 Sätze.
+Kannst du bitte den folgenden Text zusammenfassen und sprachlich auf ein A2-Niveau in Deutsch vereinfachen? Schreibe maximal 5 Sätze und nur auf Deutsch.
 ``%TXT%``<|eot_id|><|start_header_id|>assistant<|end_header_id|>
 """ 
     response = client.completions.create(
@@ -60,6 +61,8 @@ def postprocess_basic(output):
     output = output.replace("Hier ist ein Text, der den Originaltext auf ein A2-Niveau in Deutsch vereinfacht und auf maximal 5 Sätze reduziert:", "")
     output = output.replace("Here is a summary of the text in 5 sentences, written in simple language and at an A2 level:", "")
     output = output.replace("Leider ist der Text sehr kurz und enthält nur ein Wort. Hier ist eine mögliche Zusammenfassung und Vereinfachung auf A2-Niveau:", "")
+    output = output.replace("Here is a summary of the text in 5 sentences, written in a simplified language and at an A2 level:", "")
+    output = output.replace("Hier ist ein Text auf A2-Niveau in Deutsch:", "")
     # maybe also at end: output = output.replace("Ich hoffe, das hilft! Lassen Sie mich wissen, wenn Sie weitere Fragen haben.", "")
     output = output.strip()
     return output

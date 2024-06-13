@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simba Text Assistant</title>
+    <title>Simba Text Assistent</title>
     {% load static %}
     <link rel="shortcut icon" type="image/png" href="{% static 'pagebox/favicon.svg' %}" >
     <style>
@@ -95,12 +95,17 @@
     <div id="logo"><img src="{% static 'pagebox/simbalogo.svg' %}" alt="Simba Logo"></div>
 
     <div id="about-link">
-        <a href="https://github.com/fhewett/simba" style="color: #fff; text-decoration: none;">About & Source</a> | 
-        <a href="https://www.hiig.de/en/data-protection-policy/" style="color: #fff; text-decoration: none;">Privacy Policy</a>
+        <a href="https://github.com/fhewett/simba" style="color: #fff; text-decoration: none;" target="_blank"><!-- About & Source-->Info & Quellcode</a> | 
+        <a href="https://github.com/fhewett/simba/blob/main/PRIVACY.md" style="color: #fff; text-decoration: none;" target="_blank">Datenschutzerklärung</a>
     </div>
 
+    <!--div class="notice">
+        Terms: Simba is a research project on text simplication in German. All texts are collected for further research. Please do not submit any personal data.
+        Additionally, Simba is in beta, and may produce incorrect outputs; please check important details.
+    </div-->
     <div class="notice">
-        Terms: Simba is a research project on text simplication. User texts are collected for furthur research. Please do not submit any personal data.
+    	Nutzungsbedingungen: Simba ist ein Forschungsprojekt zur Textvereinfachung im Deutschen. Alle Texte werden für die weitere Forschung gesammelt. Bitte keine persönlichen Daten übermitteln.
+        Außerdem befindet sich Simba in der Beta-Phase und kann fehlerhafte Ergebnisse liefern; bitte wichtige Details überprüfen.
     </div>
 
     <form method="post">
@@ -108,10 +113,13 @@
     <div class="box-container">
         <div>
             <div class="text-box">
-                <textarea name="text" class="input-text" placeholder="Type text here...">{{ input }}</textarea>
+                <textarea name="text" class="input-text" placeholder="Text hier eingeben..."><!--"Type text here..."-->{{ input }}</textarea>
             </div>
             <div id="br-link">
-                <select id="ModelDropdown"><option value="option1">Model 1 (summarize & simplify)</option></select>
+                <select id="ModelDropdown">
+                	<!--option value="option1">Model 1 (summarize & simplify)</option-->
+                	<option value="option1">Modell 1 (zusammenfassen und vereinfachen)</option>
+                	</select>
                 <input type="submit" value="Simplify">
             </div>
         </div>
@@ -133,7 +141,7 @@
 
     <script>
         document.getElementById('thumbs-down').onclick = function() {
-            var fnotes = prompt("How can we improve?");
+            var fnotes = prompt("Wie können die Ergebnisse verbessert werden?"); // How can the results be improved? 
             if (fnotes !== null) {
                 // Send feedback to the server via AJAX
                 var xhr = new XMLHttpRequest();
@@ -142,10 +150,10 @@
                 xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
                 xhr.onload = function() {
                     if (xhr.status === 200) {
-                        alert("Thank you for your feedback!");
+                        alert("Danke für das Feedback!");  // Thanks for the feedback
                         // TODO: change the down button to filled
                     } else {
-                        alert("Error submitting feedback.");
+                        alert("Fehler beim Senden von Feedback :(");  // Error submitting feedback.
                     }
                 };
                 xhr.send("uuid={{ uuid }}&thumb=D&fnotes=" + encodeURIComponent(fnotes));
@@ -160,10 +168,10 @@
             xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
             xhr.onload = function() {
                 if (xhr.status === 200) {
-                    alert("Thank you for your feedback!");
+                    alert("Danke für das Feedback!");  // Thanks for the feedback
                     // TODO: change the up button to filled
                 } else {
-                    alert("Error submitting feedback.");
+                    alert("Fehler beim Senden von Feedback :(");  // Error submitting feedback
                 }
             };
             xhr.send("uuid={{ uuid }}&thumb=U");

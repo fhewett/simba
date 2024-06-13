@@ -94,7 +94,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'settings.middleware.TimingMiddleware',  # HA added to measure API time
+     # HA removed 202404 'settings.middleware.TimingMiddleware',  # HA added to measure API time
 ]
 
 ROOT_URLCONF = 'settings.urls'
