@@ -1,41 +1,37 @@
 "use strict";
 
-/**
- * 
- * @returns The cleaned and sanatized core Text of a website
- * This function just uses external libraries to extract the core text of any website
- */
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  // This action is called everytime the user opens the popup
+  if (request.action === "getPageContent") {
+    sendResponse({ text: extractCoreText(), url: document.URL }); 
+  }
+});
+
+
+// Function to extract the core text of any webpage 
 function extractCoreText() {
   let cloneDoc = document.cloneNode(true)
   
-  // Elements to remove
+  // Remove code elements to make page content cleaner
   if (cloneDoc.querySelector("code") != null) {
     const e = cloneDoc.querySelector("code")
     e.remove()
   }
-  // Elements to remove
 
+  // Use readability (external lib by Mozilla) to get the page core content 
   const reader = new Readability(cloneDoc)
   const article = reader.parse()
-  let txt = ""
-  if (article.textContent.includes(article.excerpt)) {
-    txt = article.title + "\n\n" + article.textContent
-  }
-  else {
-    txt = article.title + "\n\n" + article.excerpt + "\n\n" + article.textContent
-  }
-  return DOMPurify.sanitize(txt)
+  let txt = article.title + "\n\n" + article.textContent
+  
+  // HA: we original used `DOMPurify.sanitize(txt)`, however I don't think the purification/sanitization is necessary?
+  return txt
 }
 
-/**
- * 
- * @param {Node} node 
- * @param {string} searchString 
- * @returns {Node} Smallest Parent in which the given String is still fully contained
- * 
- * Given a Root Node to search in, this function will return the smallest Node in which we can still find the entire given searchString
- * The goal of this is to reduce computation time, because we don't need to look for our searchString in Nodes, which do not contain the searchString.
- */
+
+/* HIGHLIGHTING FUNCTION REMOVED 202406 (commented in case we'd want to restore it) 
+
+// Given a Root Node to search in, this function will return the smallest Node in which we can still find the entire given searchString
+// The goal of this is to reduce computation time, because we don't need to look for our searchString in Nodes, which do not contain the searchString.
 function findSmallestParent(node, searchString) {
   //Only Element Nodes are important, these includes <p>, <div>, <span>, <b>, etc; basically every Node that can contain text
   if (node.nodeType === Node.ELEMENT_NODE) {
@@ -63,12 +59,8 @@ function findSmallestParent(node, searchString) {
   return null
 }
 
-/**
- * 
- * @param {{node: Node, text: string, replaceType: int}} replacePropertiesArray 
- * Given an Array of replaceProperties, this function highlights all the given text in their respective Nodes
- * For security reasons any inserted text gets sanatized by DOMPurfy first, this is best practice and even nessasary according to Mozilla
- */
+// Given an Array of replaceProperties, this function highlights all the given text in their respective Nodes
+// For security reasons any inserted text gets sanatized by DOMPurfy first, this is best practice and even nessasary according to Mozilla
 function highlightNode(replacePropertiesArray) {
   for (const replaceProperties of replacePropertiesArray) {
     console.log(replaceProperties)
@@ -105,21 +97,10 @@ function highlightNode(replacePropertiesArray) {
   }
 }
 
-/**
- * 
- * @param {Node} currentNode 
- * @param {{nsi: int, ssi: int, sso: int, searchString: int, replacePropertiesArray: replaceProperties}} searchProps 
- * Given a Node and searchProps, this function looks for all the Nodes, in which we can find parts of the searchString.
- * Basically, it fills an Array, which includes all the Text Nodes, which have a consecutive part of the searchString in them.
- * This is important, because we have to respect the HTML hierarchy of the DOM.
- * Each Node, that has a part of the searchString in it has to be highlighted seperately, which is why we first find out which Nodes we need.
- * 
- * nsi: Node Start Index -> Describes, where in the innerText of the smallestParent the currentNode starts
- * ssi: Search Start Index -> Describes, where in the innerText of the smallestParent we started our search
- * sso: Search String Offset -> Describes, which Character of the searchString we are looking at
- * searchString -> the entire text, which we are trying to find
- * replacePropertiesArray -> An Array of the replaceProperties Class
- */
+// Given a Node and searchProps, this function looks for all the Nodes, in which we can find parts of the searchString.
+// Basically, it fills an Array, which includes all the Text Nodes, which have a consecutive part of the searchString in them.
+// This is important, because we have to respect the HTML hierarchy of the DOM.
+// Each Node, that has a part of the searchString in it has to be highlighted seperately, which is why we first find out which Nodes we need.
 function getReplaceNodes(currentNode, searchProps) {
   switch (currentNode.nodeType) {
     // If the currentNode is an Element, we want to start the recursion until we find the inner textNode
@@ -263,10 +244,22 @@ function highlightWord() {
     wordElement.addEventListener('mouseenter', showTooltip);
     wordElement.addEventListener('mouseleave', hideTooltip);
   });
-});
- 
+}); 
 }
 
+// TO USE ABOVE with the sentence[s] to highlight
+// First find the smallest Parent Node; Then fill the replaceProperties Array with all Nodes, which should be highlighted; Lastly highlight them 
+// .forEach(sentence => {
+//     const hNode = findSmallestParent(document.body, sentence)
+//     if (hNode != null) {
+//        const rPArray = [] 
+//        getReplaceNodes(hNode, { nsi: 0, ssi: 0, sso: 0, searchString: sentence, rPArray: rPArray })
+//        highlightNode(rPArray)
+//    }
+// }
+*/
+
+/* TOOLTIP FUNCTION REMOVED 202406 (commented in case we'd want to restore it)
 function showTooltip(event) {
   var tooltip = document.createElement('div');
   tooltip.className = 'tooltip';
@@ -285,50 +278,5 @@ function hideTooltip(event) {
 function positionTooltip(event, tooltip) {
   tooltip.style.top = event.clientY + 10 + 'px';
   tooltip.style.left = event.clientX + 10 + 'px';
-}
+}*/
 
-// Connect to the messager, to be able to communicate with the backgroundScript
-let myPort = chrome.runtime.connect({ name: "port-from-cs" });
-myPort.onMessage.addListener((m) => {
-  console.log(m.greeting)
-  // If we however get the sentences which should be highlighted, we will do so
-  if (m.greeting === "highlightZZ") {
-    console.log(m.data.output)
-    m.data.output.forEach(sentence => {
-      console.log(findSmallestParent(document.body, sentence))
-      console.log(sentence)
-      // First find the smallest Parent Node
-      const hNode = findSmallestParent(document.body, sentence)
-      if (hNode != null) {
-        const rPArray = []
-        // Then fill the replaceProperties Array with all the Nodes, which should be highlighted
-        getReplaceNodes(hNode, { nsi: 0, ssi: 0, sso: 0, searchString: sentence, rPArray: rPArray })
-        console.log(rPArray)
-        // And lastly highlight these Nodes
-        highlightNode(rPArray)
-      }
-      else {
-        console.log("Could not find text: " + sentence)
-      }
-
-    });
-  }
-  else if (m.greeting === "summary") {
-    window.sessionStorage.setItem("sum-text", m.text)
-    window.sessionStorage.setItem("uuid-sum", m.uuid)
-
-  }
-  else if (m.greeting === "markWords") {
-    highlightWord()
-    chrome.runtime.sendMessage({ greeting: "highlight"})
-  }
-});
-
-// User opened the popup
-chrome.runtime.onMessage.addListener((message) => {
-  if (message.greeting === "start") {
-    console.log(extractCoreText());
-    chrome.runtime.sendMessage({greeting: "returnText", text: extractCoreText(), url: document.URL});
-    // Send message to backgroundScript
-  }
-});

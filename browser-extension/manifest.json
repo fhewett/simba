@@ -1,36 +1,29 @@
 {
   "manifest_version": 3,
   "name": "Simba Text Assistant",
-  "version": "1.0.1",
-  "description": "The Simba Text Assistant improves your reading experience. It provides a simplified summary.",
+  "version": "1.0.3",
+  "description": "The Simba Text Assistant improves your reading experience by provideing a simplified summary of webpages.",
   "homepage_url": "https://github.com/fhewett/simba",
   "permissions": [
     "activeTab",
     "storage",
     "contextMenus"
   ],
-  "background": {
-    "service_worker": "service_worker.js"
-  },
+  "host_permissions": [
+    "https://simba.publicinterest.ai/*"
+  ],
   "content_scripts": [
-    {
-      "matches": [
-        "<all_urls>"
-      ],
+  {
+      "matches": ["<all_urls>"],
       "js": [
-        "purify.min.js",
         "Readability.js",
         "content.js"
-      ],
-      "css": [
-          "UI/injected.css"
       ]
     }
-  ],
+  ],  
   "action": {
-    "browser_style": true,
     "default_title": "Simba",
-    "default_popup": "UI/index.html",
+    "default_popup": "UI/popup.html",
     "theme_icons": [
       {
         "light": "UI/assets/Lion-dark.svg",
@@ -43,17 +36,5 @@
         "size": 32
       }
     ]
-  },
-  "web_accessible_resources": [
-    {
-      "resources": [
-        "dict.json"
-      ],
-      "matches": [
-        "*://*/*"
-      ]
-    }
-  ],
-
-  "content_security_policy": {}
+  }
 }

@@ -1,22 +1,19 @@
 <!doctype html>
-<html class="" lang="">
-
+<html>
 <head>
     <meta charset="UTF-8">
     <link href="https://fonts.cdnfonts.com/css/ocr-a-std" rel="stylesheet">
-
-    <title>Simba positive Feedback</title>
-
+    <title>Simba negative Feedback</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="css/styles.css" rel="stylesheet">
+    <link href="./popup.css" rel="stylesheet">
+    <script src="./popup.js"></script>
 </head>
 
 <body>
     <div class="main website-width" title="">
-        <a class="index" href="./index.html" tabindex="1">
+        <a class="logo" href="./popup.html" tabindex="1">
             <img src="assets/Logotype.svg" frameborder="0" width="100%" height="100%">
         </a>
-        <!--<a class="settings" href="./simba-manage.html" tabindex="1"></a>-->
         <a class="about mask" href="https://github.com/fhewett/simba" tabindex="2" target="_blank">
             <img src="assets/Info.svg" frameborder="0" width="100%" height="100%">
         </a>
@@ -37,16 +34,18 @@
             </svg>
         </div>
         <div class="feedback std-text">
-            FEEDBACK
+            Feedback
         </div>
-        <div class="upvote-uppage mask">
-            <img src="assets/thumbs-up-line.svg" frameborder="0" width="100%" height="100%">
+        <div class="downvote-downpage mask">
+            <img src="assets/thumbs-down-line.svg" frameborder="0" width="100%" height="100%">
         </div>
-        <div class="sub-feedback std-text">
-            Thank you for submitting your feedback.
+        <div class="downvote-propose std-text">
+            <b>You downvoted a sentence we proposed</b>, do you want to give us an alternative?
         </div>
+        <form action="">
+            <textarea id="down-text" tabindex="3" class="downvote-newsen std-text" placeholder="Please explain your feedback and/or paste the sentences that would make a better summary."></textarea>
+        </form>
+        <button id="down-sub" class="downvote-submit std-text" tabindex="4">SUBMIT</button>
     </div>
-    <script src="js/script.js"></script>
 </body>
-
 </html>

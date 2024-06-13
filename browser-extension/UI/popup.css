@@ -2,109 +2,99 @@
     --color-font: #000;
     --color-background: #F8F8FA;
     --color-background-muted: #fff;
-    --color-font-muted: #555;
+    --color-font-muted: #444;
     --font-std: 'Roboto', 'Arial', 'sans-serif';
     --font-high: 'OCR A Std', sans-serif;
     --font-muted: 'Courier', 'monospace';
 }
 
 @media (prefers-color-scheme: dark) {
-
     :root {
         --color-font: #fff;
         --color-background: #222;
         --color-background-muted: #000;
-        --color-font-muted: #DDD;
+        --color-font-muted: #EEE;
     }
 }
 
-.loader {
-    top: 170px;
-    width: 300px;
-    height: 5px;
+/* added this to remove white-thix border in firefox */
+html, body {
+    margin: 0;
+    padding: 0;
+    border: none; 
+    box-shadow: none; 
+    border-radius: 0; 
+    /* background-color: #yourBackgroundColor;  */
+}
+
+.loader2 {
+    top: 97px;
+    width: 250px;
+    height: 4px;
+    left: -67px;
     text-align: center;
     font-size: 10px;
     position: absolute;
 }
 
-.loader2 {
-    top: 270px;
-}
-
-.loader>div {
+.loader2>div {
     height: 100%;
-    width: 30px;
+    width: 18px;
     display: inline-block;
     margin-left: 10px;
-    --load-color: #EFFF33;
+    --load-color: #93FBCA;
     -webkit-animation: delay 0.8s infinite ease-in-out;
     animation: delay 0.8s infinite ease-in-out;
 }
 
-.loader2>div {
-    --load-color: #93FBCA;
-}
-
-.loader .bar2 {
+.loader2 .bar2 {
     -webkit-animation-delay: -0.7s;
     animation-delay: -0.7s;
 }
 
-.loader .bar3 {
+.loader2 .bar3 {
     -webkit-animation-delay: -0.6s;
     animation-delay: -0.6s;
 }
 
-.loader .bar4 {
+/*.loader2 .bar4 {
     -webkit-animation-delay: -0.5s;
     animation-delay: -0.5s;
 }
 
-.loader .bar5 {
+.loader2 .bar5 {
     -webkit-animation-delay: -0.4s;
     animation-delay: -0.4s;
 }
 
-.loader .bar6 {
+.loader2 .bar6 {
     -webkit-animation-delay: -0.3s;
     animation-delay: -0.3s;
-}
+}*/
 
 @-webkit-keyframes delay {
-
     0%,
     40%,
     100% {
         background-color: var(--color-font);
     }
-
     20% {
         background-color: var(--load-color);
     }
 }
 
 @keyframes delay {
-
     0%,
     40%,
     100% {
         background-color: var(--color-font);
     }
-
     20% {
         background-color: var(--load-color);
     }
 }
 
-.highlight-switch {
-    width: 100px;
-    min-height: 100px;
-    background-color: var(--color-background);
-    position: absolute;
-    top: 95px;
-    left: 20px;
-}
-
+/* // in case we want a switch/slider again
 .summary-switch {
     width: 100px;
     min-height: 100px;
@@ -113,20 +103,17 @@
     top: 195px;
     left: 20px;
 }
-
 .switch {
     position: relative;
     display: inline-block;
     width: 60px;
     height: 34px;
 }
-
 .switch input {
     opacity: 0;
     width: 0;
     height: 0;
 }
-
 .slider {
     position: absolute;
     cursor: pointer;
@@ -138,7 +125,6 @@
     -webkit-transition: .4s;
     transition: .4s;
 }
-
 .slider:before {
     position: absolute;
     content: "";
@@ -150,40 +136,38 @@
     -webkit-transition: .4s;
     transition: .4s;
 }
-
 input:checked+.slider {
     background-color: #93FBCA;
 }
-
 input:focus+.slider {
     box-shadow: 0 0 1px #93FBCA;
 }
-
 input:checked+.slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
 }
-
 .slider.round {
     border-radius: 34px;
 }
-
 .slider.round:before {
     border-radius: 50%;
 }
-
-input:checked+.sliderH {
-    background-color: #EFFF33;
+.summary-head {
+    width: 200px;
+    font-size: large;
+    top: 210px;
+    left: 100px;
 }
 
-input:focus+.sliderH {
-    box-shadow: 0 0 1px #EFFF33;
-}
+.summary-sub {
+    top: 230px;
+    left: 100px;
+}*/
 
 .main {
     background-color: transparent;
-    min-height: 600px;
+    min-height: 380px;
     overflow: auto;
     position: relative;
 }
@@ -195,18 +179,18 @@ input:focus+.sliderH {
     height: 30px;
 }
 
-.index {
+.logo {
     position: absolute;
     overflow: hidden;
     width: 190px;
     height: 35Spx;
-    top: 20px;
+    top: 15px;
     left: 20px;
 }
 
 .beta-badge {
     width: 50px;
-    height: 25px;
+    height: 20px;
     fill: var(--color-font);
     position: absolute;
     top: 20px;
@@ -217,85 +201,57 @@ input:focus+.sliderH {
     fill: #000;
 }
 
-.settings {
-    top: 20px;
-    left: 350px;
-}
 
 .about {
-    top: 20px;
+    top: 15px;
     left: 400px;
 }
 
 .upvote {
-    top: 325px;
+    top: 75px;
     left: 300px;
 }
 
 .downvote {
-    top: 325px;
+    top: 75px;
     left: 340px;
 }
 
 .copy {
-    top: 325px;
+    top: 75px;
     left: 400px;
 }
 
 .upvote-uppage {
-    top: 90px;
+    top: 75px;
     left: 125px;
 }
 
 .downvote-downpage {
-    top: 90px;
+    top: 75px;
     left: 125px;
 }
 
 .std-text {
     color: var(--color-font-muted);
     font-family: var(--font-std);
-    font-size: small;
+    font-size: medium;
     position: absolute;
 }
 
-.highlight-head {
-    width: 300px;
-    font-size: large;
-    top: 110px;
-    left: 100px;
-}
-
-.highlight-sub {
-    top: 130px;
-    left: 100px;
-}
-
-.summary-head {
-    width: 200px;
-    font-size: large;
-    top: 210px;
-    left: 100px;
-}
-
-.summary-sub {
-    top: 230px;
-    left: 100px;
-}
-
-.summary-main {
+.summary-header {
     width: 200px;
     letter-spacing: 1px;
     font-size: large;
-    top: 325px;
+    top: 70px;
     left: 20px;
 }
 
 .summary-textarea {
-    width: 408px;
+    width: 390px;
     font-family: var(--font-muted);
-    min-height: 200px;
-    top: 360px;
+    min-height: 220px;
+    top: 120px;
     left: 20px;
     background-color: var(--color-background-muted);
     border-width: 1px 1px 1px 1px;
@@ -306,7 +262,7 @@ input:focus+.sliderH {
 
 .feedback {
     width: 371px;
-    top: 90px;
+    top: 75px;
     left: 20px;
     font-size: large;
 }
@@ -314,33 +270,33 @@ input:focus+.sliderH {
 .sub-feedback {
     width: 300px;
     min-height: 51px;
-    top: 140px;
+    top: 125px;
     left: 20px;
 }
 
 .downvote-propose {
     width: 410px;
     min-height: 51px;
-    top: 180px;
+    top: 130px;
     left: 20px;
 }
 
 .downvote-newsen {
     width: 400px;
     height: 100px;
-    top: 250px;
+    top: 200px;
     left: 20px;
     padding: 10px;
     border-width: 1px 1px 1px 1px;
     border-style: solid;
     resize: none;
     font-family: var(--font-muted);
-    font-size: small;
+    font-size: medium;
     background-color: var(--color-background-muted);
 }
 
 .downvote-submit {
-    top: 380px;
+    top: 340px;
     left: 350px;
     border-width: 1px 1px 1px 1px;
     border-style: solid;
