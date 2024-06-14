@@ -3,52 +3,16 @@
 let summaryUUID = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('DBG: popup.js DOMContentLoaded event fired!');
-  
-  // first: wire events for the buttons & some UX message 
-  try {
-    document.getElementById("copy").addEventListener("click", function () {
-	navigator.clipboard.writeText(document.getElementById("message-box").innerText);
-    });
-  } catch (error) {}
-  try {
-    document.getElementById("downvote").addEventListener("click", function () { 
-    	if (summaryUUID == null) {
-    	   event.preventDefault();  // no summary, no feedback! 
-    	} else {
-    	    callSimbaFeedbackApi(summaryUUID, "dn");
-    	    event.preventDefault();  // TEST/TEMP!!!
-    	    
-             // TODO: add summaryUUID to href...
-               //window.location.href = "./simba-feedback-upvote.html?" + uuid; 
-    	    //downvoteText = document.getElementById("down-text").value;
-    	}
-    });
-    document.getElementById("upvote").addEventListener("click",function () { 
-    	if (summaryUUID == null) {
-    	   event.preventDefault();  // no summary, no feedback! 
-    	} else { 
-    	  callSimbaFeedbackApi(summaryUUID, "up");
-    	      	   event.preventDefault();  // TEST/TEMP!!!
-    	}
-     });
-   } catch (error) { 
-       console.error('popjs: error setting vote listners');
-   }
-   
-  // old: checkUserLanguage();
+  console.log('DBG: popup.js DOMContentLoaded event fired!');   
   document.getElementById('message-box').innerText = 'Getting page content...';
       
-  // next: let's send a message to content.j) to get the active tab/page content; 
-
+  // let's send a message to content.js to get the active page's content
   function fetchContent(retryCount = 0) {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const tabId = tabs[0].id;
-      
+      const tabId = tabs[0].id;      
       chrome.tabs.sendMessage(tabId, { action: "getPageContent" }, (response) => {
         if (response) {
           // lastly: we send this content to the Simba server to produce simplified summary 
-          // console.log('Page HTML:', response.text);
           document.getElementById('message-box').innerText = "Waiting for Simba server...";
           callSimbaSimplifyApi(response.text, response.url);  
         } else if (retryCount < 4) {
@@ -66,6 +30,49 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   fetchContent();
+
+  // lastly, lets wire events for the buttons & voting 
+  try {
+    document.getElementById("copy").addEventListener("click", function () {
+	    navigator.clipboard.writeText(document.getElementById("message-box").innerText);
+    });
+  } catch (error) {}
+  try {
+    document.getElementById("upvote").addEventListener("click",function () { 
+    	if (summaryUUID != null) {
+    	   // no summary, no feedback! 
+         callSimbaFeedbackApi(summaryUUID, "up");
+        document.getElementById("summary-view").style.display = 'none';
+        document.getElementById("feedback-view").style.display = 'block';
+        document.getElementById("thumbsup").style.display = 'block';        
+        document.getElementById("thumbsdown").style.display = 'none';        
+    	}
+    });   
+    document.getElementById("downvote").addEventListener("click", function () { 
+    	if (summaryUUID != null) {
+        callSimbaFeedbackApi(summaryUUID, "dn");
+        document.getElementById("summary-view").style.display = 'none';
+        document.getElementById("feedback-view").style.display = 'block';
+        document.getElementById("thumbsup").style.display = 'none';        
+        document.getElementById("thumbsdown").style.display = 'block';     
+        document.getElementById("downexplain-view").style.display = 'block';        
+   
+    	}
+    });
+    document.getElementById("down-submit").addEventListener("click",function () { 
+      if (summaryUUID != null) {
+        var feedback = document.getElementById("down-explain").value;
+        callSimbaFeedbackApi(summaryUUID, "dn", feedback);
+        document.getElementById("downexplain-view").style.display = 'none';
+      }
+    });     
+    document.getElementById("simba-logo").addEventListener("click",function () { 
+      document.getElementById("summary-view").style.display = 'block';
+      document.getElementById("feedback-view").style.display = 'none';
+    });
+   } catch (error) { 
+       console.error('popjs: error setting feedback/thumb listners');
+   }
 });
 
 
@@ -80,16 +87,16 @@ async function callSimbaSimplifyApi(pagetext, pageurl) {
         if (response.ok) {
             const data = await response.json();
             summaryUUID = data.uuid;
-            console.log('Got server simplify api result', data);
-	    document.getElementById('message-box').innerText = data.output; // display server output
-	    document.getElementById('progressbar').style.display = "none";  // hide progress bar
+            console.log('Got Simba simplify API results:', data);
+	          document.getElementById('message-box').innerText = data.output; // display server output
+	          document.getElementById('progressbar').style.display = "none";  // hide progress bar
         } else {
             console.error('Bad server response for simba simplify api');
-            document.getElementById('message-box').innerText = 'Bad response from Simba server (simplify): ' + response.status;
+            document.getElementById('message-box').innerText = 'Bad response from Simba server: ' + response.status;
         }
     } catch (error) {
         console.error('Error during simba simplify api:', error);
-        document.getElementById('message-box').innerText = 'Error connecting to Simba server (simplify): ' + error;
+        document.getElementById('message-box').innerText = 'Error connecting to Simba server: ' + error;
     }
 }
 
@@ -101,29 +108,19 @@ async function callSimbaFeedbackApi(uuid, thumb, fnotes="") {
         const response = await fetch(simbaurl, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ "uuid": uuid, "thumb": thumb })  // , "fnotes": fnotes })
+            body: JSON.stringify({ "uuid": uuid, "thumb": thumb, "fnotes": fnotes })
         });
         if (response.ok) {
-            console.log('Server response ok for simba feedback api');
+            console.log('Server response ok for Simba feedback API');
         } else {
-            console.error('Bad server response for simba feedback api', response.status);
+            console.error('Bad server response for Simba feedback API: ', response.status);
         }
     } catch (error) {
-        console.error('Error during simba feedback api:', error);
+        console.error('Error during Simba feedback API:', error);
     }
 }
 
 
-/*function sendDownvote() {
-    // TODO: below is old code, update
-    document.getElementById('message-box').innerText = 'dnvote: ' + summaryUUID;
-    alert('downvote' + summaryUUID);
-    //downvoteText = document.getElementById("down-text").value;
-    //chrome.runtime.sendMessage({ greeting: "downvote" });
-    //window.location.href = "./simba-feedback-upvote.html?" + uuid;
-    return false;
-}*/
-    
 
 /* // HA: old method of translating to German; to decide what to do with it
 function checkUserLanguage() {
