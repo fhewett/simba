@@ -1,11 +1,9 @@
 # Simba Browser Extension
 
-[Eine Deutsche Version dieser Seite findest du hier](https://github.com/fhewett/simba/blob/main/highlighter-plugin-chrome/README_de.md)
-
 **Please note: these are instructions for the developer versions, the official versions can be found in the Chrome/Firefox Extension Stores**
 
 This is a tutorial for installing the 'work in progress' version of the browser extensions for Chrome/Firefox.
-If you want to install the stable versions for Chrome, check out the Simba Add-On on the Chrome Extension Store (**coming soon**).
+You can find the stable versions of Simba on [Firefox Add-ons website](https://addons.mozilla.org/de/firefox/addon/simba-text-assistant/) and [Chrome Web Store](https://chromewebstore.google.com/detail/simba-text-assistant/lllfbelghpclobblmackbkheabbhfdhf). 
 
 ## Installing on Chrome
 - Pull this repository (or download as .zip)

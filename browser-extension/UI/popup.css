@@ -17,14 +17,13 @@
     }
 }
 
-/* added this to remove white-thix border in firefox */
+/* added this to remove white-thick border in firefox */
 html, body {
     margin: 0;
     padding: 0;
     border: none; 
     box-shadow: none; 
     border-radius: 0; 
-    /* background-color: #yourBackgroundColor;  */
 }
 
 body {
@@ -101,7 +100,12 @@ body {
     height: 35Spx;
     top: 15px;
     left: 20px;
+}
+
+@media (prefers-color-scheme: dark) {
+.logo {
     filter: invert(100%) brightness(200%);
+    }
 }
 
 .beta-badge {
@@ -199,7 +203,7 @@ body {
 }
 
 .downvote-newsen {
-    width: 400px;
+    width: 390px;
     height: 100px;
     top: 180px;
     left: 20px;
@@ -214,7 +218,7 @@ body {
 
 .downvote-submit {
     top: 330px;
-    left: 350px;
+    left: 320px;
     border-width: 1px 1px 1px 1px;
     border-style: solid;
     font-size: large;

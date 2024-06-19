@@ -35,7 +35,7 @@
   </div>
 
   <div id="summary-view">
-    <span class="summary-header std-text">Summary</span>
+    <span class="summary-header std-text">Zusammenfassung</span>
     <div class="loader2 summaryLoader" id="progressbar">
       <span class="bar1"></span>
       <span class="bar2"></span>
@@ -57,7 +57,8 @@
   
   <div id="feedback-view" style="display: none;">
     <div class="feedback std-text">
-      Thank you for your feedback.
+      Danke für das Feedback.
+      <!--Thank you for your feedback.-->
     </div>
     
     <div id="thumbsup">
@@ -68,13 +69,14 @@
       <span class="downvoted mask"><img src="assets/thumbs-down-line.svg" frameborder="0" width="100%" height="100%"></span>
       <div id="downexplain-view">
         <div class="downvote-propose std-text">
-          <b>You downvoted our summary:</b> how can we improve? <!--Do you want to suggest an alternative?-->
+          <b>Wie können wir die Zusammenfassung verbessern?</b> 
+          <!-- note: it might be better to give the user categories here, e.g. facutality, coherence, complexity, mainpoints, ...--> 
         </div>
         <form action="">
           <textarea id="down-explain" tabindex="3" class="downvote-newsen std-text"
-            placeholder="Please explain your feedback and/or paste the sentences that would make a better summary."></textarea>
+            placeholder="Zusätzliche Details (optional)"></textarea>
         </form>
-        <button id="down-submit" class="downvote-submit std-text" tabindex="4">SUBMIT</button>
+        <button id="down-submit" class="downvote-submit std-text" tabindex="4">Abschicken</button>
       </div>
     </div>
   </div>
