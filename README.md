@@ -4,7 +4,7 @@
 
 ## Was ist der SIMBA Text Assistent?
 
-Der Simba Text Assistent ist ein Browser-Plugin und Weboberfläche, der Zusammenfassungen von deutschsprachigen Texten auf Webseiten erstellt. Er wurde entwickelt, um die Zusammenfassungen zusätzlich zu vereinfachen, indem er die Sätze verkürzt und schwierige Wörter vermeidet.
+Der Simba Text Assistent ist ein Browser-Extension und Weboberfläche, der Zusammenfassungen von deutschsprachigen Texten auf Webseiten erstellt. Er wurde entwickelt, um die Zusammenfassungen zusätzlich zu vereinfachen, indem er die Sätze verkürzt und schwierige Wörter vermeidet.
 
 Unsere Modelle und unser Code sind Open Source.
 Die Zielgruppen von vereinfachten Sprache reichen von Menschen mit kognitiven Behinderungen über Nicht-Muttersprachler*innen bis hin zu Kindern und Laien. Der „gesellschaftliche Zweck“ der vereinfachten Sprache besteht also darin, möglichst vielen verschiedenen Menschen Zugang zu denselben Informationen zu verschaffen.
