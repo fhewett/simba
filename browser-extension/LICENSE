@@ -1,5 +1,5 @@
-# Parts of the SIMBA code are based on the Readability project with its respective copyright (https://github.com/mozilla/readability/blob/main/LICENSE.md)
+Simba browser extension uses the Mozilla Public License Version 2.0.
 
-------------------------------------------------------------------------------------------------------------------------------------
+The browser extension makes use of the Readability project which has a different license (https://github.com/mozilla/readability/blob/main/LICENSE.md)
 
-# This project also makes use of the DOMPurify project with its respective copyright (https://github.com/cure53/DOMPurify/blob/main/LICENSE)
+

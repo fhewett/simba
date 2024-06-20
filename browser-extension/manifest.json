@@ -5,9 +5,7 @@
   "description": "The Simba Text Assistant improves your reading experience by provideing a simplified summary of webpages.",
   "homepage_url": "https://github.com/fhewett/simba",
   "permissions": [
-    "activeTab",
-    "storage",
-    "contextMenus"
+    "activeTab"
   ],
   "host_permissions": [
     "https://simba.publicinterest.ai/*"
@@ -36,5 +34,11 @@
         "size": 32
       }
     ]
+  },  
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{1e7bab23-ed25-46e3-91a2-b00204e0c58e}",
+      "strict_min_version": "109.0"
+    }
   }
 }
