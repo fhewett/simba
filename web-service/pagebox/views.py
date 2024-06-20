@@ -51,11 +51,8 @@ def submit_feedback(request):
 
         # record feedback
         obj = get_object_or_404(APIRequestLog, pk=uuid)
-        if obj.feedback_thumb:
-            # there shouldn't really be a feedback already stored, but to be safe lets not override.
-            obj.feedback_details = "\n---\nEarlier: " + obj.feedback_thumb + "\n" + obj.feedback_details
-
         obj.feedback_thumb = thumb[0].upper()
-        obj.feedback_details = fnotes + obj.feedback_details
+        obj.feedback_details = fnotes  # overrides earlier feedback on same UUID
         obj.save()    
         return JsonResponse({'status': 'success', 'message': 'Thank you for your feedback!'})
+        

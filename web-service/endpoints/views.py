@@ -76,11 +76,11 @@ class RestFeedbackApi(APIView):
         fnotes = request.data.get("fnotes", "")
 
         obj = get_object_or_404(APIRequestLog, pk=uuid)
-        if obj.feedback_thumb:
-            # there shouldn't really be a feedback already stored, but to be safe lets not override.
-            obj.feedback_details = "\n---\nEarlier: " + obj.feedback_thumb + "\n" + obj.feedback_details
+        #if obj.feedback_thumb:
+        #    # there shouldn't really be a feedback already stored, but to be safe lets not override.
+        #    obj.feedback_details = "\n---\nEarlier: " + obj.feedback_thumb + "\n" + obj.feedback_details
         obj.feedback_thumb = thumb[0].upper()
-        obj.feedback_details = fnotes + obj.feedback_details
+        obj.feedback_details = fnotes  # + obj.feedback_details
         obj.save()
         return Response(status=200)
 
