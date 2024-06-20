@@ -47,23 +47,24 @@ Kannst du bitte den folgenden Text zusammenfassen und sprachlich auf ein A2-Nive
 
 def postprocess_basic(output):
     # basic post-processing. 
-    #   better would be to get model not to add these sentences, or remove from `Hier` to `:\n`
+    # it might be better to get the model not to such sentences, or remove from `Hier` to `:\n`
     output = output.replace("Hier sind die 5 vollständigen Sätze:", "")
     output = output.replace("Hier ist der Text in 5 vollständigen Sätzen vereinfacht:", "")
+    output = output.replace("Hier ist ein Text auf A2-Niveau in Deutsch:", "")
     output = output.replace("Hier ist ein zusammengefasster Text auf A2-Niveau:", "")
     output = output.replace("Hier ist eine Zusammenfassung des Textes auf A2-Niveau:", "")
+    output = output.replace("Hier ist ein Zusammenfassung des Textes auf A2-Niveau:", "")
     output = output.replace("Hier ist ein Text, der auf A2-Niveau in Deutsch vereinfacht und zusammengefasst wurde:", "")
     output = output.replace("Hier ist ein Text, der auf ein A2-Niveau in Deutsch vereinfacht und zusammengefasst wurde:", "")
     output = output.replace("Hier ist ein Text, der den Originaltext auf ein A2-Niveau in Deutsch vereinfacht und auf 5 Sätze reduziert:", "")
     output = output.replace("Hier ist ein Text, der den Originaltext auf ein A2-Niveau in Deutsch vereinfacht und zusammengefasst:", "")
     output = output.replace("Hier ist ein Text, der den Originaltext zusammenfasst und auf ein A2-Niveau in Deutsch vereinfacht:", "")    
-    output = output.replace("Hier ist ein Text, der den Originaltext auf ein A2-Niveau in Deutsch vereinfacht und auf maximal 5 Sätze reduziert:", "")
+    output = output.replace("Hier ist ein Text, der den Originaltext auf ein A2-Niveau in Deutsch vereinfacht und auf maximal 5 Sätze reduziert:", "")    
+    output = output.replace("Leider ist der Text sehr kurz und enthält nur ein Wort. Hier ist eine mögliche Zusammenfassung und Vereinfachung auf A2-Niveau:", "")
     output = output.replace("Here is a summary of the text in 5 sentences, written at an A2 level in German:", "")
     output = output.replace("Here is a summary of the text in 5 sentences, written at an A2 level:", "")
     output = output.replace("Here is a summary of the text in 5 sentences, written in simple language and at an A2 level:", "")
-    output = output.replace("Leider ist der Text sehr kurz und enthält nur ein Wort. Hier ist eine mögliche Zusammenfassung und Vereinfachung auf A2-Niveau:", "")
     output = output.replace("Here is a summary of the text in 5 sentences, written in a simplified language and at an A2 level:", "")
-    output = output.replace("Hier ist ein Text auf A2-Niveau in Deutsch:", "")
     # maybe also at end: output = output.replace("Ich hoffe, das hilft! Lassen Sie mich wissen, wenn Sie weitere Fragen haben.", "")
     output = output.strip()
     return output
