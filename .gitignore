@@ -142,3 +142,6 @@ venv-*/
 .env
 websvc/temp-tests/
 tmp-*
+temp-*
+.DS_Store
+

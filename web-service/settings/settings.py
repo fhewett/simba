@@ -51,7 +51,7 @@ SECRET_KEY = os.environ['SECRET_KEY']  # load from environment for security
 # SECURITY WARNING: don't run with debug turned on in production!
 # Change this to "False" when you are ready for production
 DEBUG = True if os.environ.get("DJANGO_DEBUG") else False
-
+print("DEBUG MODE:", DEBUG)
 
 # GAE SECURITY WARNING: It's recommended that you use this when
 # running in production. The URL will be known once you first deploy
@@ -88,7 +88,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  # HA: added to resolve CORS error
+    'corsheaders.middleware.CorsMiddleware',  # HA: added to resolve CORS error 
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -166,22 +166,20 @@ STATICFILES_DIRS = []
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# HA This is for the Django REST framework. -
-# TODO: double check security for production (fine for development)
+# HA This is for the Django REST framework. 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
-        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        'rest_framework.permissions.AllowAny',  # API is public to all (called by browser-extension)
     ]
 }
 
-# HA
+# HA 
 CORS_ORIGIN_ALLOW_ALL = True
 
 # Caching Backend 
 # - Not necessary to include snippet on GAE (memcached is active/configured already)
-# - For other insalls, use below, which also requires memcached to be installed/running (easy on Ubuntu)
+# - For other installs, use below, which also requires memcached to be installed/running 
+# - Since 202404 we are not using caching currently
 # CACHES = {
 #     'default': {
 #         'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',

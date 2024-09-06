@@ -7,10 +7,10 @@ django-environ==0.10.0
 psycopg2-binary==2.9.9  
 google-cloud-secret-manager==2.16.1
 
-openai  # for the openai API support (used by VLLM)
-pylibmc  # needs libmemcached-tools on Ubuntu; on GAE works
+openai  # for OpenAI API as well as VLLM support
 together  # for Together API
 
+# pylibmc  # needs libmemcached-tools on Ubuntu; on GAE works; remarked 202409
 # transformers  # AutoTokenizer
 # tiktoken  # OpenAI's fast tokenizer
 

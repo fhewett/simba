@@ -2,18 +2,32 @@ from time import time
 import ipaddress
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.core.cache import cache  
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser, FormParser
 from rest_framework.response import Response
 from rest_framework.decorators import parser_classes
+from rest_framework.authentication import SessionAuthentication
 from .db_models import APIRequestLog
 from .lang_models import *
 
 
+class CsrfExemptSessionAuthentication(SessionAuthentication):
+    # This class, as well as the `csrf_exempt` decorator are required for RestSimplfyApi() to work publicly. 
+    # Otherwise: when one is logged into the admin site, Django still enforces CSRF protection 
+    # for POST requests associated with that session regardless of the decorator (raising a 403)
+
+    def enforce_csrf(self, request):
+        return  # Do not perform the CSRF check
+    
+
+@method_decorator(csrf_exempt, name='dispatch')
 class RestSimplifyApi(APIView):
-    """Summarizes & simplifies inputed text via an ML model (chosen by backend); Logs to database."""
+    """REST API view: post() simplifies requested text via an ML model of choice and logs to DB."""
+
+    authentication_classes = (CsrfExemptSessionAuthentication, )
 
     def __init__(self):
         super().__init__()
@@ -21,7 +35,6 @@ class RestSimplifyApi(APIView):
     def __call__(self, request, *args, **kwargs):
         return self.dispatch(request, *args, **kwargs)
 
-    @csrf_exempt
     @parser_classes([JSONParser, FormParser])
     def post(self, request, *args, **kwargs):
         # Handle the REST API request here (e.g. coming from the browser extension) 
@@ -32,10 +45,10 @@ class RestSimplifyApi(APIView):
 
         # note: pre-processing of the input coming from the browser (readability) appears tobe unnecessary with latest models
         st = time()
-        output = llama3_together_v20240425(text)  
+        output = llama3ft_runpod_v20240905(text)  
         duration =round(time()-st, 2)
-        print(f"Model `llama3_together_v20240425` called in  {duration} sec (RESTAPI).")  # apparently prints go to log in GAE
-        uuid = APIRequestLog.create_save(model_sig="llama3_together_v20240425",
+        #print(f"Model on backend called in {duration} sec (RESTAPI).")  # apparently prints go to log in GAE
+        uuid = APIRequestLog.create_save(model_sig="llama3ft_runpod_v20240905",
                                   meta_data={"userip": userip, "browser_url": url, "src": "api"}, 
                                   input_text=text, output_text=output, duration=duration)
         return Response({"output":output, "uuid": uuid})
@@ -58,8 +71,11 @@ def get_pseudo_user_ip(request):
     return modified_ip
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class RestFeedbackApi(APIView):
-    """Store feedback from user for a particular model output"""
+    """REST API view to store feedback from user for a particular model output"""
+
+    authentication_classes = (CsrfExemptSessionAuthentication, )
 
     def __init__(self):
         super().__init__()
@@ -67,7 +83,6 @@ class RestFeedbackApi(APIView):
     def __call__(self, request, *args, **kwargs):
         return self.dispatch(request, *args, **kwargs)
 
-    @csrf_exempt
     @parser_classes([JSONParser])  # only JSON
     def post(self, request, *args, **kwargs):
         print("DBG RestFeedbackApi.post():", request.data) 

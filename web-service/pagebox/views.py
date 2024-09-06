@@ -12,12 +12,20 @@ def index_view(request):
     if request.method == "POST":
         text = request.POST.get('text')
         # NOTE: perhaps we would want want to check for some minimum amount of text (and other validations)? 
+        selected_model = request.POST.get('ModelDropdown')
+        print(selected_model)
         userip = get_pseudo_user_ip(request)
         st = time()
-        output = llama3_together_v20240425(text)  
+        if selected_model == 'option-simba2409':
+            model_dbsig = "llama3ft_runpod_v20240905"
+            output = llama3ft_runpod_v20240905(text) 
+        else:  
+            # default fallback Llama-3
+            model_dbsig = "llama3_together_v20240425"
+            output = llama3_together_v20240425(text)  
         duration = round(time()-st, 2)
-        print(f"Model `llama3_together_v20240425` called in  {duration} sec (webform).")  # goes to log in GAE
-        uuid = APIRequestLog.create_save(model_sig="llama3_together_v20240425",
+        print(f"Model {model_dbsig} called in {duration} sec (webform).")  # goes to log in GAE
+        uuid = APIRequestLog.create_save(model_sig=model_dbsig,
                                   meta_data={"userip": userip, "src": "web"}, input_text=text, 
                                   output_text=output, duration=duration)
 
